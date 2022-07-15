@@ -18,6 +18,9 @@ on:
       - "code/**"
       - ".github/workflows/sql.yml"
 
+env:
+  WORKING_DIRECTORY: "code/MyDatabase/"
+
 jobs:
   sql:
     name: SQL
@@ -41,8 +44,8 @@ jobs:
       - name: Get SQL Package Version
         run: sqlpackage /version
       
-      # Build .NET project
-      - name: Build .NET project
+      # Build Database project
+      - name: Build Database project
         id: dotnet_build
-        run: dotnet build "MyDatabase.sqlproj" /p:NetCoreBuild=true /p:NETCoreTargetsPath="./myDatabase"
-        working-directory: "code/MyDatabase/"
+        run: dotnet build /p:NetCoreBuild=true
+        working-directory: ${{ env.WORKING_DIRECTORY }}
