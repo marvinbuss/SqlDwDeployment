@@ -1,0 +1,35 @@
+name: SQL - Test and Build
+
+on:
+  push:
+    # Publish `main` as Docker `latest` image.
+    branches:
+      - main
+
+    # Publish `v1.2.3` tags as releases.
+    tags:
+      - 'v*.*.*'
+
+  # Run tests for any PRs.
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "code/**"
+      - ".github/workflows/sql.yml"
+
+jobs:
+  sql:
+    name: SQL
+    runs-on: ubuntu-latest
+    continue-on-error: false
+
+    steps:
+      # Checkout repository
+      - name: Check Out Repository
+        id: checkout_repository
+        uses: actions/checkout@v3
+
+      # Get SQL Package Version
+      - name: Get SQL Package Version
+        run: sqlpackage.exe /version
