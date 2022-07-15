@@ -30,6 +30,19 @@ jobs:
         id: checkout_repository
         uses: actions/checkout@v3
 
+      # Setup .NET
+      - name: Setup .NET
+        id: dotnet_setup
+        uses: actions/setup-dotnet@v2
+        with:
+          dotnet-version: "6.0.x"
+
       # Get SQL Package Version
       - name: Get SQL Package Version
         run: sqlpackage /version
+      
+      # Build .NET project
+      - name: Build .NET project
+        id: dotnet_build
+        run: dotnet build "MyDatabase.sqlproj" /p:NetCoreBuild=true /p:NETCoreTargetsPath="./myDatabase"
+        working-directory: "code/MyDatabase/"
