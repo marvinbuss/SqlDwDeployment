@@ -32,4 +32,4 @@ jobs:
 
       # Get SQL Package Version
       - name: Get SQL Package Version
-        run: sqlpackage.exe /version
+        run: SqlPackage /version
