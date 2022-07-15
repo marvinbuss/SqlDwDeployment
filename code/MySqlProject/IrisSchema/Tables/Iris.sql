@@ -1,4 +1,4 @@
-﻿CREATE TABLE [IrisSchema].[Iris]
+CREATE TABLE [IrisSchema].[Iris]
 (
     [SepalLength] [decimal](18,0) NOT NULL,
     [SepalWidth] [decimal](18,0) NOT NULL,
