@@ -19,7 +19,7 @@ on:
       - ".github/workflows/sql.yml"
 
 env:
-  WORKING_DIRECTORY: "code/MyDatabase/"
+  WORKING_DIRECTORY: "code/MySqlProject/"
 
 jobs:
   sql:
