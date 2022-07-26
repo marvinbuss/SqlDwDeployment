@@ -74,7 +74,7 @@ jobs:
           Write-Output "Set secret value"
           Write-Output "::add-mask::${azureAccessToken}"
           Write-Output "::set-output name=azureAccessToken::${azureAccessToken}"
-        shell: powershell
+        shell: pwsh
 
       # SQL Package Version
       - name: SQL Package Version
