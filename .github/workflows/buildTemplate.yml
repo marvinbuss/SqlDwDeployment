@@ -50,7 +50,7 @@ jobs:
       # Build Database project
       - name: Build Database project
         id: dotnet_build
-        run: dotnet build /p:NetCoreBuild=true --configuration Release --no-restore --output ${{ env.BUILD_PATH }}
+        run: dotnet build /p:NetCoreBuild=true
         working-directory: ${{ inputs.working_directory }}
 
       # Login to Azure
