@@ -22,9 +22,24 @@ env:
   WORKING_DIRECTORY: "code/MySqlProject/"
 
 jobs:
-  sql:
-    uses: ./.github/workflows/buildTemplate.yml
-    name: "Build SQL DB Project"
+  sql_report:
+    uses: ./.github/workflows/reportTemplate.yml
+    name: "Report SQL Changes"
+    with:
+      dotnet_version: "6.0.x"
+      working_directory: "code/MySqlProject/"
+      project_name: "MySqlProject"
+    secrets:
+      azure_subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
+      target_server_name: ${{ secrets.SQL_SERVER_NAME }}
+      target_database_name: ${{ secrets.SQL_DATABASE_NAME }}
+  
+  sql_deploy:
+    uses: ./.github/workflows/deployTemplate.yml
+    name: "Deploy SQL Changes"
+    # needs: [sql_report]
+    # if: github.event_name == 'push' || github.event_name == 'release'
     with:
       dotnet_version: "6.0.x"
       working_directory: "code/MySqlProject/"
