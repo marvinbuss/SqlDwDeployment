@@ -1,4 +1,4 @@
-name: Report Template
+name: Deploy Template
 
 on:
   workflow_call:
@@ -35,7 +35,7 @@ env:
 
 jobs:
   build:
-    name: Build of SQL Project
+    name: Deploy SQL Project
     runs-on: ubuntu-latest
     continue-on-error: false
     # environment: ${{ inputs.environment }}
