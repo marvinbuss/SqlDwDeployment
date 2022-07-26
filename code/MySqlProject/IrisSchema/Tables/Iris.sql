@@ -4,7 +4,8 @@ CREATE TABLE [IrisSchema].[Iris]
     [SepalWidth] [decimal](18,0) NOT NULL,
     [PetalLength] [decimal](18,0) NOT NULL,
     [PetalWidth] [decimal](18,0) NOT NULL,
-    [Variety] [varchar](30) NOT NULL
+    [Variety] [varchar](30) NOT NULL,
+    [Description] [varchar](30) NOT NULL
 )
 WITH
 (
