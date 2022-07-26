@@ -67,21 +67,6 @@ jobs:
           creds: ${{ secrets.azure_credentials }}
           # enable-AzPSSession: true
 
-      # # Generate Azure Active Directory Token
-      # - name: Generate Azure Active Directory Token
-      #   id: azure_access_token
-      #   run: |
-      #     Write-Output "Set Azure Context"
-      #     Set-AzContext -Subscription "${{ secrets.azure_subscription_id }}"
-
-      #     Write-Output "Create Azure Access Token"
-      #     $azureAccessToken = (Get-AzAccessToken -ResourceUrl "https://database.windows.net").Token
-
-      #     Write-Output "Set secret value"
-      #     Write-Output "::add-mask::${azureAccessToken}"
-      #     Write-Output "::set-output name=azureAccessToken::${azureAccessToken}"
-      #   shell: pwsh
-      
       # Generate Azure Active Directory Token
       - name: Generate Azure Active Directory Token
         id: azure_access_token
@@ -130,4 +115,4 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: build
-          path: ${{ github.workspace }}/${{ inputs.working_directory }}
+          path: ${{ github.workspace }}/${{ inputs.working_directory }}/${{ env.BUILD_PATH }}
