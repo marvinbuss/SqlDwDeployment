@@ -50,7 +50,7 @@ jobs:
       # Build Database project
       - name: Build Database project
         id: dotnet_build
-        run: dotnet build /p:NetCoreBuild=true --configuration Release
+        run: dotnet build /p:NetCoreBuild=true --configuration Release --output ${{ env.BUILD_PATH }}
         working-directory: ${{ inputs.working_directory }}
 
       # Login to Azure
@@ -74,6 +74,7 @@ jobs:
           Write-Host "Set secret value"
           Write-Host "::add-mask::${azureAccessToken}"
           Write-Host "::set-output name=azureAccessToken::${azureAccessToken}"
+        shell: powershell
 
       # SQL Package Version
       - name: SQL Package Version
