@@ -1,0 +1,111 @@
+name: Validation Template
+
+on:
+  workflow_call:
+    inputs:
+      dotnet_version:
+        required: true
+        type: string
+        default: "6.0.x"
+        description: "Specifies the .NET version."
+      working_directory:
+        required: true
+        type: string
+        description: "Specifies the working directory for the SQL project."
+      project_name:
+        required: true
+        type: string
+        description: "Specifies the name of the SQL project."
+    secrets:
+      azure_subscription_id:
+        required: true
+        description: "Specifies the subscription id of the deployment."
+      azure_credentials:
+        required: true
+        description: "Specifies the azure credentials used for authentication."
+
+env:
+  BUILD_PATH: "./DatabaseRelease"
+
+jobs:
+  validation:
+    name: Validation of ${{ inputs.environment }}
+    runs-on: ubuntu-latest
+    continue-on-error: false
+    # environment: ${{ inputs.environment }}
+
+    steps:
+      # Checkout repository
+      - name: Check Out Repository
+        id: checkout_repository
+        uses: actions/checkout@v3
+
+      # Setup .NET
+      - name: Setup .NET
+        id: dotnet_setup
+        uses: actions/setup-dotnet@v2
+        with:
+          dotnet-version: ${{ inputs.dotnet_version }}
+
+      # Get SQL Package Version
+      - name: Get SQL Package Version
+        run: sqlpackage /Version
+      
+      # Build Database project
+      - name: Build Database project
+        id: dotnet_build
+        run: dotnet build /p:NetCoreBuild=true --configuration Release --no-restore --output ${{ env.BUILD_PATH }}
+        working-directory: ${{ inputs.working_directory }}
+
+      # Login to Azure
+      - name: Azure Login
+        id: azure_login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.azure_credentials }}
+          enable-AzPSSession: true
+      
+      # Generate Azure Active Directory Token
+      - name: Generate Azure Active Directory Token
+        id: azure_access_token
+        run: |
+          Write-Host "Set Azure Context"
+          Set-AzContext -Subscription "${{ secrets.azure_subscription_id }}"
+
+          Write-Host "Create Azure Access Token"
+          $azureAccessToken = (Get-AzAccessToken -ResourceUrl "https://database.windows.net").Token
+
+          Write-Host "Set secret value"
+          Write-Host "::add-mask::${azureAccessToken}"
+          Write-Host "::set-output name=azureAccessToken::${azureAccessToken}"
+
+      # Generate Deployment Report
+      - name: Generate SQL Deployment Report
+        id: sql_deployment_report
+        run: |
+          sqlpackage /Action:DeployReport /SourceFile:"./${{ env.BUILD_PATH }}/${{ inputs.project_name }}.dacpac" /TargetServerName:"${{ inputs.target_server_name }}" /TargetDatabaseName:"${{ inputs.target_database_name }}" /OutputPath:"./${{ env.BUILD_PATH }}/deployReport.xml" /AccessToken:"${{ steps.azure_access_token.outputs.azureAccessToken }}"
+        working-directory: ${{ inputs.working_directory }}
+
+      # Generate Deployment Script
+      - name: Generate SQL Deployment Script
+        id: sql_deployment_report
+        run: |
+          sqlpackage /Action:Script /SourceFile:"./${{ env.BUILD_PATH }}/${{ inputs.project_name }}.dacpac" /TargetServerName:"${{ inputs.target_server_name }}" /TargetDatabaseName:"${{ inputs.target_database_name }}" /OutputPath:"./${{ env.BUILD_PATH }}/deployScript.sql" /AccessToken:"${{ steps.azure_access_token.outputs.azureAccessToken }}"
+        working-directory: ${{ inputs.working_directory }}
+
+      # Log out from Azure
+      - name: Log out from Azure
+        id: azure_logout
+        uses: azure/cli@v1
+        with:
+          azcliversion: "agentazcliversion"
+          inlineScript: |
+            az logout
+      
+      # Upload Load Testing Results
+      - name: Upload Load Testing Results
+        id: upload_load_testing_results
+        uses: actions/upload-artifact@v2
+        with:
+          name: build
+          path: ${{ github.workspace }}/${{ inputs.working_directory }}

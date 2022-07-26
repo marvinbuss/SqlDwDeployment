@@ -23,29 +23,12 @@ env:
 
 jobs:
   sql:
-    name: SQL
-    runs-on: ubuntu-latest
-    continue-on-error: false
-
-    steps:
-      # Checkout repository
-      - name: Check Out Repository
-        id: checkout_repository
-        uses: actions/checkout@v3
-
-      # Setup .NET
-      - name: Setup .NET
-        id: dotnet_setup
-        uses: actions/setup-dotnet@v2
-        with:
-          dotnet-version: "6.0.x"
-
-      # Get SQL Package Version
-      - name: Get SQL Package Version
-        run: sqlpackage /version
-      
-      # Build Database project
-      - name: Build Database project
-        id: dotnet_build
-        run: dotnet build /p:NetCoreBuild=true
-        working-directory: ${{ env.WORKING_DIRECTORY }}
+    uses: ./.github/workflows/buildTemplate.yml
+    name: "Build SQL DB Project"
+    with:
+      dotnet_version: "6.0.x"
+      working_directory: "code/MySqlProject/"
+      project_name: "MySqlProject"
+    secrets:
+      azure_subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
