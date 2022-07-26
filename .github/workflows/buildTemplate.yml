@@ -65,15 +65,15 @@ jobs:
       - name: Generate Azure Active Directory Token
         id: azure_access_token
         run: |
-          Write-Host "Set Azure Context"
+          Write-Output "Set Azure Context"
           Set-AzContext -Subscription "${{ secrets.azure_subscription_id }}"
 
-          Write-Host "Create Azure Access Token"
+          Write-Output "Create Azure Access Token"
           $azureAccessToken = (Get-AzAccessToken -ResourceUrl "https://database.windows.net").Token
 
-          Write-Host "Set secret value"
-          Write-Host "::add-mask::${azureAccessToken}"
-          Write-Host "::set-output name=azureAccessToken::${azureAccessToken}"
+          Write-Output "Set secret value"
+          Write-Output "::add-mask::${azureAccessToken}"
+          Write-Output "::set-output name=azureAccessToken::${azureAccessToken}"
         shell: powershell
 
       # SQL Package Version
@@ -104,9 +104,9 @@ jobs:
           inlineScript: |
             az logout
 
-      # Upload Load Testing Results
-      - name: Upload Load Testing Results
-        id: upload_load_testing_results
+      # Upload SQL Package Results
+      - name: Upload SQL Package Results
+        id: sqlpackage_results
         uses: actions/upload-artifact@v2
         with:
           name: build
