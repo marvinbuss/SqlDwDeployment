@@ -65,7 +65,6 @@ jobs:
         uses: azure/login@v1
         with:
           creds: ${{ secrets.azure_credentials }}
-          # enable-AzPSSession: true
 
       # Generate Azure Active Directory Token
       - name: Generate Azure Active Directory Token
