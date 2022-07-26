@@ -31,7 +31,7 @@ on:
         description: "Specifies the target sql database name."
 
 env:
-  BUILD_PATH: "./DatabaseRelease"
+  BUILD_PATH: "DatabaseRelease"
 
 jobs:
   build:
@@ -56,7 +56,7 @@ jobs:
       # Build Database project
       - name: Build Database project
         id: dotnet_build
-        run: dotnet build /p:NetCoreBuild=true --configuration Release --output ${{ env.BUILD_PATH }}
+        run: dotnet build /p:NetCoreBuild=true --configuration Release --output ./${{ env.BUILD_PATH }}
         working-directory: ${{ inputs.working_directory }}
 
       # Login to Azure
