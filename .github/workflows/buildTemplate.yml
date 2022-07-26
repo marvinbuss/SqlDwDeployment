@@ -90,7 +90,7 @@ jobs:
           az account set -s "${{ secrets.azure_subscription_id }}"
 
           echo "Create Azure Access Token"
-          ACCESS_TOKEN=$(az account get-access-token --scope "https://purview.azure.net/.default" --query "accessToken" -o tsv)
+          ACCESS_TOKEN=$(az account get-access-token --scope "https://database.windows.net" --query "accessToken" -o tsv)
 
           echo "Set secret value"
           echo "::add-mask::$ACCESS_TOKEN"
