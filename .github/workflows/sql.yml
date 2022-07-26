@@ -22,9 +22,17 @@ env:
   WORKING_DIRECTORY: "code/MySqlProject/"
 
 jobs:
+  sql_build:
+    uses: ./.github/workflows/buildTemplate.yml
+    name: "Build SQL Project"
+    with:
+      dotnet_version: "6.0.x"
+      working_directory: "code/MySqlProject/"
+  
   sql_report:
     uses: ./.github/workflows/reportTemplate.yml
     name: "Report SQL Changes"
+    needs: [sql_build]
     with:
       dotnet_version: "6.0.x"
       working_directory: "code/MySqlProject/"
@@ -38,8 +46,8 @@ jobs:
   sql_deploy:
     uses: ./.github/workflows/deployTemplate.yml
     name: "Deploy SQL Changes"
-    # needs: [sql_report]
-    # if: github.event_name == 'push' || github.event_name == 'release'
+    needs: [sql_build, sql_report]
+    if: github.event_name == 'push' || github.event_name == 'release'
     with:
       dotnet_version: "6.0.x"
       working_directory: "code/MySqlProject/"
