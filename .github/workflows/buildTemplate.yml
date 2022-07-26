@@ -50,7 +50,7 @@ jobs:
       # Build Database project
       - name: Build Database project
         id: dotnet_build
-        run: dotnet build /p:NetCoreBuild=true
+        run: dotnet build /p:NetCoreBuild=true --configuration Release
         working-directory: ${{ inputs.working_directory }}
 
       # Login to Azure
@@ -60,7 +60,7 @@ jobs:
         with:
           creds: ${{ secrets.azure_credentials }}
           enable-AzPSSession: true
-      
+
       # Generate Azure Active Directory Token
       - name: Generate Azure Active Directory Token
         id: azure_access_token
@@ -79,7 +79,7 @@ jobs:
       - name: SQL Package Version
         id: sqlpackage_version
         run: sqlpackage /Version
-      
+
       # SQL Package Deployment Report
       - name: SQL Package Deployment Report
         id: sqlpackage_deployreport
@@ -102,7 +102,7 @@ jobs:
           azcliversion: "agentazcliversion"
           inlineScript: |
             az logout
-      
+
       # Upload Load Testing Results
       - name: Upload Load Testing Results
         id: upload_load_testing_results
