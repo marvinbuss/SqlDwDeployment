@@ -61,20 +61,34 @@ jobs:
           creds: ${{ secrets.azure_credentials }}
           enable-AzPSSession: true
 
+      # # Generate Azure Active Directory Token
+      # - name: Generate Azure Active Directory Token
+      #   id: azure_access_token
+      #   run: |
+      #     Write-Output "Set Azure Context"
+      #     Set-AzContext -Subscription "${{ secrets.azure_subscription_id }}"
+
+      #     Write-Output "Create Azure Access Token"
+      #     $azureAccessToken = (Get-AzAccessToken -ResourceUrl "https://database.windows.net").Token
+
+      #     Write-Output "Set secret value"
+      #     Write-Output "::add-mask::${azureAccessToken}"
+      #     Write-Output "::set-output name=azureAccessToken::${azureAccessToken}"
+      #   shell: pwsh
+      
       # Generate Azure Active Directory Token
       - name: Generate Azure Active Directory Token
         id: azure_access_token
         run: |
-          Write-Output "Set Azure Context"
-          Set-AzContext -Subscription "${{ secrets.azure_subscription_id }}"
+          echo "Set Azure Context"
+          az account set -s "${{ secrets.azure_subscription_id }}"
 
-          Write-Output "Create Azure Access Token"
-          $azureAccessToken = (Get-AzAccessToken -ResourceUrl "https://database.windows.net").Token
+          echo "Create Azure Access Token"
+          ACCESS_TOKEN=$(az account get-access-token --scope "https://purview.azure.net/.default" --query "accessToken" -o tsv)
 
-          Write-Output "Set secret value"
-          Write-Output "::add-mask::${azureAccessToken}"
-          Write-Output "::set-output name=azureAccessToken::${azureAccessToken}"
-        shell: pwsh
+          echo "Set secret value"
+          echo "::add-mask::$ACCESS_TOKEN"
+          echo "::set-output name=azureAccessToken::$ACCESS_TOKEN"
 
       # SQL Package Version
       - name: SQL Package Version
