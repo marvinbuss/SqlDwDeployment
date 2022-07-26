@@ -34,8 +34,8 @@ env:
   BUILD_PATH: "./DatabaseRelease"
 
 jobs:
-  validation:
-    name: Validation of ${{ inputs.environment }}
+  build:
+    name: Build of SQL Project
     runs-on: ubuntu-latest
     continue-on-error: false
     # environment: ${{ inputs.environment }}
