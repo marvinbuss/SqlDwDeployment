@@ -8,7 +8,7 @@ on:
 
     # Publish `v1.2.3` tags as releases.
     tags:
-      - 'v*.*.*'
+      - "v*.*.*"
 
   # Run tests for any PRs.
   pull_request:
@@ -22,30 +22,38 @@ env:
   WORKING_DIRECTORY: "code/MySqlProject/"
 
 jobs:
-  sql:
-    name: SQL
-    runs-on: ubuntu-latest
-    continue-on-error: false
-
-    steps:
-      # Checkout repository
-      - name: Check Out Repository
-        id: checkout_repository
-        uses: actions/checkout@v3
-
-      # Setup .NET
-      - name: Setup .NET
-        id: dotnet_setup
-        uses: actions/setup-dotnet@v2
-        with:
-          dotnet-version: "6.0.x"
-
-      # Get SQL Package Version
-      - name: Get SQL Package Version
-        run: sqlpackage /version
-      
-      # Build Database project
-      - name: Build Database project
-        id: dotnet_build
-        run: dotnet build /p:NetCoreBuild=true
-        working-directory: ${{ env.WORKING_DIRECTORY }}
+  sql_build:
+    uses: ./.github/workflows/buildTemplate.yml
+    name: "Build SQL Project"
+    with:
+      dotnet_version: "6.0.x"
+      working_directory: "code/MySqlProject/"
+  
+  sql_report:
+    uses: ./.github/workflows/reportTemplate.yml
+    name: "Report SQL Changes"
+    needs: [sql_build]
+    with:
+      dotnet_version: "6.0.x"
+      working_directory: "code/MySqlProject/"
+      project_name: "MySqlProject"
+    secrets:
+      azure_subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
+      target_server_name: ${{ secrets.SQL_SERVER_NAME }}
+      target_database_name: ${{ secrets.SQL_DATABASE_NAME }}
+  
+  sql_deploy:
+    uses: ./.github/workflows/deployTemplate.yml
+    name: "Deploy SQL Changes"
+    needs: [sql_build, sql_report]
+    if: github.event_name == 'push' || github.event_name == 'release'
+    with:
+      dotnet_version: "6.0.x"
+      working_directory: "code/MySqlProject/"
+      project_name: "MySqlProject"
+    secrets:
+      azure_subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
+      target_server_name: ${{ secrets.SQL_SERVER_NAME }}
+      target_database_name: ${{ secrets.SQL_DATABASE_NAME }}

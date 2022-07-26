@@ -1,0 +1,43 @@
+name: Report Template
+
+on:
+  workflow_call:
+    inputs:
+      dotnet_version:
+        required: true
+        type: string
+        default: "6.0.x"
+        description: "Specifies the .NET version."
+      working_directory:
+        required: true
+        type: string
+        description: "Specifies the working directory for the SQL project."
+
+env:
+  BUILD_PATH: "DatabaseRelease"
+
+jobs:
+  build:
+    name: Build SQL Project
+    runs-on: ubuntu-latest
+    continue-on-error: false
+    # environment: ${{ inputs.environment }}
+
+    steps:
+      # Checkout repository
+      - name: Check Out Repository
+        id: checkout_repository
+        uses: actions/checkout@v3
+
+      # Setup .NET
+      - name: Setup .NET
+        id: dotnet_setup
+        uses: actions/setup-dotnet@v2
+        with:
+          dotnet-version: ${{ inputs.dotnet_version }}
+
+      # Build Database project
+      - name: Build Database project
+        id: dotnet_build
+        run: dotnet build /p:NetCoreBuild=true --configuration Release --output ./${{ env.BUILD_PATH }}
+        working-directory: ${{ inputs.working_directory }}
