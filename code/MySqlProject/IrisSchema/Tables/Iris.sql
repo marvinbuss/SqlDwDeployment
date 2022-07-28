@@ -1,14 +1,9 @@
-CREATE TABLE [IrisSchema].[Iris]
-(
-    [NewSepalLength] [decimal](18,0) NOT NULL,
-    [SepalWidth] [decimal](18,0) NOT NULL,
-    [PetalLength] [decimal](18,0) NOT NULL,
-    [PetalWidth] [decimal](18,0) NOT NULL,
-    [Variety] [varchar](30) NOT NULL
+CREATE TABLE [IrisSchema].[Iris] (
+    [NewSepalLength] DECIMAL (18) DEFAULT 0 NOT NULL,
+    [SepalWidth]     DECIMAL (18) NOT NULL,
+    [PetalLength]    DECIMAL (18) NOT NULL,
+    [PetalWidth]     DECIMAL (18) NOT NULL,
+    [Variety]        VARCHAR (30) NOT NULL
 )
-WITH
-(
-    DISTRIBUTION = HASH ( [Variety] ),
-    CLUSTERED COLUMNSTORE INDEX
-)
+WITH (CLUSTERED COLUMNSTORE INDEX, DISTRIBUTION = HASH([Variety]));
 GO
