@@ -112,7 +112,7 @@ jobs:
       # Upload SQL Package Results
       - name: Upload SQL Package Results
         id: sqlpackage_results
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: build
           path: ${{ github.workspace }}/${{ inputs.working_directory }}/${{ env.BUILD_PATH }}
