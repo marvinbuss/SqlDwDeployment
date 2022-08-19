@@ -90,7 +90,7 @@ jobs:
       - name: SQL Package Deployment
         id: sqlpackage_deployment
         run: |
-          sqlpackage /Action:Publish /SourceFile:"./${{ env.BUILD_PATH }}/${{ inputs.project_name }}.dacpac" /TargetServerName:"${{ secrets.target_server_name }}" /TargetDatabaseName:"${{ secrets.target_database_name }}" /AccessToken:"${{ steps.azure_access_token.outputs.azureAccessToken }}"
+          sqlpackage /Action:Publish /SourceFile:"./${{ env.BUILD_PATH }}/${{ inputs.project_name }}.dacpac" /TargetServerName:"${{ secrets.target_server_name }}" /TargetDatabaseName:"${{ secrets.target_database_name }}" /AccessToken:"${{ steps.azure_access_token.outputs.azureAccessToken }}" /p:VerifyCollationCompatibility=true /p:VerifyDeployment=true /p:BlockOnPossibleDataLoss=true /p:BackupDatabaseBeforeChanges=true
         working-directory: ${{ inputs.working_directory }}
 
       # Log out from Azure
