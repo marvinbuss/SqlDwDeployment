@@ -4,7 +4,7 @@ on:
   workflow_call:
     inputs:
       dotnet_version:
-        required: true
+        required: false
         type: string
         default: "6.0.x"
         description: "Specifies the .NET version."
