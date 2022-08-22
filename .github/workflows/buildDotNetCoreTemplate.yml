@@ -1,4 +1,4 @@
-name: Report Template
+name: Build Template (.NET)
 
 on:
   workflow_call:

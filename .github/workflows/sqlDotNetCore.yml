@@ -1,4 +1,4 @@
-name: SQL - Test and Build
+name: SQL .NET Core - Test and Build
 
 on:
   push:
@@ -23,14 +23,14 @@ env:
 
 jobs:
   sql_build:
-    uses: ./.github/workflows/buildTemplate.yml
+    uses: ./.github/workflows/buildDotNetCoreTemplate.yml
     name: "Build SQL Project"
     with:
       dotnet_version: "6.0.x"
       working_directory: "code/MySqlProject/"
   
   sql_report:
-    uses: ./.github/workflows/reportTemplate.yml
+    uses: ./.github/workflows/reportDotNetCoreTemplate.yml
     name: "Report SQL Changes"
     needs: [sql_build]
     with:
@@ -44,7 +44,7 @@ jobs:
       target_database_name: ${{ secrets.SQL_DATABASE_NAME }}
   
   sql_deploy:
-    uses: ./.github/workflows/deployTemplate.yml
+    uses: ./.github/workflows/deployDotNetCoreTemplate.yml
     name: "Deploy SQL Changes"
     needs: [sql_build, sql_report]
     if: github.event_name == 'push' || github.event_name == 'release'

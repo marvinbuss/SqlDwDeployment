@@ -1,4 +1,4 @@
-name: Report Template
+name: Deploy Template (.NET Core)
 
 on:
   workflow_call:
@@ -35,7 +35,7 @@ env:
 
 jobs:
   build:
-    name: Report SQL Project Changes
+    name: Deploy SQL Project
     runs-on: ubuntu-latest
     continue-on-error: false
     # environment: ${{ inputs.environment }}
@@ -86,18 +86,11 @@ jobs:
         id: sqlpackage_version
         run: sqlpackage /Version
 
-      # SQL Package Deployment Report
-      - name: SQL Package Deployment Report
-        id: sqlpackage_deployreport
+      # SQL Package Deployment
+      - name: SQL Package Deployment
+        id: sqlpackage_deployment
         run: |
-          sqlpackage /Action:DeployReport /SourceFile:"./${{ env.BUILD_PATH }}/${{ inputs.project_name }}.dacpac" /TargetServerName:"${{ secrets.target_server_name }}" /TargetDatabaseName:"${{ secrets.target_database_name }}" /OutputPath:"./${{ env.BUILD_PATH }}/deployReport.xml" /AccessToken:"${{ steps.azure_access_token.outputs.azureAccessToken }}" /p:VerifyCollationCompatibility=true /p:VerifyDeployment=true
-        working-directory: ${{ inputs.working_directory }}
-
-      # SQL Package Deployment Script
-      - name: SQL Package Deployment Script
-        id: sqlpackage_script
-        run: |
-          sqlpackage /Action:Script /SourceFile:"./${{ env.BUILD_PATH }}/${{ inputs.project_name }}.dacpac" /TargetServerName:"${{ secrets.target_server_name }}" /TargetDatabaseName:"${{ secrets.target_database_name }}" /OutputPath:"./${{ env.BUILD_PATH }}/deployScript.sql" /AccessToken:"${{ steps.azure_access_token.outputs.azureAccessToken }}" /p:VerifyCollationCompatibility=true /p:VerifyDeployment=true
+          sqlpackage /Action:Publish /SourceFile:"./${{ env.BUILD_PATH }}/${{ inputs.project_name }}.dacpac" /TargetServerName:"${{ secrets.target_server_name }}" /TargetDatabaseName:"${{ secrets.target_database_name }}" /AccessToken:"${{ steps.azure_access_token.outputs.azureAccessToken }}" /p:VerifyCollationCompatibility=true /p:VerifyDeployment=true /p:BlockOnPossibleDataLoss=true /p:BackupDatabaseBeforeChanges=true
         working-directory: ${{ inputs.working_directory }}
 
       # Log out from Azure
@@ -108,11 +101,3 @@ jobs:
           azcliversion: "agentazcliversion"
           inlineScript: |
             az logout
-
-      # Upload SQL Package Results
-      - name: Upload SQL Package Results
-        id: sqlpackage_results
-        uses: actions/upload-artifact@v3
-        with:
-          name: build
-          path: ${{ github.workspace }}/${{ inputs.working_directory }}/${{ env.BUILD_PATH }}
