@@ -4,7 +4,7 @@ on:
   workflow_call:
     inputs:
       dotnet_version:
-        required: true
+        required: false
         type: string
         default: "6.0.x"
         description: "Specifies the .NET version."
@@ -90,14 +90,14 @@ jobs:
       - name: SQL Package Deployment Report
         id: sqlpackage_deployreport
         run: |
-          sqlpackage /Action:DeployReport /SourceFile:"./${{ env.BUILD_PATH }}/${{ inputs.project_name }}.dacpac" /TargetServerName:"${{ secrets.target_server_name }}" /TargetDatabaseName:"${{ secrets.target_database_name }}" /OutputPath:"./${{ env.BUILD_PATH }}/deployReport.xml" /AccessToken:"${{ steps.azure_access_token.outputs.azureAccessToken }}"
+          sqlpackage /Action:DeployReport /SourceFile:"./${{ env.BUILD_PATH }}/${{ inputs.project_name }}.dacpac" /TargetServerName:"${{ secrets.target_server_name }}" /TargetDatabaseName:"${{ secrets.target_database_name }}" /OutputPath:"./${{ env.BUILD_PATH }}/deployReport.xml" /AccessToken:"${{ steps.azure_access_token.outputs.azureAccessToken }}" /p:VerifyCollationCompatibility=true /p:VerifyDeployment=true
         working-directory: ${{ inputs.working_directory }}
 
       # SQL Package Deployment Script
       - name: SQL Package Deployment Script
         id: sqlpackage_script
         run: |
-          sqlpackage /Action:Script /SourceFile:"./${{ env.BUILD_PATH }}/${{ inputs.project_name }}.dacpac" /TargetServerName:"${{ secrets.target_server_name }}" /TargetDatabaseName:"${{ secrets.target_database_name }}" /OutputPath:"./${{ env.BUILD_PATH }}/deployScript.sql" /AccessToken:"${{ steps.azure_access_token.outputs.azureAccessToken }}"
+          sqlpackage /Action:Script /SourceFile:"./${{ env.BUILD_PATH }}/${{ inputs.project_name }}.dacpac" /TargetServerName:"${{ secrets.target_server_name }}" /TargetDatabaseName:"${{ secrets.target_database_name }}" /OutputPath:"./${{ env.BUILD_PATH }}/deployScript.sql" /AccessToken:"${{ steps.azure_access_token.outputs.azureAccessToken }}" /p:VerifyCollationCompatibility=true /p:VerifyDeployment=true
         working-directory: ${{ inputs.working_directory }}
 
       # Log out from Azure
@@ -112,7 +112,7 @@ jobs:
       # Upload SQL Package Results
       - name: Upload SQL Package Results
         id: sqlpackage_results
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: build
           path: ${{ github.workspace }}/${{ inputs.working_directory }}/${{ env.BUILD_PATH }}
