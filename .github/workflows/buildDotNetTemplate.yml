@@ -41,6 +41,6 @@ jobs:
         id: build_artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: build
+          name: buildDotNet
           path: ${{ github.workspace }}/${{ inputs.working_directory }}/${{ env.BUILD_PATH }}
 

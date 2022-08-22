@@ -28,19 +28,18 @@ jobs:
     with:
       working_directory: "code/MyDotNetSqlProject/MyDotNetSqlProject"
   
-  # sql_report:
-  #   uses: ./.github/workflows/reportTemplate.yml
-  #   name: "Report SQL Changes"
-  #   needs: [sql_build]
-  #   with:
-  #     dotnet_version: "6.0.x"
-  #     working_directory: "code/MySqlProject/"
-  #     project_name: "MySqlProject"
-  #   secrets:
-  #     azure_subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-  #     azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
-  #     target_server_name: ${{ secrets.SQL_SERVER_NAME }}
-  #     target_database_name: ${{ secrets.SQL_DATABASE_NAME }}
+  sql_report:
+    uses: ./.github/workflows/reportTemplate.yml
+    name: "Report SQL Changes"
+    needs: [sql_build]
+    with:
+      working_directory: "code/MyDotNetSqlProject/MyDotNetSqlProject"
+      project_name: "MyDotNetSqlProject"
+    secrets:
+      azure_subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
+      target_server_name: ${{ secrets.SQL_SERVER_NAME }}
+      target_database_name: ${{ secrets.SQL_DATABASE_NAME }}
   
   # sql_deploy:
   #   uses: ./.github/workflows/deployTemplate.yml
