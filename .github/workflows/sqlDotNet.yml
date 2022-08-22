@@ -26,7 +26,6 @@ jobs:
     uses: ./.github/workflows/buildDotNetTemplate.yml
     name: "Build SQL Project"
     with:
-      dotnet_version: "6.0.x"
       working_directory: "code/MyDotNetSqlProject/MyDotNetSqlProject"
   
   # sql_report:
