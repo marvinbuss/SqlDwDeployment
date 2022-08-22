@@ -60,7 +60,7 @@ foreach ($trigger in $triggers) {
     }
     $response = Invoke-WebRequest `
         -Method POST `
-        -Uri "https://$($SynapseWorkspaceName).dev.azuresynapse.net/triggers/$($trigger.Name)/start?api-version=2020-12-01" `
+        -Uri "https://$($SynapseWorkspaceName).dev.azuresynapse.net/triggers/$($trigger.Name)/stop?api-version=2020-12-01" `
         -Headers $authHeader
     
     if ($response.StatusCode -lt 400 && $response.StatusCode -ge 200) {
