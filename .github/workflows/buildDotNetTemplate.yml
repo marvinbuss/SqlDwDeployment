@@ -23,12 +23,17 @@ jobs:
       - name: Check Out Repository
         id: checkout_repository
         uses: actions/checkout@v3
+      
+      # Setup msbuild
+      - name: Add msbuild to PATH
+        id: msbuild_setup
+        uses: microsoft/setup-msbuild@v1.1
 
       # Build Database project
       - name: Build Database project
         id: dotnet_build
         run: |
-          & 'C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\msbuild.exe' MyDotNetSqlProject.sqlproj /p:Configuration=Release /p:OutputPath=.\${{ env.BUILD_PATH }}
+          msbuild.exe  MyDotNetSqlProject.sqlproj /p:Configuration=Release /p:OutputPath=.\${{ env.BUILD_PATH }}
         working-directory: ${{ inputs.working_directory }}
       
       # Upload SQL Package Artifacts
