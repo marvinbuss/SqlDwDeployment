@@ -3,6 +3,10 @@ name: Build Template (.NET)
 on:
   workflow_call:
     inputs:
+      build_artifact_name:
+        required: true
+        type: string
+        description: "Specifies the name of the artifact to be downloaded."
       dotnet_version:
         required: false
         type: string
@@ -41,3 +45,11 @@ jobs:
         id: dotnet_build
         run: dotnet build /p:NetCoreBuild=true --configuration Release --output ./${{ env.BUILD_PATH }}
         working-directory: ${{ inputs.working_directory }}
+      
+      # Upload SQL Package Artifacts
+      - name: Upload Build Artifacts
+        id: build_artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ inputs.build_artifact_name }}
+          path: ${{ github.workspace }}/${{ inputs.working_directory }}/${{ env.BUILD_PATH }}

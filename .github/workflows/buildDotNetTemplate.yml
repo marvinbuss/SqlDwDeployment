@@ -3,6 +3,10 @@ name: Build Template (.NET)
 on:
   workflow_call:
     inputs:
+      build_artifact_name:
+        required: true
+        type: string
+        description: "Specifies the name of the artifact to be downloaded."
       working_directory:
         required: true
         type: string
@@ -41,6 +45,5 @@ jobs:
         id: build_artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: buildDotNet
+          name: ${{ inputs.build_artifact_name }}
           path: ${{ github.workspace }}/${{ inputs.working_directory }}/${{ env.BUILD_PATH }}
-

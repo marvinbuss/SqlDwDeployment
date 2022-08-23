@@ -3,11 +3,10 @@ name: Deploy Template (.NET Core)
 on:
   workflow_call:
     inputs:
-      dotnet_version:
-        required: false
+      build_artifact_name:
+        required: true
         type: string
-        default: "6.0.x"
-        description: "Specifies the .NET version."
+        description: "Specifies the name of the artifact to be downloaded."
       working_directory:
         required: true
         type: string
@@ -41,24 +40,14 @@ jobs:
     # environment: ${{ inputs.environment }}
 
     steps:
-      # Checkout repository
-      - name: Check Out Repository
-        id: checkout_repository
-        uses: actions/checkout@v3
-
-      # Setup .NET
-      - name: Setup .NET
-        id: dotnet_setup
-        uses: actions/setup-dotnet@v2
+      # Download Build Artifact
+      - name: Download Build Artifact
+        id: artifact_download
+        uses: actions/download-artifact@v3
         with:
-          dotnet-version: ${{ inputs.dotnet_version }}
-
-      # Build Database project
-      - name: Build Database project
-        id: dotnet_build
-        run: dotnet build /p:NetCoreBuild=true --configuration Release --output ./${{ env.BUILD_PATH }}
-        working-directory: ${{ inputs.working_directory }}
-
+          name: ${{ inputs.build_artifact_name }}
+          path: ${{ github.workspace }}/${{ inputs.working_directory }}/${{ env.BUILD_PATH }}
+      
       # Login to Azure
       - name: Azure Login
         id: azure_login
@@ -90,7 +79,7 @@ jobs:
       - name: SQL Package Deployment
         id: sqlpackage_deployment
         run: |
-          sqlpackage /Action:Publish /SourceFile:"./${{ env.BUILD_PATH }}/${{ inputs.project_name }}.dacpac" /TargetServerName:"${{ secrets.target_server_name }}" /TargetDatabaseName:"${{ secrets.target_database_name }}" /AccessToken:"${{ steps.azure_access_token.outputs.azureAccessToken }}" /p:VerifyCollationCompatibility=true /p:VerifyDeployment=true /p:BlockOnPossibleDataLoss=true
+          sqlpackage /Action:Publish /SourceFile:"${{steps.artifact_download.outputs.download-path}}/${{ inputs.project_name }}.dacpac" /TargetServerName:"${{ secrets.target_server_name }}" /TargetDatabaseName:"${{ secrets.target_database_name }}" /AccessToken:"${{ steps.azure_access_token.outputs.azureAccessToken }}" /p:VerifyCollationCompatibility=true /p:VerifyDeployment=true /p:BlockOnPossibleDataLoss=true
         working-directory: ${{ inputs.working_directory }}
 
       # Log out from Azure

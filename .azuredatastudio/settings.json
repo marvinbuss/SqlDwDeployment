@@ -1,0 +1,5 @@
+{
+    "dataworkspace.excludedProjects": [
+        "code/MySqlProject/MySqlProject.sqlproj"
+    ]
+}

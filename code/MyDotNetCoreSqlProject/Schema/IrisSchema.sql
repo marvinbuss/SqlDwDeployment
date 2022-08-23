@@ -1,3 +1,2 @@
 CREATE SCHEMA [IrisSchema]
 	AUTHORIZATION [dbo];
-GO

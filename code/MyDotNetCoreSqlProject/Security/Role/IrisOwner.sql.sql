@@ -1,2 +1,1 @@
 CREATE ROLE [IrisOwner]
-GO
