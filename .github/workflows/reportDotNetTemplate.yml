@@ -71,6 +71,7 @@ jobs:
       - name: Create Output Directory
         id: output_directory
         run: mkdir ${{ env.OUTPUT_PATH }}
+        working-directory: ${{ inputs.working_directory }}
 
       # SQL Package Version
       - name: SQL Package Version
