@@ -15,11 +15,8 @@ on:
     branches:
       - main
     paths:
-      - "code/**"
-      - ".github/workflows/sql.yml"
-
-env:
-  WORKING_DIRECTORY: "code/MySqlProject/"
+      - "code/MySqlProject/**"
+      - ".github/workflows/sqlDotNetCore.yml"
 
 jobs:
   sql_build:
