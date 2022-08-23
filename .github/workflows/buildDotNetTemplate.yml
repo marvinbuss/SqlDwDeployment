@@ -45,5 +45,5 @@ jobs:
         id: build_artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: ${{ inputs.build_build_artifact_name }}
+          name: ${{ inputs.build_artifact_name }}
           path: ${{ github.workspace }}/${{ inputs.working_directory }}/${{ env.BUILD_PATH }}
