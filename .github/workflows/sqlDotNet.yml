@@ -1,4 +1,4 @@
-name: SQL - Test and Build
+name: SQL .NET - Test and Build
 
 on:
   push:
@@ -15,28 +15,23 @@ on:
     branches:
       - main
     paths:
-      - "code/**"
-      - ".github/workflows/sql.yml"
-
-env:
-  WORKING_DIRECTORY: "code/MySqlProject/"
+      - "code/MyDotNetSqlProject/**"
+      - ".github/workflows/sqlDotNet.yml"
 
 jobs:
   sql_build:
-    uses: ./.github/workflows/buildTemplate.yml
+    uses: ./.github/workflows/buildDotNetTemplate.yml
     name: "Build SQL Project"
     with:
-      dotnet_version: "6.0.x"
-      working_directory: "code/MySqlProject/"
+      working_directory: "code/MyDotNetSqlProject/MyDotNetSqlProject"
   
   sql_report:
-    uses: ./.github/workflows/reportTemplate.yml
+    uses: ./.github/workflows/reportDotNetTemplate.yml
     name: "Report SQL Changes"
     needs: [sql_build]
     with:
-      dotnet_version: "6.0.x"
-      working_directory: "code/MySqlProject/"
-      project_name: "MySqlProject"
+      working_directory: "code/MyDotNetSqlProject/MyDotNetSqlProject"
+      project_name: "MyDotNetSqlProject"
     secrets:
       azure_subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
       azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
@@ -44,14 +39,13 @@ jobs:
       target_database_name: ${{ secrets.SQL_DATABASE_NAME }}
   
   sql_deploy:
-    uses: ./.github/workflows/deployTemplate.yml
+    uses: ./.github/workflows/deployDotNetTemplate.yml
     name: "Deploy SQL Changes"
     needs: [sql_build, sql_report]
     if: github.event_name == 'push' || github.event_name == 'release'
     with:
-      dotnet_version: "6.0.x"
-      working_directory: "code/MySqlProject/"
-      project_name: "MySqlProject"
+      working_directory: "code/MyDotNetSqlProject/MyDotNetSqlProject"
+      project_name: "MyDotNetSqlProject"
     secrets:
       azure_subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
       azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
