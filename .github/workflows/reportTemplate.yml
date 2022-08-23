@@ -7,6 +7,11 @@ on:
         required: true
         type: string
         description: "Specifies the name of the artifact to be downloaded."
+      report_artifact_name:
+        required: false
+        default: report
+        type: string
+        description: "Specifies the name of the report artifact to be created."
       working_directory:
         required: true
         type: string
@@ -110,5 +115,5 @@ jobs:
         id: sqlpackage_results
         uses: actions/upload-artifact@v3
         with:
-          name: reportDotNet
+          name: ${{ inputs.report_artifact_name }}
           path: ${{ github.workspace }}/${{ inputs.working_directory }}/${{ env.OUTPUT_PATH }}
