@@ -32,4 +32,5 @@ jobs:
           VALIDATE_SHELL_SHFMT: false
           VALIDATE_BASH: false
           VALIDATE_SQLFLUFF: false
+          VALIDATE_GITHUB_ACTIONS: false
           FILTER_REGEX_EXCLUDE: (/.devcontainer/|/reference/)

@@ -66,6 +66,11 @@ jobs:
           echo "Set secret value"
           echo "::add-mask::$ACCESS_TOKEN"
           echo "::set-output name=azureAccessToken::$ACCESS_TOKEN"
+        
+      # Create Output Directory
+      - name: Create Output Directory
+        id: output_directory
+        run: mkdir ${{ env.OUTPUT_PATH }}
 
       # SQL Package Version
       - name: SQL Package Version
