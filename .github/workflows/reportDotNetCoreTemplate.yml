@@ -114,5 +114,5 @@ jobs:
         id: sqlpackage_results
         uses: actions/upload-artifact@v3
         with:
-          name: build
+          name: reportDotNetCore
           path: ${{ github.workspace }}/${{ inputs.working_directory }}/${{ env.BUILD_PATH }}
