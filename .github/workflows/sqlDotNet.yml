@@ -29,7 +29,7 @@ jobs:
       working_directory: "code/MyDotNetSqlProject/MyDotNetSqlProject"
   
   sql_report:
-    uses: ./.github/workflows/reportTemplate.yml
+    uses: ./.github/workflows/reportDotNetTemplate.yml
     name: "Report SQL Changes"
     needs: [sql_build]
     with:
