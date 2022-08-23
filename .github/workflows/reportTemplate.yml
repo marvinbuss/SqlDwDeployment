@@ -1,8 +1,12 @@
-name: Deploy Template (.NET Core)
+name: Report Template (.NET Core)
 
 on:
   workflow_call:
     inputs:
+      build_artifact_name:
+        required: true
+        type: string
+        description: "Specifies the name of the artifact to be downloaded."
       working_directory:
         required: true
         type: string
@@ -27,10 +31,11 @@ on:
 
 env:
   BUILD_PATH: "DatabaseRelease"
+  OUTPUT_PATH: "Report"
 
 jobs:
   build:
-    name: Deploy SQL Project
+    name: Report SQL Project Changes
     runs-on: ubuntu-latest
     continue-on-error: false
     # environment: ${{ inputs.environment }}
@@ -41,7 +46,7 @@ jobs:
         id: artifact_download
         uses: actions/download-artifact@v3
         with:
-          name: buildDotNet
+          name: ${{ inputs.build_artifact_name }}
           path: ${{ github.workspace }}/${{ inputs.working_directory }}/${{ env.BUILD_PATH }}
       
       # Login to Azure
@@ -65,17 +70,30 @@ jobs:
           echo "Set secret value"
           echo "::add-mask::$ACCESS_TOKEN"
           echo "::set-output name=azureAccessToken::$ACCESS_TOKEN"
+        
+      # Create Output Directory
+      - name: Create Output Directory
+        id: output_directory
+        run: mkdir ${{ env.OUTPUT_PATH }}
+        working-directory: ${{ inputs.working_directory }}
 
       # SQL Package Version
       - name: SQL Package Version
         id: sqlpackage_version
         run: sqlpackage /Version
 
-      # SQL Package Deployment
-      - name: SQL Package Deployment
-        id: sqlpackage_deployment
+      # SQL Package Deployment Report
+      - name: SQL Package Deployment Report
+        id: sqlpackage_deployreport
         run: |
-          sqlpackage /Action:Publish /SourceFile:"${{steps.artifact_download.outputs.download-path}}/${{ inputs.project_name }}.dacpac" /TargetServerName:"${{ secrets.target_server_name }}" /TargetDatabaseName:"${{ secrets.target_database_name }}" /AccessToken:"${{ steps.azure_access_token.outputs.azureAccessToken }}" /p:VerifyCollationCompatibility=true /p:VerifyDeployment=true /p:BlockOnPossibleDataLoss=true
+          sqlpackage /Action:DeployReport /SourceFile:"${{steps.artifact_download.outputs.download-path}}/${{ inputs.project_name }}.dacpac" /TargetServerName:"${{ secrets.target_server_name }}" /TargetDatabaseName:"${{ secrets.target_database_name }}" /OutputPath:"./${{ env.OUTPUT_PATH }}/deployReport.xml" /AccessToken:"${{ steps.azure_access_token.outputs.azureAccessToken }}" /p:VerifyCollationCompatibility=true /p:VerifyDeployment=true
+        working-directory: ${{ inputs.working_directory }}
+
+      # SQL Package Deployment Script
+      - name: SQL Package Deployment Script
+        id: sqlpackage_script
+        run: |
+          sqlpackage /Action:Script /SourceFile:"${{steps.artifact_download.outputs.download-path}}/${{ inputs.project_name }}.dacpac" /TargetServerName:"${{ secrets.target_server_name }}" /TargetDatabaseName:"${{ secrets.target_database_name }}" /OutputPath:"./${{ env.OUTPUT_PATH }}/deployScript.sql" /AccessToken:"${{ steps.azure_access_token.outputs.azureAccessToken }}" /p:VerifyCollationCompatibility=true /p:VerifyDeployment=true
         working-directory: ${{ inputs.working_directory }}
 
       # Log out from Azure
@@ -86,3 +104,11 @@ jobs:
           azcliversion: "agentazcliversion"
           inlineScript: |
             az logout
+
+      # Upload SQL Package Results
+      - name: Upload SQL Package Results
+        id: sqlpackage_results
+        uses: actions/upload-artifact@v3
+        with:
+          name: reportDotNet
+          path: ${{ github.workspace }}/${{ inputs.working_directory }}/${{ env.OUTPUT_PATH }}

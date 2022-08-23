@@ -23,13 +23,15 @@ jobs:
     uses: ./.github/workflows/buildDotNetTemplate.yml
     name: "Build SQL Project"
     with:
+      build_artifact_name: buildDotNet
       working_directory: "code/MyDotNetSqlProject/MyDotNetSqlProject"
   
   sql_report:
-    uses: ./.github/workflows/reportDotNetTemplate.yml
+    uses: ./.github/workflows/reportTemplate.yml
     name: "Report SQL Changes"
     needs: [sql_build]
     with:
+      build_artifact_name: buildDotNet
       working_directory: "code/MyDotNetSqlProject/MyDotNetSqlProject"
       project_name: "MyDotNetSqlProject"
     secrets:
@@ -39,11 +41,12 @@ jobs:
       target_database_name: ${{ secrets.SQL_DATABASE_NAME }}
   
   sql_deploy:
-    uses: ./.github/workflows/deployDotNetTemplate.yml
+    uses: ./.github/workflows/deployTemplate.yml
     name: "Deploy SQL Changes"
     needs: [sql_build, sql_report]
     if: github.event_name == 'push' || github.event_name == 'release'
     with:
+      build_artifact_name: buildDotNet
       working_directory: "code/MyDotNetSqlProject/MyDotNetSqlProject"
       project_name: "MyDotNetSqlProject"
     secrets:

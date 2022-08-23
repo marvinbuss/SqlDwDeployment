@@ -3,11 +3,6 @@ name: Report Template (.NET Core)
 on:
   workflow_call:
     inputs:
-      dotnet_version:
-        required: false
-        type: string
-        default: "6.0.x"
-        description: "Specifies the .NET version."
       working_directory:
         required: true
         type: string
@@ -32,6 +27,7 @@ on:
 
 env:
   BUILD_PATH: "DatabaseRelease"
+  OUTPUT_PATH: "Report"
 
 jobs:
   build:
@@ -41,24 +37,14 @@ jobs:
     # environment: ${{ inputs.environment }}
 
     steps:
-      # Checkout repository
-      - name: Check Out Repository
-        id: checkout_repository
-        uses: actions/checkout@v3
-
-      # Setup .NET
-      - name: Setup .NET
-        id: dotnet_setup
-        uses: actions/setup-dotnet@v2
+      # Download Build Artifact
+      - name: Download Build Artifact
+        id: artifact_download
+        uses: actions/download-artifact@v3
         with:
-          dotnet-version: ${{ inputs.dotnet_version }}
-
-      # Build Database project
-      - name: Build Database project
-        id: dotnet_build
-        run: dotnet build /p:NetCoreBuild=true --configuration Release --output ./${{ env.BUILD_PATH }}
-        working-directory: ${{ inputs.working_directory }}
-
+          name: buildDotNetCore
+          path: ${{ github.workspace }}/${{ inputs.working_directory }}/${{ env.BUILD_PATH }}
+      
       # Login to Azure
       - name: Azure Login
         id: azure_login
@@ -81,6 +67,12 @@ jobs:
           echo "::add-mask::$ACCESS_TOKEN"
           echo "::set-output name=azureAccessToken::$ACCESS_TOKEN"
 
+      # Create Output Directory
+      - name: Create Output Directory
+        id: output_directory
+        run: mkdir ${{ env.OUTPUT_PATH }}
+        working-directory: ${{ inputs.working_directory }}
+
       # SQL Package Version
       - name: SQL Package Version
         id: sqlpackage_version
@@ -90,14 +82,14 @@ jobs:
       - name: SQL Package Deployment Report
         id: sqlpackage_deployreport
         run: |
-          sqlpackage /Action:DeployReport /SourceFile:"./${{ env.BUILD_PATH }}/${{ inputs.project_name }}.dacpac" /TargetServerName:"${{ secrets.target_server_name }}" /TargetDatabaseName:"${{ secrets.target_database_name }}" /OutputPath:"./${{ env.BUILD_PATH }}/deployReport.xml" /AccessToken:"${{ steps.azure_access_token.outputs.azureAccessToken }}" /p:VerifyCollationCompatibility=true /p:VerifyDeployment=true
+          sqlpackage /Action:DeployReport /SourceFile:"${{steps.artifact_download.outputs.download-path}}/${{ inputs.project_name }}.dacpac" /TargetServerName:"${{ secrets.target_server_name }}" /TargetDatabaseName:"${{ secrets.target_database_name }}" /OutputPath:"./${{ env.OUTPUT_PATH }}/deployReport.xml" /AccessToken:"${{ steps.azure_access_token.outputs.azureAccessToken }}" /p:VerifyCollationCompatibility=true /p:VerifyDeployment=true
         working-directory: ${{ inputs.working_directory }}
 
       # SQL Package Deployment Script
       - name: SQL Package Deployment Script
         id: sqlpackage_script
         run: |
-          sqlpackage /Action:Script /SourceFile:"./${{ env.BUILD_PATH }}/${{ inputs.project_name }}.dacpac" /TargetServerName:"${{ secrets.target_server_name }}" /TargetDatabaseName:"${{ secrets.target_database_name }}" /OutputPath:"./${{ env.BUILD_PATH }}/deployScript.sql" /AccessToken:"${{ steps.azure_access_token.outputs.azureAccessToken }}" /p:VerifyCollationCompatibility=true /p:VerifyDeployment=true
+          sqlpackage /Action:Script /SourceFile:"${{steps.artifact_download.outputs.download-path}}/${{ inputs.project_name }}.dacpac" /TargetServerName:"${{ secrets.target_server_name }}" /TargetDatabaseName:"${{ secrets.target_database_name }}" /OutputPath:"./${{ env.OUTPUT_PATH }}/deployReport.xml" /AccessToken:"${{ steps.azure_access_token.outputs.azureAccessToken }}" /p:VerifyCollationCompatibility=true /p:VerifyDeployment=true
         working-directory: ${{ inputs.working_directory }}
 
       # Log out from Azure
@@ -115,4 +107,4 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: reportDotNetCore
-          path: ${{ github.workspace }}/${{ inputs.working_directory }}/${{ env.BUILD_PATH }}
+          path: ${{ github.workspace }}/${{ inputs.working_directory }}/${{ env.OUTPUT_PATH }}

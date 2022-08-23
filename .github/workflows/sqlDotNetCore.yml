@@ -15,7 +15,7 @@ on:
     branches:
       - main
     paths:
-      - "code/MySqlProject/**"
+      - "code/MyDotNetCoreSqlProject/**"
       - ".github/workflows/sqlDotNetCore.yml"
 
 jobs:
@@ -23,17 +23,18 @@ jobs:
     uses: ./.github/workflows/buildDotNetCoreTemplate.yml
     name: "Build SQL Project"
     with:
+      build_artifact_name: buildDotNetCore
       dotnet_version: "6.0.x"
-      working_directory: "code/MySqlProject/"
+      working_directory: "code/MyDotNetCoreSqlProject/"
   
   sql_report:
-    uses: ./.github/workflows/reportDotNetCoreTemplate.yml
+    uses: ./.github/workflows/reportTemplate.yml
     name: "Report SQL Changes"
     needs: [sql_build]
     with:
-      dotnet_version: "6.0.x"
-      working_directory: "code/MySqlProject/"
-      project_name: "MySqlProject"
+      build_artifact_name: buildDotNetCore
+      working_directory: "code/MyDotNetCoreSqlProject/"
+      project_name: "MyDotNetCoreSqlProject"
     secrets:
       azure_subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
       azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
@@ -41,14 +42,14 @@ jobs:
       target_database_name: ${{ secrets.SQL_DATABASE_NAME }}
   
   sql_deploy:
-    uses: ./.github/workflows/deployDotNetCoreTemplate.yml
+    uses: ./.github/workflows/deployTemplate.yml
     name: "Deploy SQL Changes"
     needs: [sql_build, sql_report]
     if: github.event_name == 'push' || github.event_name == 'release'
     with:
-      dotnet_version: "6.0.x"
-      working_directory: "code/MySqlProject/"
-      project_name: "MySqlProject"
+      build_artifact_name: buildDotNetCore
+      working_directory: "code/MyDotNetCoreSqlProject/"
+      project_name: "MyDotNetCoreSqlProject"
     secrets:
       azure_subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
       azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
