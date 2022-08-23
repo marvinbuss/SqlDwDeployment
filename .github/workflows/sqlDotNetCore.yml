@@ -33,6 +33,7 @@ jobs:
     needs: [sql_build]
     with:
       build_artifact_name: buildDotNetCore
+      report_artifact_name: reportDotNetCore
       working_directory: "code/MyDotNetCoreSqlProject/"
       project_name: "MyDotNetCoreSqlProject"
     secrets:

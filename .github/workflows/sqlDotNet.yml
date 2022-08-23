@@ -32,6 +32,7 @@ jobs:
     needs: [sql_build]
     with:
       build_artifact_name: buildDotNet
+      report_artifact_name: reportDotNet
       working_directory: "code/MyDotNetSqlProject/MyDotNetSqlProject"
       project_name: "MyDotNetSqlProject"
     secrets:
