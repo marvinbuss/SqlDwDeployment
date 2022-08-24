@@ -65,6 +65,5 @@
   <ItemGroup>
     <Build Include="Security\Roles\IrisOwner.sql" />
     <Build Include="Schema\IrisSchema.sql" />
-    <Build Include="IrisSchema\Tables\Iris.sql" />
   </ItemGroup>
 </Project>
