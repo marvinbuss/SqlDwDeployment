@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Operations Version="1.0" xmlns="http://schemas.microsoft.com/sqlserver/dac/Serialization/2012/02">
+  <Operation Name="Rename Refactor" Key="2804630c-8335-414e-b952-753826d6802b" ChangeDateTime="08/23/2022 15:48:02">
+    <Property Name="ElementName" Value="[IrisSchema].[Iris].[SepalLength]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[IrisSchema].[Iris]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="[NewSepalLength]" />
+  </Operation>
+</Operations>
