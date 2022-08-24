@@ -25,6 +25,6 @@ These reusable GitHub workflows are used by the following GitHub Action workflow
 * [`sqlDotNetCore.yml`](/.github/workflows/sqlDotNetCore.yml): Is used to run the end-to-end process for the SDK-style database project that includes build, report generation and deployment.
 * [`sqlDotNet.yml`](/.github/workflows/sqlDotNet.yml): Is used to run the end-to-end process for the standard database project that includes build, report generation and deployment.
 
-# Comparison of database project types
+## Comparison of database project types
 
 As both database projects contain the exact same artifact definitions, we can evaluate how each one of them performs on different tasks and changes in the source database project. The reports generated for each project on a pull request can be reviewed to understand how incremental changes are applied within the respective template.
