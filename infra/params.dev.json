@@ -21,7 +21,7 @@
                 "repositoryName": "SqlDwDeployment",
                 "collaborationBranch": "main",
                 "rootFolder": "/code/synapse"
-              }
+            }
         },
         "enableSqlPool": {
             "value": true

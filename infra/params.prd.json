@@ -15,13 +15,7 @@
             "value": {}
         },
         "synapseRepositoryConfiguration": {
-            "value": {
-                "type": "WorkspaceGitHubConfiguration",
-                "accountName": "marvinbuss",
-                "repositoryName": "SqlDwDeployment",
-                "collaborationBranch": "main",
-                "rootFolder": "/code/synapse"
-              }
+            "value": {}
         },
         "enableSqlPool": {
             "value": true
