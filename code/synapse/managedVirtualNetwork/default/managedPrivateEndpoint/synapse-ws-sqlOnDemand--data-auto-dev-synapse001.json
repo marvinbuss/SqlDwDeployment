@@ -1,0 +1,10 @@
+{
+	"name": "synapse-ws-sqlOnDemand--data-auto-dev-synapse001",
+	"properties": {
+		"privateLinkResourceId": "/subscriptions/558bd446-4212-46a2-908c-9ab0a628705e/resourceGroups/synapse-deployment/providers/Microsoft.Synapse/workspaces/data-auto-dev-synapse001",
+		"groupId": "sqlOnDemand",
+		"fqdns": [
+			"data-auto-dev-synapse001-ondemand.f4946394-74e6-412e-9618-936ff2cf6b4c.sql.azuresynapse.net"
+		]
+	}
+}

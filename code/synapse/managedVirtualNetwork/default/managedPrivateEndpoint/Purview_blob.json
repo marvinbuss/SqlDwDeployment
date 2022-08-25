@@ -1,0 +1,7 @@
+{
+	"name": "Purview_blob",
+	"properties": {
+		"privateLinkResourceId": "/subscriptions/558bd446-4212-46a2-908c-9ab0a628705e/resourceGroups/managed-rg-tsmspzj/providers/Microsoft.Storage/storageAccounts/scanwesteuropefhwfmtd",
+		"groupId": "blob"
+	}
+}
