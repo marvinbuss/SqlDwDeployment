@@ -28,8 +28,9 @@ jobs:
     name: "Report SQL Changes"
     needs: [sql_build]
     with:
-      build_artifact_name: buildDotNetCore
-      report_artifact_name: reportDotNetCore
+      environment: "dev"
+      build_artifact_name: "buildDotNetCore"
+      report_artifact_name: "reportDotNetCore"
       working_directory: "code/MyDotNetCoreSqlProject/"
       project_name: "MyDotNetCoreSqlProject"
     secrets:
@@ -44,7 +45,8 @@ jobs:
     needs: [sql_build, sql_report]
     if: github.event_name == 'push' || github.event_name == 'release'
     with:
-      build_artifact_name: buildDotNetCore
+      environment: "dev"
+      build_artifact_name: "buildDotNetCore"
       working_directory: "code/MyDotNetCoreSqlProject/"
       project_name: "MyDotNetCoreSqlProject"
     secrets:

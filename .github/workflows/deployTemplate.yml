@@ -3,6 +3,11 @@ name: Deploy Template (.NET Core)
 on:
   workflow_call:
     inputs:
+      environment:
+        required: true
+        type: string
+        default: "dev"
+        description: "Specifies the environment of the deployment."
       build_artifact_name:
         required: true
         type: string
