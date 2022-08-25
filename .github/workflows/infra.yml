@@ -26,7 +26,6 @@ jobs:
       azure_subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
       azure_location_name: ${{ secrets.AZURE_LOCATION }}
       azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
-      api_key_dev: ${{ secrets.API_KEY_DEV }}
 
   validation_test:
     uses: ./.github/workflows/validationTemplate.yml
