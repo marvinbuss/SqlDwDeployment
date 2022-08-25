@@ -48,7 +48,7 @@ jobs:
         id: deployment_run
         uses: azure/arm-deploy@v1
         with:
-          scope: resourceGroup
+          scope: resourcegroup
           subscriptionId: ${{ secrets.azure_subscription_id }}
           resourceGroupName: ${{ secrets.azure_resource_group_name }}
           region: ${{ secrets.azure_location_name }}
