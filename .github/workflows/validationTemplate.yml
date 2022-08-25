@@ -1,0 +1,78 @@
+name: Validation Template
+
+on:
+  workflow_call:
+    inputs:
+      environment:
+        required: true
+        type: string
+        default: "dev"
+        description: "Specifies the environment of the deployment."
+    secrets:
+      azure_subscription_id:
+        required: true
+        description: "Specifies the subscription id of the deployment."
+      azure_location_name:
+        required: true
+        description: "Specifies the location name of the deployment."
+      azure_credentials:
+        required: true
+        description: "Specifies the azure credentials used for authentication."
+
+jobs:
+  validation:
+    name: Validation of ${{ inputs.environment }}
+    runs-on: ubuntu-latest
+    continue-on-error: false
+    environment: ${{ inputs.environment }}
+
+    steps:
+      # Check Out Repository
+      - name: Check Out Repository
+        id: checkout_repository
+        uses: actions/checkout@v2
+
+      # Login to Azure
+      - name: Azure Login
+        id: azure_login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.azure_credentials }}
+
+      # Deploy Template - validation
+      - name: Deploy Template - validation
+        id: deployment_validation
+        uses: azure/arm-deploy@v1
+        with:
+          scope: subscription
+          subscriptionId: ${{ secrets.azure_subscription_id }}
+          region: ${{ secrets.azure_location_name }}
+          template: ${{ github.workspace }}/infra/main.bicep
+          parameters: ${{ github.workspace }}/infra/params.${{ inputs.environment }}.json
+          deploymentMode: Validate
+          deploymentName: "App-${{ github.sha }}"
+          failOnStdErr: false
+
+      # Deploy Template - what-if
+      - name: Deploy Template - what-if
+        id: deployment_whatif
+        uses: azure/arm-deploy@v1
+        with:
+          scope: subscription
+          subscriptionId: ${{ secrets.azure_subscription_id }}
+          region: ${{ secrets.azure_location_name }}
+          template: ${{ github.workspace }}/infra/main.bicep
+          parameters: ${{ github.workspace }}/infra/params.${{ inputs.environment }}.json
+          deploymentMode: Incremental
+          deploymentName: "App-${{ github.sha }}"
+          failOnStdErr: false
+          additionalArguments: "--what-if --what-if-exclude-change-types Ignore NoChange Unsupported --what-if-result-format FullResourcePayloads"
+
+      # Log out from Azure
+      - name: Log out from Azure
+        id: azure_logout
+        uses: azure/cli@v1
+        with:
+          azcliversion: "agentazcliversion"
+          inlineScript: |
+            az logout

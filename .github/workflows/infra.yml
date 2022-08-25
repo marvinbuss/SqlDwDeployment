@@ -1,0 +1,85 @@
+name: Infrastructure Deployment
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - "v*.*.*"
+    paths:
+      - "infra/**"
+      - ".github/workflows/**"
+
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "infra/**"
+      - ".github/workflows/**"
+
+jobs:
+  validation_dev:
+    uses: ./.github/workflows/validationTemplate.yml
+    name: "Validation of IaC templates - Dev"
+    with:
+      environment: "dev"
+    secrets:
+      azure_subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      azure_location_name: ${{ secrets.AZURE_LOCATION }}
+      azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
+      api_key_dev: ${{ secrets.API_KEY_DEV }}
+
+  validation_test:
+    uses: ./.github/workflows/validationTemplate.yml
+    name: "Validation of IaC templates - Test"
+    with:
+      environment: "tst"
+    secrets:
+      azure_subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      azure_location_name: ${{ secrets.AZURE_LOCATION }}
+      azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
+
+  validation_prod:
+    uses: ./.github/workflows/validationTemplate.yml
+    name: "Validation of IaC templates - Prod"
+    with:
+      environment: "prd"
+    secrets:
+      azure_subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      azure_location_name: ${{ secrets.AZURE_LOCATION }}
+      azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
+
+  deployment_dev:
+    uses: ./.github/workflows/deploymentTemplate.yml
+    name: "Deployment of IaC templates - Dev"
+    needs: [validation_dev, validation_test, validation_prod]
+    if: github.event_name == 'push' || github.event_name == 'release'
+    with:
+      environment: "dev"
+    secrets:
+      azure_subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      azure_location_name: ${{ secrets.AZURE_LOCATION }}
+      azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
+
+  deployment_test:
+    uses: ./.github/workflows/deploymentTemplate.yml
+    name: "Deployment of IaC templates - Test"
+    needs: [deployment_dev]
+    if: github.event_name == 'push' || github.event_name == 'release'
+    with:
+      environment: "tst"
+    secrets:
+      azure_subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      azure_location_name: ${{ secrets.AZURE_LOCATION }}
+      azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
+
+  deployment_prod:
+    uses: ./.github/workflows/deploymentTemplate.yml
+    name: "Deployment of IaC templates - Prod"
+    needs: [deployment_test]
+    if: github.event_name == 'release'
+    with:
+      environment: "prd"
+    secrets:
+      azure_subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      azure_location_name: ${{ secrets.AZURE_LOCATION }}
+      azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
