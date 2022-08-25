@@ -3,13 +3,13 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "location": {
-            "value": "northeurope"
+            "value": "westeurope"
         },
         "environment": {
             "value": "dev"
         },
         "prefix": {
-            "value": "synapse-auto"
+            "value": "data-auto"
         },
         "tags": {
             "value": {}
