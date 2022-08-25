@@ -55,7 +55,6 @@ var tagsDefault = {
   Name: name
 }
 var tagsJoined = union(tagsDefault, tags)
-var administratorUsername = 'SqlMainUser'
 var dataLake001Name = '${name}-lake001'
 var keyVault001Name = '${name}-vault001'
 var synapse001Name = '${name}-synapse001'
@@ -100,12 +99,11 @@ module synapse001 'modules/services/synapse.bicep' = {
     subnetId: subnetId
     purviewId: purviewId
     enableSqlPool: enableSqlPool
-    administratorUsername: administratorUsername
     synapseSqlAdminGroupName: ''
     synapseSqlAdminGroupObjectID: ''
     synapseComputeSubnetId: ''
     synapseDefaultStorageAccountId: dataLake001.outputs.storageId
-    synapseDefaultStorageAccountFileSystemId: dataLake001.outputs.storageFileSystemIds[0]
+    synapseDefaultStorageAccountFileSystemId: dataLake001.outputs.storageFileSystemIds[0].storageFileSystemId
     synapseRepositoryConfiguration: synapseRepositoryConfiguration
     privateDnsZoneIdSynapseDev: privateDnsZoneIdSynapseDev
     privateDnsZoneIdSynapseSql: privateDnsZoneIdSynapseSql
@@ -116,7 +114,7 @@ module synapse001RoleAssignmentStorage 'modules/auxiliary/synapseRoleAssignmentS
   name: 'synapse001RoleAssignmentStorage'
   scope: resourceGroup()
   params: {
-    storageAccountFileSystemId: dataLake001.outputs.storageFileSystemIds[0]
+    storageAccountFileSystemId: dataLake001.outputs.storageFileSystemIds[0].storageFileSystemId
     synapseId: synapse001.outputs.synapseId
   }
 }

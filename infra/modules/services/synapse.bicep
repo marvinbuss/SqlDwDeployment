@@ -9,7 +9,6 @@ param location string
 param tags object
 param subnetId string
 param synapseName string
-param administratorUsername string = 'SqlMainUser'
 param synapseSqlAdminGroupName string = ''
 param synapseSqlAdminGroupObjectID string = ''
 param synapseDefaultStorageAccountId string
@@ -29,7 +28,7 @@ var synapsePrivateEndpointNameSqlOnDemand = '${synapse.name}-sqlondemand-private
 var synapsePrivateEndpointNameDev = '${synapse.name}-dev-private-endpoint'
 
 // Resources
-resource synapse 'Microsoft.Synapse/workspaces@2021-06-01' = {
+resource synapse 'Microsoft.Synapse/workspaces@2021-06-01-preview' = {
   name: synapseName
   location: location
   tags: tags
@@ -40,22 +39,21 @@ resource synapse 'Microsoft.Synapse/workspaces@2021-06-01' = {
     azureADOnlyAuthentication: true
     defaultDataLakeStorage: {
       accountUrl: 'https://${synapseDefaultStorageAccountName}.dfs.${environment().suffixes.storage}'
-      createManagedPrivateEndpoint: true
       filesystem: synapseDefaultStorageAccountFileSystemName
+      createManagedPrivateEndpoint: true
       resourceId: synapseDefaultStorageAccountId
     }
     managedResourceGroupName: synapseName
     managedVirtualNetwork: 'default'
     managedVirtualNetworkSettings: {
       allowedAadTenantIdsForLinking: []
-      linkedAccessCheckOnTargetResource: false
+      // linkedAccessCheckOnTargetResource: false
       preventDataExfiltration: false
     }
     publicNetworkAccess: 'Enabled'
     purviewConfiguration: {
       purviewResourceId: purviewId
     }
-    sqlAdministratorLogin: administratorUsername
     virtualNetworkProfile: {
       computeSubnetId: synapseComputeSubnetId
     }
