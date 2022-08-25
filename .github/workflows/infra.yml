@@ -24,6 +24,7 @@ jobs:
       environment: "dev"
     secrets:
       azure_subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      azure_resource_group_name: ${{ secrets.AZURE_RESOURCE_GROUP_NAME }}
       azure_location_name: ${{ secrets.AZURE_LOCATION }}
       azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
 
@@ -34,6 +35,7 @@ jobs:
       environment: "tst"
     secrets:
       azure_subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      azure_resource_group_name: ${{ secrets.AZURE_RESOURCE_GROUP_NAME }}
       azure_location_name: ${{ secrets.AZURE_LOCATION }}
       azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
 
@@ -44,6 +46,7 @@ jobs:
       environment: "prd"
     secrets:
       azure_subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      azure_resource_group_name: ${{ secrets.AZURE_RESOURCE_GROUP_NAME }}
       azure_location_name: ${{ secrets.AZURE_LOCATION }}
       azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
 
@@ -56,6 +59,7 @@ jobs:
       environment: "dev"
     secrets:
       azure_subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      azure_resource_group_name: ${{ secrets.AZURE_RESOURCE_GROUP_NAME }}
       azure_location_name: ${{ secrets.AZURE_LOCATION }}
       azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
 
@@ -68,6 +72,7 @@ jobs:
       environment: "tst"
     secrets:
       azure_subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      azure_resource_group_name: ${{ secrets.AZURE_RESOURCE_GROUP_NAME }}
       azure_location_name: ${{ secrets.AZURE_LOCATION }}
       azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
 
@@ -80,5 +85,6 @@ jobs:
       environment: "prd"
     secrets:
       azure_subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      azure_resource_group_name: ${{ secrets.AZURE_RESOURCE_GROUP_NAME }}
       azure_location_name: ${{ secrets.AZURE_LOCATION }}
       azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
