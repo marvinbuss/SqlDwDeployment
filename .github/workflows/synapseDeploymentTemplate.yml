@@ -1,0 +1,78 @@
+name: Deployment Template
+
+on:
+  workflow_call:
+    inputs:
+      environment:
+        required: true
+        type: string
+        default: "dev"
+        description: "Specifies the environment of the deployment."
+      synapse_workspace_name:
+        required: true
+        type: string
+        description: "Specifies the name of the synapse workspace."
+    secrets:
+      azure_subscription_id:
+        required: true
+        description: "Specifies the subscription id of the deployment."
+      azure_resource_group_name:
+        required: true
+        description: "Specifies the name of the resource group for the deployment."
+      azure_location_name:
+        required: true
+        description: "Specifies the location name of the deployment."
+      azure_credentials:
+        required: true
+        description: "Specifies the azure credentials used for authentication."
+
+jobs:
+  deployment:
+    name: Deployment to ${{ inputs.environment }}
+    runs-on: ubuntu-latest
+    continue-on-error: false
+    if: github.event_name == 'push' || github.event_name == 'release'
+    environment: ${{ inputs.environment }}
+
+    steps:
+      # Check Out Repository
+      - name: Check Out Repository
+        id: checkout_repository
+        uses: actions/checkout@v2
+
+      # Login to Azure
+      - name: Azure Login
+        id: azure_login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.azure_credentials }}
+
+      # Deploy Synapse Artifacts
+      - name: Deploy Synapse Artifacts
+        id: deployment_synapse
+        uses: azure/synapse-workspace-deployment@v1.7.0
+        with:
+          TargetWorkspaceName: ${{ inputs.synapse_workspace_name }}
+          TemplateFile: 
+          ParametersFile: 
+          ArtifactsFolder: 
+          operation: "validateDeploy"
+          deployManagedPrivateEndpoint: true
+          # OverrideArmParameters: 
+          DeleteArtifactsNotInTemplate: true
+          Environment: "Azure Public"
+          subscriptionId: ${{ secrets.azure_subscription_id }}
+          resourceGroup: ${{ secrets.azure_resource_group_name }}
+          clientId: ${{ secrets.client_id }}
+          clientSecret: ${{ secrets.client_secret }}
+          managedIdentity: false
+
+
+      # Log out from Azure
+      - name: Log out from Azure
+        id: azure_logout
+        uses: azure/cli@v1
+        with:
+          azcliversion: "agentazcliversion"
+          inlineScript: |
+            az logout
