@@ -1,0 +1,7 @@
+{
+	"name": "defaultKeyVault",
+	"properties": {
+		"privateLinkResourceId": "/subscriptions/558bd446-4212-46a2-908c-9ab0a628705e/resourceGroups/synapse-deployment/providers/Microsoft.KeyVault/vaults/data-auto-dev-vault001",
+		"groupId": "vault"
+	}
+}
