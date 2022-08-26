@@ -18,7 +18,7 @@ on:
 
 jobs:
   validation_dev:
-    uses: ./.github/workflows/validationTemplate.yml
+    uses: ./.github/workflows/infraValidationTemplate.yml
     name: "Validation of IaC templates - Dev"
     with:
       environment: "dev"
@@ -29,7 +29,7 @@ jobs:
       azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
 
   validation_test:
-    uses: ./.github/workflows/validationTemplate.yml
+    uses: ./.github/workflows/infraValidationTemplate.yml
     name: "Validation of IaC templates - Test"
     with:
       environment: "tst"
@@ -40,7 +40,7 @@ jobs:
       azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
 
   validation_prod:
-    uses: ./.github/workflows/validationTemplate.yml
+    uses: ./.github/workflows/infraValidationTemplate.yml
     name: "Validation of IaC templates - Prod"
     with:
       environment: "prd"
@@ -51,7 +51,7 @@ jobs:
       azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
 
   deployment_dev:
-    uses: ./.github/workflows/deploymentTemplate.yml
+    uses: ./.github/workflows/infraDeploymentTemplate.yml
     name: "Deployment of IaC templates - Dev"
     needs: [validation_dev, validation_test, validation_prod]
     if: github.event_name == 'push' || github.event_name == 'release'
@@ -64,7 +64,7 @@ jobs:
       azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
 
   deployment_test:
-    uses: ./.github/workflows/deploymentTemplate.yml
+    uses: ./.github/workflows/infraDeploymentTemplate.yml
     name: "Deployment of IaC templates - Test"
     needs: [deployment_dev]
     if: github.event_name == 'push' || github.event_name == 'release'
@@ -77,7 +77,7 @@ jobs:
       azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
 
   deployment_prod:
-    uses: ./.github/workflows/deploymentTemplate.yml
+    uses: ./.github/workflows/infraDeploymentTemplate.yml
     name: "Deployment of IaC templates - Prod"
     needs: [deployment_test]
     if: github.event_name == 'release'

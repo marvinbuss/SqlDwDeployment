@@ -42,7 +42,7 @@ jobs:
     name: Deploy SQL Project
     runs-on: ubuntu-latest
     continue-on-error: false
-    # environment: ${{ inputs.environment }}
+    environment: ${{ inputs.environment }}
 
     steps:
       # Download Build Artifact

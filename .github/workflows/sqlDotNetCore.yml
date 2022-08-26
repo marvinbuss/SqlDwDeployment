@@ -23,8 +23,8 @@ jobs:
       dotnet_version: "6.0.x"
       working_directory: "code/MyDotNetCoreSqlProject/"
   
-  sql_report:
-    uses: ./.github/workflows/reportTemplate.yml
+  sql_report_dev:
+    uses: ./.github/workflows/sqlReportTemplate.yml
     name: "Report SQL Changes"
     needs: [sql_build]
     with:
@@ -39,10 +39,10 @@ jobs:
       target_server_name: ${{ secrets.SQL_SERVER_NAME }}
       target_database_name: ${{ secrets.SQL_DATABASE_NAME }}
   
-  sql_deploy:
-    uses: ./.github/workflows/deployTemplate.yml
+  sql_deploy_dev:
+    uses: ./.github/workflows/sqlDeploymentTemplate.yml
     name: "Deploy SQL Changes"
-    needs: [sql_build, sql_report]
+    needs: [sql_report_dev]
     if: github.event_name == 'push' || github.event_name == 'release'
     with:
       environment: "dev"
