@@ -1,0 +1,49 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"workspaceName": {
+			"value": "data-auto-dev-synapse001"
+		},
+		"data-auto-dev-synapse001-WorkspaceDefaultSqlServer_connectionString": {
+			"value": ""
+		},
+		"data-auto-dev-synapse001-WorkspaceDefaultSqlServer_properties_typeProperties_connectionString": {
+			"value": ""
+		},
+		"data-auto-dev-synapse001-WorkspaceDefaultStorage_properties_typeProperties_blobEndpointUri": {
+			"value": "https://dataautodevlake001.dfs.core.windows.net"
+		},
+		"Purview_properties_managedPrivateEndpointPrivateLinkResourceId": {
+			"value": "/subscriptions/558bd446-4212-46a2-908c-9ab0a628705e/resourceGroups/synapse-rg/providers/Microsoft.Purview/accounts/marvtest"
+		},
+		"Purview_blob_properties_managedPrivateEndpointPrivateLinkResourceId": {
+			"value": "/subscriptions/558bd446-4212-46a2-908c-9ab0a628705e/resourceGroups/managed-rg-tsmspzj/providers/Microsoft.Storage/storageAccounts/scanwesteuropefhwfmtd"
+		},
+		"Purview_namespace_properties_managedPrivateEndpointPrivateLinkResourceId": {
+			"value": "/subscriptions/558bd446-4212-46a2-908c-9ab0a628705e/resourceGroups/managed-rg-tsmspzj/providers/Microsoft.EventHub/namespaces/Atlas-5759ff09-2cdd-465c-8de5-200c80d09372"
+		},
+		"Purview_queue_properties_managedPrivateEndpointPrivateLinkResourceId": {
+			"value": "/subscriptions/558bd446-4212-46a2-908c-9ab0a628705e/resourceGroups/managed-rg-tsmspzj/providers/Microsoft.Storage/storageAccounts/scanwesteuropefhwfmtd"
+		},
+		"synapse-ws-custstgacct--data-auto-dev-synapse001-dataautodevlake001_properties_managedPrivateEndpointPrivateLinkResourceId": {
+			"value": "/subscriptions/558bd446-4212-46a2-908c-9ab0a628705e/resourceGroups/synapse-deployment/providers/Microsoft.Storage/storageAccounts/dataautodevlake001"
+		},
+		"synapse-ws-sql--data-auto-dev-synapse001_properties_managedPrivateEndpointPrivateLinkResourceId": {
+			"value": "/subscriptions/558bd446-4212-46a2-908c-9ab0a628705e/resourceGroups/synapse-deployment/providers/Microsoft.Synapse/workspaces/data-auto-dev-synapse001"
+		},
+		"synapse-ws-sql--data-auto-dev-synapse001_properties_managedPrivateEndpointsFqdns": {
+			"value": [
+				"data-auto-dev-synapse001.f4946394-74e6-412e-9618-936ff2cf6b4c.sql.azuresynapse.net"
+			]
+		},
+		"synapse-ws-sqlOnDemand--data-auto-dev-synapse001_properties_managedPrivateEndpointPrivateLinkResourceId": {
+			"value": "/subscriptions/558bd446-4212-46a2-908c-9ab0a628705e/resourceGroups/synapse-deployment/providers/Microsoft.Synapse/workspaces/data-auto-dev-synapse001"
+		},
+		"synapse-ws-sqlOnDemand--data-auto-dev-synapse001_properties_managedPrivateEndpointsFqdns": {
+			"value": [
+				"data-auto-dev-synapse001-ondemand.f4946394-74e6-412e-9618-936ff2cf6b4c.sql.azuresynapse.net"
+			]
+		}
+	}
+}
