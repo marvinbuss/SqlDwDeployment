@@ -1,0 +1,7 @@
+{
+	"name": "Purview_namespace",
+	"properties": {
+		"privateLinkResourceId": "/subscriptions/558bd446-4212-46a2-908c-9ab0a628705e/resourceGroups/managed-rg-tsmspzj/providers/Microsoft.EventHub/namespaces/Atlas-5759ff09-2cdd-465c-8de5-200c80d09372",
+		"groupId": "namespace"
+	}
+}

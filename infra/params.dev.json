@@ -1,0 +1,54 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "value": "westeurope"
+        },
+        "environment": {
+            "value": "dev"
+        },
+        "prefix": {
+            "value": "data-auto"
+        },
+        "tags": {
+            "value": {}
+        },
+        "synapseRepositoryConfiguration": {
+            "value": {
+                "type": "WorkspaceGitHubConfiguration",
+                "accountName": "marvinbuss",
+                "repositoryName": "SqlDwDeployment",
+                "collaborationBranch": "main",
+                "rootFolder": "/code/synapse"
+            }
+        },
+        "enableSqlPool": {
+            "value": true
+        },
+        "purviewId": {
+            "value": ""
+        },
+        "enableRoleAssignments": {
+            "value": true
+        },
+        "subnetId": {
+            "value": "/subscriptions/558bd446-4212-46a2-908c-9ab0a628705e/resourceGroups/synapse-deployment/providers/Microsoft.Network/virtualNetworks/synapse-vnet/subnets/synapse001"
+        },
+        "privateDnsZoneIdKeyVault": {
+            "value": "/subscriptions/558bd446-4212-46a2-908c-9ab0a628705e/resourcegroups/synapse-deployment/providers/Microsoft.Network/privateDnsZones/privatelink.vaultcore.azure.net"
+        },
+        "privateDnsZoneIdSynapseDev": {
+            "value": "/subscriptions/558bd446-4212-46a2-908c-9ab0a628705e/resourcegroups/synapse-deployment/providers/Microsoft.Network/privateDnsZones/privatelink.dev.azuresynapse.net"
+        },
+        "privateDnsZoneIdSynapseSql": {
+            "value": "/subscriptions/558bd446-4212-46a2-908c-9ab0a628705e/resourcegroups/synapse-deployment/providers/Microsoft.Network/privateDnsZones/privatelink.sql.azuresynapse.net"
+        },
+        "privateDnsZoneIdBlob": {
+            "value": "/subscriptions/558bd446-4212-46a2-908c-9ab0a628705e/resourcegroups/synapse-deployment/providers/Microsoft.Network/privateDnsZones/privatelink.blob.core.windows.net"
+        },
+        "privateDnsZoneIdDfs": {
+            "value": "/subscriptions/558bd446-4212-46a2-908c-9ab0a628705e/resourcegroups/synapse-deployment/providers/Microsoft.Network/privateDnsZones/privatelink.dfs.core.windows.net"
+        }
+    }
+}
