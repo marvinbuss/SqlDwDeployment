@@ -53,7 +53,7 @@ jobs:
           TemplateFile: ${{ github.workspace }}/${{ inputs.source_synapse_workspace_name }}/TemplateForWorkspace.json
           ParametersFile: ${{ github.workspace }}/parameters/parameters.${{ inputs.target_synapse_workspace_name }}.json
           # ArtifactsFolder: 
-          operation: "validateDeploy"
+          operation: "deploy"
           deployManagedPrivateEndpoint: true
           # OverrideArmParameters: 
           DeleteArtifactsNotInTemplate: true
