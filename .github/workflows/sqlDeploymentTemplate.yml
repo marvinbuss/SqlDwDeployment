@@ -1,4 +1,4 @@
-name: Deploy Template (.NET Core)
+name: SQL Deployment Template
 
 on:
   workflow_call:

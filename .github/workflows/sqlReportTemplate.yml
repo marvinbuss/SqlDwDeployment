@@ -1,4 +1,4 @@
-name: Report Template (.NET Core)
+name: SQL Report Template
 
 on:
   workflow_call:

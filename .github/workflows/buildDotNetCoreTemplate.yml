@@ -1,4 +1,4 @@
-name: Build Template (.NET)
+name: SQL Build Template (.NET)
 
 on:
   workflow_call:
