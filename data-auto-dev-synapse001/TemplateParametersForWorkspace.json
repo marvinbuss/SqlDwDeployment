@@ -29,7 +29,7 @@
 		"Purview_queue_properties_managedPrivateEndpointPrivateLinkResourceId": {
 			"value": "/subscriptions/558bd446-4212-46a2-908c-9ab0a628705e/resourceGroups/managed-rg-tsmspzj/providers/Microsoft.Storage/storageAccounts/scanwesteuropefhwfmtd"
 		},
-		"defaultDataLakeStorage_properties_managedPrivateEndpointPrivateLinkResourceId": {
+		"defaultDataLake_properties_managedPrivateEndpointPrivateLinkResourceId": {
 			"value": "/subscriptions/558bd446-4212-46a2-908c-9ab0a628705e/resourceGroups/synapse-deployment/providers/Microsoft.Storage/storageAccounts/dataautodevlake001"
 		},
 		"defaultKeyVault_properties_managedPrivateEndpointPrivateLinkResourceId": {
@@ -40,7 +40,7 @@
 		},
 		"synapse-ws-sql--data-auto-dev-synapse001_properties_managedPrivateEndpointsFqdns": {
 			"value": [
-				"data-auto-dev-synapse001.f4946394-74e6-412e-9618-936ff2cf6b4c.sql.azuresynapse.net"
+				"data-auto-dev-synapse001.813fcfa7-0204-46d5-9c1d-8f46018061fd.sql.azuresynapse.net"
 			]
 		},
 		"synapse-ws-sqlOnDemand--data-auto-dev-synapse001_properties_managedPrivateEndpointPrivateLinkResourceId": {
@@ -48,7 +48,7 @@
 		},
 		"synapse-ws-sqlOnDemand--data-auto-dev-synapse001_properties_managedPrivateEndpointsFqdns": {
 			"value": [
-				"data-auto-dev-synapse001-ondemand.f4946394-74e6-412e-9618-936ff2cf6b4c.sql.azuresynapse.net"
+				"data-auto-dev-synapse001-ondemand.813fcfa7-0204-46d5-9c1d-8f46018061fd.sql.azuresynapse.net"
 			]
 		}
 	}
