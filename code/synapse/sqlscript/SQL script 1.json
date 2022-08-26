@@ -1,0 +1,17 @@
+{
+	"name": "SQL script 1",
+	"properties": {
+		"content": {
+			"query": "CREATE USER [mabuss@microsoft.com] FROM EXTERNAL PROVIDER;\nCREATE USER [sql-test] FROM EXTERNAL PROVIDER;\nGO;\n\nEXEC sp_addrolemember 'db_admin', [mabuss@microsoft.com];\nEXEC sp_addrolemember 'db_admin', [sql-test];\nGO;\n\nALTER ROLE dbmanager ADD MEMBER [sql-test];\nGO;",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "master",
+				"poolName": "sqlPool001"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}
