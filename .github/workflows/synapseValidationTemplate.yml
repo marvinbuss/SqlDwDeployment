@@ -13,6 +13,9 @@ on:
         type: string
         description: "Specifies the name of the synapse workspace."
     secrets:
+      tenant_id:
+        required: true
+        description: "Specifies the tenant id of the deployment."
       azure_subscription_id:
         required: true
         description: "Specifies the subscription id of the deployment."
@@ -50,6 +53,7 @@ jobs:
           deployManagedPrivateEndpoint: true
           DeleteArtifactsNotInTemplate: true
           Environment: "Azure Public"
+          tenantId: ${{ secrets.tenant_id }}
           subscriptionId: ${{ secrets.azure_subscription_id }}
           resourceGroup: ${{ secrets.azure_resource_group_name }}
           clientId: ${{ secrets.client_id }}
