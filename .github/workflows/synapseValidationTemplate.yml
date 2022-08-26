@@ -52,10 +52,3 @@ jobs:
           operation: "validate"
           deployManagedPrivateEndpoint: true
           DeleteArtifactsNotInTemplate: true
-          Environment: "Azure Public"
-          tenantId: ${{ secrets.tenant_id }}
-          subscriptionId: ${{ secrets.azure_subscription_id }}
-          resourceGroup: ${{ secrets.azure_resource_group_name }}
-          clientId: ${{ secrets.client_id }}
-          clientSecret: ${{ secrets.client_secret }}
-          managedIdentity: false

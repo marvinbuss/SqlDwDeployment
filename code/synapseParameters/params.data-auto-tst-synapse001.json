@@ -27,7 +27,7 @@
 			"value": "/subscriptions/558bd446-4212-46a2-908c-9ab0a628705e/resourceGroups/managed-rg-tsmspzj/providers/Microsoft.Storage/storageAccounts/scanwesteuropefhwfmtd"
 		},
 		"synapse-ws-custstgacct--data-auto-dev-synapse001-dataautodevlake001_properties_managedPrivateEndpointPrivateLinkResourceId": {
-			"value": "/subscriptions/558bd446-4212-46a2-908c-9ab0a628705e/resourceGroups/synapse-deployment/providers/Microsoft.Storage/storageAccounts/dataautotstlake001"
+			"value": ""
 		},
 		"synapse-ws-sql--data-auto-dev-synapse001_properties_managedPrivateEndpointPrivateLinkResourceId": {
 			"value": "/subscriptions/558bd446-4212-46a2-908c-9ab0a628705e/resourceGroups/synapse-deployment/providers/Microsoft.Synapse/workspaces/data-auto-tst-synapse001"
