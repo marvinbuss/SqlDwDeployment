@@ -1,5 +1,5 @@
 {
-	"name": "defaultDataLakeStorage",
+	"name": "defaultDataLake",
 	"properties": {
 		"privateLinkResourceId": "/subscriptions/558bd446-4212-46a2-908c-9ab0a628705e/resourceGroups/synapse-deployment/providers/Microsoft.Storage/storageAccounts/dataautodevlake001",
 		"groupId": "dfs"

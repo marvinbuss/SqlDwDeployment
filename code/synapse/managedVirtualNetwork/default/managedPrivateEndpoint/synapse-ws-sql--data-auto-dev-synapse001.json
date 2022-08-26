@@ -4,7 +4,7 @@
 		"privateLinkResourceId": "/subscriptions/558bd446-4212-46a2-908c-9ab0a628705e/resourceGroups/synapse-deployment/providers/Microsoft.Synapse/workspaces/data-auto-dev-synapse001",
 		"groupId": "sql",
 		"fqdns": [
-			"data-auto-dev-synapse001.f4946394-74e6-412e-9618-936ff2cf6b4c.sql.azuresynapse.net"
+			"data-auto-dev-synapse001.813fcfa7-0204-46d5-9c1d-8f46018061fd.sql.azuresynapse.net"
 		]
 	}
 }
