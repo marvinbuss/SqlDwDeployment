@@ -1,0 +1,11 @@
+{
+	"name": "defaultKeyVault",
+	"properties": {
+		"description": "Default Key Vault",
+		"annotations": [],
+		"type": "AzureKeyVault",
+		"typeProperties": {
+			"baseUrl": "https://data-auto-dev-vault001.vault.azure.net/"
+		}
+	}
+}
