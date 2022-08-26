@@ -19,7 +19,7 @@ on:
 jobs:
   validation_dev:
     uses: ./.github/workflows/synapseValidationTemplate.yml
-    name: "Validation of IaC templates - Dev"
+    name: "Validation of Synapse artifacts - Dev"
     with:
       environment: "dev"
       target_synapse_workspace_name: "data-auto-dev-synapse001"
@@ -31,7 +31,7 @@ jobs:
 
   validation_test:
     uses: ./.github/workflows/synapseValidationTemplate.yml
-    name: "Validation of IaC templates - Test"
+    name: "Validation of Synapse artifacts - Test"
     with:
       environment: "tst"
       target_synapse_workspace_name: "data-auto-tst-synapse001"
@@ -43,7 +43,7 @@ jobs:
 
   # validation_prod:
   #   uses: ./.github/workflows/synapseValidationTemplate.yml
-  #   name: "Validation of IaC templates - Prod"
+  #   name: "Validation of Synapse artifacts - Prod"
   #   with:
   #     environment: "prd"
   #     target_synapse_workspace_name: ""
@@ -55,7 +55,7 @@ jobs:
 
   deployment_test:
     uses: ./.github/workflows/synapseDeploymentTemplate.yml
-    name: "Deployment of IaC templates - Test"
+    name: "Deployment of Synapse artifacts - Test"
     needs: [validation_dev, validation_test]
     if: github.event_name == 'push'
     with:
@@ -70,7 +70,7 @@ jobs:
 
   deployment_prod:
     uses: ./.github/workflows/synapseDeploymentTemplate.yml
-    name: "Deployment of IaC templates - Prod"
+    name: "Deployment of Synapse artifacts - Prod"
     needs: [deployment_test]
     if: github.event_name == 'release'
     with:
