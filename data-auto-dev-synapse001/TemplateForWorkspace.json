@@ -18,6 +18,10 @@
 			"type": "string",
 			"defaultValue": "https://dataautodevlake001.dfs.core.windows.net"
 		},
+		"defaultKeyVault_properties_typeProperties_baseUrl": {
+			"type": "string",
+			"defaultValue": "https://data-auto-dev-vault001.vault.azure.net/"
+		},
 		"Purview_properties_managedPrivateEndpointPrivateLinkResourceId": {
 			"type": "string",
 			"defaultValue": "/subscriptions/558bd446-4212-46a2-908c-9ab0a628705e/resourceGroups/synapse-rg/providers/Microsoft.Purview/accounts/marvtest"
@@ -37,6 +41,10 @@
 		"defaultDataLakeStorage_properties_managedPrivateEndpointPrivateLinkResourceId": {
 			"type": "string",
 			"defaultValue": "/subscriptions/558bd446-4212-46a2-908c-9ab0a628705e/resourceGroups/synapse-deployment/providers/Microsoft.Storage/storageAccounts/dataautodevlake001"
+		},
+		"defaultKeyVault_properties_managedPrivateEndpointPrivateLinkResourceId": {
+			"type": "string",
+			"defaultValue": "/subscriptions/558bd446-4212-46a2-908c-9ab0a628705e/resourceGroups/synapse-deployment/providers/Microsoft.KeyVault/vaults/data-auto-dev-vault001"
 		},
 		"synapse-ws-sql--data-auto-dev-synapse001_properties_managedPrivateEndpointPrivateLinkResourceId": {
 			"type": "string",
@@ -110,6 +118,20 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('workspaceName'), '/defaultKeyVault')]",
+			"type": "Microsoft.Synapse/workspaces/linkedServices",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"description": "Default Key Vault",
+				"annotations": [],
+				"type": "AzureKeyVault",
+				"typeProperties": {
+					"baseUrl": "[parameters('defaultKeyVault_properties_typeProperties_baseUrl')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('workspaceName'), '/AutoResolveIntegrationRuntime')]",
 			"type": "Microsoft.Synapse/workspaces/integrationRuntimes",
 			"apiVersion": "2019-06-01-preview",
@@ -145,10 +167,13 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('workspaceName'), '/SQL script 1')]",
+			"name": "[concat(parameters('workspaceName'), '/GrantAccess')]",
 			"type": "Microsoft.Synapse/workspaces/sqlscripts",
 			"apiVersion": "2019-06-01-preview",
 			"properties": {
+				"folder": {
+					"name": "Samples"
+				},
 				"content": {
 					"query": "CREATE USER [sql-test] FROM EXTERNAL PROVIDER;\nGO;\n\nEXEC sp_addrolemember 'db_admin', [sql-test];\nGO;\n\nALTER ROLE dbmanager ADD MEMBER [sql-test];\nGO;",
 					"metadata": {
@@ -264,6 +289,18 @@
 			"properties": {
 				"privateLinkResourceId": "[parameters('defaultDataLakeStorage_properties_managedPrivateEndpointPrivateLinkResourceId')]",
 				"groupId": "dfs"
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/managedVirtualNetworks/default')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/default/defaultKeyVault')]",
+			"type": "Microsoft.Synapse/workspaces/managedVirtualNetworks/managedPrivateEndpoints",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"privateLinkResourceId": "[parameters('defaultKeyVault_properties_managedPrivateEndpointPrivateLinkResourceId')]",
+				"groupId": "vault"
 			},
 			"dependsOn": [
 				"[concat(variables('workspaceId'), '/managedVirtualNetworks/default')]"
