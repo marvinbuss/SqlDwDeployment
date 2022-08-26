@@ -34,7 +34,7 @@
 			"type": "string",
 			"defaultValue": "/subscriptions/558bd446-4212-46a2-908c-9ab0a628705e/resourceGroups/managed-rg-tsmspzj/providers/Microsoft.Storage/storageAccounts/scanwesteuropefhwfmtd"
 		},
-		"synapse-ws-custstgacct--data-auto-dev-synapse001-dataautodevlake001_properties_managedPrivateEndpointPrivateLinkResourceId": {
+		"defaultDataLakeStorage_properties_managedPrivateEndpointPrivateLinkResourceId": {
 			"type": "string",
 			"defaultValue": "/subscriptions/558bd446-4212-46a2-908c-9ab0a628705e/resourceGroups/synapse-deployment/providers/Microsoft.Storage/storageAccounts/dataautodevlake001"
 		},
@@ -258,11 +258,11 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('workspaceName'), '/default/synapse-ws-custstgacct--data-auto-dev-synapse001-dataautodevlake001')]",
+			"name": "[concat(parameters('workspaceName'), '/default/defaultDataLakeStorage')]",
 			"type": "Microsoft.Synapse/workspaces/managedVirtualNetworks/managedPrivateEndpoints",
 			"apiVersion": "2019-06-01-preview",
 			"properties": {
-				"privateLinkResourceId": "[parameters('synapse-ws-custstgacct--data-auto-dev-synapse001-dataautodevlake001_properties_managedPrivateEndpointPrivateLinkResourceId')]",
+				"privateLinkResourceId": "[parameters('defaultDataLakeStorage_properties_managedPrivateEndpointPrivateLinkResourceId')]",
 				"groupId": "dfs"
 			},
 			"dependsOn": [
