@@ -23,7 +23,7 @@ jobs:
       working_directory: "code/MyDotNetSqlProject/MyDotNetSqlProject"
   
   sql_report_dev:
-    uses: ./.github/workflows/reportTemplate.yml
+    uses: ./.github/workflows/sqlReportTemplate.yml
     name: "Report SQL Changes"
     needs: [sql_build]
     with:
@@ -39,7 +39,7 @@ jobs:
       target_database_name: ${{ secrets.SQL_DATABASE_NAME }}
   
   sql_deploy_dev:
-    uses: ./.github/workflows/deployTemplate.yml
+    uses: ./.github/workflows/sqlDeploymentTemplate.yml
     name: "Deploy SQL Changes"
     needs: [sql_report_dev]
     if: github.event_name == 'push' || github.event_name == 'release'
