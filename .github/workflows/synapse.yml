@@ -1,4 +1,4 @@
-name: Infrastructure Deployment
+name: Synapse Deployment
 on:
   push:
     branches:
@@ -56,7 +56,7 @@ jobs:
   deployment_test:
     uses: ./.github/workflows/synapseDeploymentTemplate.yml
     name: "Deployment of IaC templates - Test"
-    needs: [deployment_dev]
+    needs: [validation_dev, validation_test]
     if: github.event_name == 'push'
     with:
       environment: "tst"
