@@ -42,7 +42,7 @@ jobs:
       # Deploy Synapse Artifacts
       - name: Deploy Synapse Artifacts
         id: deployment_synapse
-        uses: azure/synapse-workspace-deployment@v1.7.0
+        uses: azure/synapse-workspace-deployment@V1.7.0
         with:
           TargetWorkspaceName: ${{ inputs.target_synapse_workspace_name }}
           ArtifactsFolder: ${{ github.workspace }}/code/synapse
