@@ -39,7 +39,7 @@ resource synapse 'Microsoft.Synapse/workspaces@2021-06-01-preview' = {
     defaultDataLakeStorage: {
       accountUrl: 'https://${synapseDefaultStorageAccountName}.dfs.${environment().suffixes.storage}'
       filesystem: synapseDefaultStorageAccountFileSystemName
-      createManagedPrivateEndpoint: true
+      createManagedPrivateEndpoint: false
       resourceId: synapseDefaultStorageAccountId
     }
     managedResourceGroupName: synapseName
