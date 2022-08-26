@@ -38,7 +38,7 @@
 			"type": "string",
 			"defaultValue": "/subscriptions/558bd446-4212-46a2-908c-9ab0a628705e/resourceGroups/managed-rg-tsmspzj/providers/Microsoft.Storage/storageAccounts/scanwesteuropefhwfmtd"
 		},
-		"defaultDataLakeStorage_properties_managedPrivateEndpointPrivateLinkResourceId": {
+		"defaultDataLake_properties_managedPrivateEndpointPrivateLinkResourceId": {
 			"type": "string",
 			"defaultValue": "/subscriptions/558bd446-4212-46a2-908c-9ab0a628705e/resourceGroups/synapse-deployment/providers/Microsoft.Storage/storageAccounts/dataautodevlake001"
 		},
@@ -53,7 +53,7 @@
 		"synapse-ws-sql--data-auto-dev-synapse001_properties_managedPrivateEndpointsFqdns": {
 			"type": "array",
 			"defaultValue": [
-				"data-auto-dev-synapse001.f4946394-74e6-412e-9618-936ff2cf6b4c.sql.azuresynapse.net"
+				"data-auto-dev-synapse001.813fcfa7-0204-46d5-9c1d-8f46018061fd.sql.azuresynapse.net"
 			]
 		},
 		"synapse-ws-sqlOnDemand--data-auto-dev-synapse001_properties_managedPrivateEndpointPrivateLinkResourceId": {
@@ -63,7 +63,7 @@
 		"synapse-ws-sqlOnDemand--data-auto-dev-synapse001_properties_managedPrivateEndpointsFqdns": {
 			"type": "array",
 			"defaultValue": [
-				"data-auto-dev-synapse001-ondemand.f4946394-74e6-412e-9618-936ff2cf6b4c.sql.azuresynapse.net"
+				"data-auto-dev-synapse001-ondemand.813fcfa7-0204-46d5-9c1d-8f46018061fd.sql.azuresynapse.net"
 			]
 		}
 	},
@@ -71,6 +71,15 @@
 		"workspaceId": "[concat('Microsoft.Synapse/workspaces/', parameters('workspaceName'))]"
 	},
 	"resources": [
+		{
+			"name": "[concat(parameters('workspaceName'), '/sqlPool001')]",
+			"type": "Microsoft.Synapse/workspaces/sqlPools",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"annotations": []
+			},
+			"dependsOn": []
+		},
 		{
 			"name": "[concat(parameters('workspaceName'), '/data-auto-dev-synapse001-WorkspaceDefaultSqlServer')]",
 			"type": "Microsoft.Synapse/workspaces/linkedServices",
@@ -180,7 +189,7 @@
 						"language": "sql"
 					},
 					"currentConnection": {
-						"databaseName": "master",
+						"databaseName": "sqlPool001",
 						"poolName": "sqlPool001"
 					},
 					"resultLimit": 5000
@@ -283,11 +292,11 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('workspaceName'), '/default/defaultDataLakeStorage')]",
+			"name": "[concat(parameters('workspaceName'), '/default/defaultDataLake')]",
 			"type": "Microsoft.Synapse/workspaces/managedVirtualNetworks/managedPrivateEndpoints",
 			"apiVersion": "2019-06-01-preview",
 			"properties": {
-				"privateLinkResourceId": "[parameters('defaultDataLakeStorage_properties_managedPrivateEndpointPrivateLinkResourceId')]",
+				"privateLinkResourceId": "[parameters('defaultDataLake_properties_managedPrivateEndpointPrivateLinkResourceId')]",
 				"groupId": "dfs"
 			},
 			"dependsOn": [
