@@ -1,6 +1,9 @@
 {
-	"name": "SQL script 1",
+	"name": "GrantAccess",
 	"properties": {
+		"folder": {
+			"name": "Samples"
+		},
 		"content": {
 			"query": "CREATE USER [sql-test] FROM EXTERNAL PROVIDER;\nGO;\n\nEXEC sp_addrolemember 'db_admin', [sql-test];\nGO;\n\nALTER ROLE dbmanager ADD MEMBER [sql-test];\nGO;",
 			"metadata": {
