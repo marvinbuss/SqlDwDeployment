@@ -8,6 +8,7 @@ on:
     paths:
       - "code/snapse/**"
       - ".github/workflows/**"
+      - "data-auto-dev-synapse001/**"
 
   pull_request:
     branches:
@@ -15,6 +16,7 @@ on:
     paths:
       - "code/snapse/**"
       - ".github/workflows/**"
+      - "data-auto-dev-synapse001/**"
 
 jobs:
   validation_dev:
