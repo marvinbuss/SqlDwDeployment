@@ -1,5 +1,5 @@
 {
-	"name": "synapse-ws-custstgacct--data-auto-dev-synapse001-dataautodevlake001",
+	"name": "defaultDataLakeStorage",
 	"properties": {
 		"privateLinkResourceId": "/subscriptions/558bd446-4212-46a2-908c-9ab0a628705e/resourceGroups/synapse-deployment/providers/Microsoft.Storage/storageAccounts/dataautodevlake001",
 		"groupId": "dfs"
