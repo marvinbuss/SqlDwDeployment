@@ -6,13 +6,16 @@ on:
       - main
     tags:
       - "v*.*.*"
+    paths:
+      - "code/MyDotNetSqlProject/**"
+      - ".github/workflows/**"
 
   pull_request:
     branches:
       - main
     paths:
       - "code/MyDotNetSqlProject/**"
-      - ".github/workflows/sqlDotNet.yml"
+      - ".github/workflows/**"
 
 jobs:
   sql_build:

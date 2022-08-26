@@ -6,17 +6,18 @@ on:
     tags:
       - "v*.*.*"
     paths:
-      - "code/snapse/**"
+      - "code/synapseParameters/**"
       - ".github/workflows/**"
       - "data-auto-dev-synapse001/**"
+      - ".github/workflows/**"
 
   pull_request:
     branches:
       - main
     paths:
-      - "code/snapse/**"
-      - ".github/workflows/**"
+      - "code/synapseParameters/**"
       - "data-auto-dev-synapse001/**"
+      - ".github/workflows/**"
 
 jobs:
   validation_dev:
