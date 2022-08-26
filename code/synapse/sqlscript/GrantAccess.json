@@ -10,7 +10,7 @@
 				"language": "sql"
 			},
 			"currentConnection": {
-				"databaseName": "master",
+				"databaseName": "sqlPool001",
 				"poolName": "sqlPool001"
 			},
 			"resultLimit": 5000
