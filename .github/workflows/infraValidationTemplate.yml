@@ -1,4 +1,4 @@
-name: Validation Template
+name: Infra Validation Template
 
 on:
   workflow_call:

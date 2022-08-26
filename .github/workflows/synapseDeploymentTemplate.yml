@@ -1,0 +1,65 @@
+name: Synapse Deployment Template
+
+on:
+  workflow_call:
+    inputs:
+      environment:
+        required: true
+        type: string
+        default: "dev"
+        description: "Specifies the environment of the deployment."
+      source_synapse_workspace_name:
+        required: true
+        type: string
+        description: "Specifies the name of the synapse workspace."
+      target_synapse_workspace_name:
+        required: true
+        type: string
+        description: "Specifies the name of the synapse workspace."
+    secrets:
+      azure_subscription_id:
+        required: true
+        description: "Specifies the subscription id of the deployment."
+      azure_resource_group_name:
+        required: true
+        description: "Specifies the name of the resource group for the deployment."
+      client_id:
+        required: true
+        description: "Specifies the client id."
+      client_secret:
+        required: true
+        description: "Specifies the client secret."
+
+jobs:
+  deployment:
+    name: Deployment to ${{ inputs.environment }}
+    runs-on: ubuntu-latest
+    continue-on-error: false
+    if: github.event_name == 'push' || github.event_name == 'release'
+    environment: ${{ inputs.environment }}
+
+    steps:
+      # Check Out Repository
+      - name: Check Out Repository
+        id: checkout_repository
+        uses: actions/checkout@v2
+
+      # Deploy Synapse Artifacts
+      - name: Deploy Synapse Artifacts
+        id: deployment_synapse
+        uses: azure/synapse-workspace-deployment@V1.7.0
+        with:
+          TargetWorkspaceName: ${{ inputs.target_synapse_workspace_name }}
+          TemplateFile: ${{ github.workspace }}/${{ inputs.source_synapse_workspace_name }}/TemplateForWorkspace.json
+          ParametersFile: ${{ github.workspace }}/parameters/parameters.${{ inputs.target_synapse_workspace_name }}.json
+          # ArtifactsFolder: 
+          operation: "validateDeploy"
+          deployManagedPrivateEndpoint: true
+          # OverrideArmParameters: 
+          DeleteArtifactsNotInTemplate: true
+          Environment: "Azure Public"
+          subscriptionId: ${{ secrets.azure_subscription_id }}
+          resourceGroup: ${{ secrets.azure_resource_group_name }}
+          clientId: ${{ secrets.client_id }}
+          clientSecret: ${{ secrets.client_secret }}
+          managedIdentity: false

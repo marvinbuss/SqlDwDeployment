@@ -1,0 +1,84 @@
+name: Synapse Deployment
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - "v*.*.*"
+    paths:
+      - "code/snapse/**"
+      - ".github/workflows/**"
+
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "code/snapse/**"
+      - ".github/workflows/**"
+
+jobs:
+  validation_dev:
+    uses: ./.github/workflows/synapseValidationTemplate.yml
+    name: "Validation of Synapse artifacts - Dev"
+    with:
+      environment: "dev"
+      target_synapse_workspace_name: "data-auto-dev-synapse001"
+    secrets:
+      azure_subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      azure_resource_group_name: ${{ secrets.AZURE_RESOURCE_GROUP_NAME }}
+      client_id: ${{ secrets.CLIENT_ID }}
+      client_secret: ${{ secrets.CLIENT_SECRET }}
+
+  validation_test:
+    uses: ./.github/workflows/synapseValidationTemplate.yml
+    name: "Validation of Synapse artifacts - Test"
+    with:
+      environment: "tst"
+      target_synapse_workspace_name: "data-auto-tst-synapse001"
+    secrets:
+      azure_subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      azure_resource_group_name: ${{ secrets.AZURE_RESOURCE_GROUP_NAME }}
+      client_id: ${{ secrets.CLIENT_ID }}
+      client_secret: ${{ secrets.CLIENT_SECRET }}
+
+  # validation_prod:
+  #   uses: ./.github/workflows/synapseValidationTemplate.yml
+  #   name: "Validation of Synapse artifacts - Prod"
+  #   with:
+  #     environment: "prd"
+  #     target_synapse_workspace_name: ""
+  #   secrets:
+  #     azure_subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+  #     azure_resource_group_name: ${{ secrets.AZURE_RESOURCE_GROUP_NAME }}
+  #     client_id: ${{ secrets.CLIENT_ID }}
+  #     client_secret: ${{ secrets.CLIENT_SECRET }}
+
+  deployment_test:
+    uses: ./.github/workflows/synapseDeploymentTemplate.yml
+    name: "Deployment of Synapse artifacts - Test"
+    needs: [validation_dev, validation_test]
+    if: github.event_name == 'push'
+    with:
+      environment: "tst"
+      source_synapse_workspace_name: "data-auto-dev-synapse001"
+      target_synapse_workspace_name: "data-auto-tst-synapse001"
+    secrets:
+      azure_subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      azure_resource_group_name: ${{ secrets.AZURE_RESOURCE_GROUP_NAME }}
+      client_id: ${{ secrets.CLIENT_ID }}
+      client_secret: ${{ secrets.CLIENT_SECRET }}
+
+  deployment_prod:
+    uses: ./.github/workflows/synapseDeploymentTemplate.yml
+    name: "Deployment of Synapse artifacts - Prod"
+    needs: [deployment_test]
+    if: github.event_name == 'release'
+    with:
+      environment: "prd"
+      source_synapse_workspace_name: "data-auto-dev-synapse001"
+      target_synapse_workspace_name: ""
+    secrets:
+      azure_subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      azure_resource_group_name: ${{ secrets.AZURE_RESOURCE_GROUP_NAME }}
+      client_id: ${{ secrets.CLIENT_ID }}
+      client_secret: ${{ secrets.CLIENT_SECRET }}
