@@ -39,9 +39,9 @@ jobs:
         id: checkout_repository
         uses: actions/checkout@v2
 
-      # Deploy Synapse Artifacts
-      - name: Deploy Synapse Artifacts
-        id: deployment_synapse
+      # Validate Synapse Artifacts
+      - name: Validate Synapse Artifacts
+        id: validation_synapse
         uses: azure/synapse-workspace-deployment@V1.7.0
         with:
           TargetWorkspaceName: ${{ inputs.target_synapse_workspace_name }}
