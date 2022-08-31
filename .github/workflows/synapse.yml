@@ -25,7 +25,7 @@ jobs:
     name: "Synapse Processing - Dev"
     with:
       environment: "dev"
-      target_synapse_workspace_name: "data-auto-dev-synapse001"
+      synapse_workspace_name: "data-auto-dev-synapse001"
     secrets:
       azure_subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
