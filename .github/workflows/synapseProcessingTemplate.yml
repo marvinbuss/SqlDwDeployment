@@ -16,6 +16,9 @@ on:
       azure_subscription_id:
         required: true
         description: "Specifies the subscription id of the deployment."
+      azure_credentials:
+        required: true
+        description: "Specifies the azure credentials used for authentication."
 
 jobs:
   deployment:

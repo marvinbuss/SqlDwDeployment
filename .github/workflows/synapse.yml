@@ -28,6 +28,7 @@ jobs:
       synapse_workspace_name: "data-auto-dev-synapse001"
     secrets:
       azure_subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
 
   validation_dev:
     uses: ./.github/workflows/synapseValidationTemplate.yml
