@@ -1,0 +1,63 @@
+name: Synapse Validation Template
+
+on:
+  workflow_call:
+    inputs:
+      environment:
+        required: true
+        type: string
+        default: "dev"
+        description: "Specifies the environment of the deployment."
+      synapse_workspace_name:
+        required: true
+        type: string
+        description: "Specifies the name of the synapse workspace."
+    secrets:
+      azure_subscription_id:
+        required: true
+        description: "Specifies the subscription id of the deployment."
+
+jobs:
+  deployment:
+    name: Deployment to ${{ inputs.environment }}
+    runs-on: ubuntu-latest
+    continue-on-error: false
+    environment: ${{ inputs.environment }}
+
+    steps:
+      # Check Out Repository
+      - name: Check Out Repository
+        id: checkout_repository
+        uses: actions/checkout@v2
+
+      # Login to Azure
+      - name: Azure Login
+        id: azure_login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.azure_credentials }}
+          enable-AzPSSession: true
+      
+      # Synapse Pre-Processing Step
+      - name: Synapse Pre-Processing Step
+        id: synapse_preprocessing
+        run: |
+          & "${{ github.workspace }}/code/scripts/SynapseRolloutPreprocessing.ps1" `
+            -SubscriptionId ${{ inputs.azure_subscription_id }} `
+            -SynapseWorkspaceName ${{ inputs.synapse_workspace_name }} `
+            -CheckPastDaysOfPipelineRuns 1
+
+      # # Synapse Pre-Processing Step
+      # - name: Synapse Pre-Processing Step
+      #   id: synapse_preprocessing
+      #   run: |
+      #     ./code/scripts/SynapseRolloutPostprocessing.ps1
+
+      # Log out from Azure
+      - name: Log out from Azure
+        id: azure_logout
+        uses: azure/cli@v1
+        with:
+          azcliversion: "agentazcliversion"
+          inlineScript: |
+            az logout
