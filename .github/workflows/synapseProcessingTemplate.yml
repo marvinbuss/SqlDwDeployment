@@ -45,11 +45,11 @@ jobs:
       - name: Synapse Pre-Processing Step
         id: synapse_preprocessing
         run: |
-          pwsh "${{ github.workspace }}/code/scripts/SynapseRolloutPreprocessing.ps1" `
-            -SubscriptionId ${{ inputs.azure_subscription_id }} `
-            -SynapseWorkspaceName ${{ inputs.synapse_workspace_name }} `
+          pwsh "./code/scripts/SynapseRolloutPreprocessing.ps1" \
+            -SubscriptionId ${{ inputs.azure_subscription_id }} \
+            -SynapseWorkspaceName ${{ inputs.synapse_workspace_name }} \
             -CheckPastDaysOfPipelineRuns 1
-        shell: pwsh
+        # shell: pwsh
 
       # # Synapse Pre-Processing Step
       # - name: Synapse Pre-Processing Step
