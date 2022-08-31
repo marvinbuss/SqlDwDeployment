@@ -40,34 +40,42 @@ catch {
 # Get Synapse Triggers
 $triggers = Get-AzSynapseTrigger `
     -WorkspaceName $SynapseWorkspaceName
+$triggerNames = @()
 
 # Stop all triggers
 foreach ($trigger in $triggers) {
     Write-Verbose $trigger.Name
-    Write-Information "Stopping Trigger '$($trigger.Name)'" -InformationAction Continue
 
-    # Both options are currently failing: https://github.com/Azure/azure-powershell/issues/16368
-    # $success = Stop-AzSynapseTrigger `
-    #     -WorkspaceName $SynapseWorkspaceName `
-    #     -Name $trigger.Name -Verbose -AsJob
-    # $trigger | Stop-AzSynapseTrigger
+    if ($trigger.Properties.RuntimeState.Value -eq "Started") {
 
-    # Workaround: Call API Endpoint manually
-    $token = Get-AzAccessToken -ResourceUrl "https://dev.azuresynapse.net"
-    $authHeader = @{
-        'Content-Type'  = 'application/octet-stream'
-        'Authorization' = 'Bearer ' + $token.Token
-    }
-    $response = Invoke-WebRequest `
-        -Method POST `
-        -Uri "https://$($SynapseWorkspaceName).dev.azuresynapse.net/triggers/$($trigger.Name)/stop?api-version=2020-12-01" `
-        -Headers $authHeader
-    
-    if ($response.StatusCode -lt 400 && $response.StatusCode -ge 200) {
-        Write-Information "Stopped Trigger '$($trigger.Name)' successfully." -InformationAction Continue
-    }
-    else {
-        Write-Error "Failed to stop trigger '$($trigger.Name)'."
+        Write-Information "Stopping Trigger '$($trigger.Name)'" -InformationAction Continue
+
+        # Both options are currently failing: https://github.com/Azure/azure-powershell/issues/16368
+        # $success = Stop-AzSynapseTrigger `
+        #     -WorkspaceName $SynapseWorkspaceName `
+        #     -Name $trigger.Name -Verbose -AsJob
+        # $trigger | Stop-AzSynapseTrigger
+
+        # Workaround: Call API Endpoint manually
+        $token = Get-AzAccessToken -ResourceUrl "https://dev.azuresynapse.net"
+        $authHeader = @{
+            'Content-Type'  = 'application/octet-stream'
+            'Authorization' = 'Bearer ' + $token.Token
+        }
+        $response = Invoke-WebRequest `
+            -Method POST `
+            -Uri "https://$($SynapseWorkspaceName).dev.azuresynapse.net/triggers/$($trigger.Name)/stop?api-version=2020-12-01" `
+            -Headers $authHeader
+
+        if ($response.StatusCode -lt 400 && $response.StatusCode -ge 200) {
+            Write-Information "Stopped Trigger '$($trigger.Name)' successfully." -InformationAction Continue
+        }
+        else {
+            Write-Error "Failed to stop trigger '$($trigger.Name)'."
+        }
+
+        # Append to List of Trigger names
+        $triggerNames.Add($trigger.Name)
     }
 }
 
@@ -86,7 +94,7 @@ foreach ($pipeline in $pipelines) {
         -PipelineName $pipeline.Name `
         -RunStartedAfter $timestamp.AddDays(-$CheckPastDaysOfPipelineRuns) `
         -RunStartedBefore $timestamp
-    
+
     foreach ($pipelineRun in $pipelineRuns) {
         if ($pipelineRun.Status -eq "InProgress") {
             Write-Information "Pipeline with Name '$($pipeline.Name)' is still in progress (Run ID: '$($pipelineRun.RunId)'). Waiting for pipeline to complete run." -InformationAction Continue
@@ -109,3 +117,4 @@ foreach ($pipeline in $pipelines) {
 }
 
 Write-Information "Successfully prepared Azure Synapse Workspace '$($SynapseWorkspaceName)' in Azure subscription '$($SubscriptionId)' for rollout of changes." -InformationAction Continue
+Write-Output "::set-output name=triggerNames::$($triggerNames))"
