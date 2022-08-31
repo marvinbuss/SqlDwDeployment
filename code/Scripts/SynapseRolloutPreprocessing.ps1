@@ -47,7 +47,7 @@ foreach ($trigger in $triggers) {
     Write-Verbose $trigger.Name
 
     if ($trigger.Properties.RuntimeState.Value -eq "Started") {
-        
+
         Write-Information "Stopping Trigger '$($trigger.Name)'" -InformationAction Continue
 
         # Both options are currently failing: https://github.com/Azure/azure-powershell/issues/16368
@@ -66,7 +66,7 @@ foreach ($trigger in $triggers) {
             -Method POST `
             -Uri "https://$($SynapseWorkspaceName).dev.azuresynapse.net/triggers/$($trigger.Name)/stop?api-version=2020-12-01" `
             -Headers $authHeader
-        
+
         if ($response.StatusCode -lt 400 && $response.StatusCode -ge 200) {
             Write-Information "Stopped Trigger '$($trigger.Name)' successfully." -InformationAction Continue
         }
@@ -94,7 +94,7 @@ foreach ($pipeline in $pipelines) {
         -PipelineName $pipeline.Name `
         -RunStartedAfter $timestamp.AddDays(-$CheckPastDaysOfPipelineRuns) `
         -RunStartedBefore $timestamp
-    
+
     foreach ($pipelineRun in $pipelineRuns) {
         if ($pipelineRun.Status -eq "InProgress") {
             Write-Information "Pipeline with Name '$($pipeline.Name)' is still in progress (Run ID: '$($pipelineRun.RunId)'). Waiting for pipeline to complete run." -InformationAction Continue
