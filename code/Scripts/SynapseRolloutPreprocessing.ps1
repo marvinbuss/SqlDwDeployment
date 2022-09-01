@@ -19,6 +19,7 @@ param (
 
 # Set Azure Context
 try {
+    Write-Information "Setting Azure context set to subscription ID '$($SubscriptionId)'." -InformationAction Continue
     $context = Set-AzContext `
         -Subscription $SubscriptionId
     Write-Information "Azure context set to subscription ID '$($context.Subscription.Id)'." -InformationAction Continue
