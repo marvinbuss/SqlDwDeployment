@@ -44,7 +44,7 @@ jobs:
       # Synapse Pre-Processing Step
       - name: Synapse Pre-Processing Step
         id: synapse_preprocessing
-        # shell: pwsh
+      #  shell: pwsh
         run: |
           pwsh -File ./code/scripts/SynapseRolloutPreprocessing.ps1
       #      -SubscriptionId ${{ inputs.azure_subscription_id }} \
