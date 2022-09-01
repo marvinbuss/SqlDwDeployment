@@ -45,29 +45,37 @@ jobs:
       - name: Synapse Pre-Processing Step
         id: synapse_preprocessing
         run: |
-          ./SynapseRolloutPreprocessing.ps1
+          ./SynapseRolloutPreprocessing.ps1 \
+            -SubscriptionId "${{ inputs.azure_subscription_id }}" \
+            -SynapseWorkspaceName "${{ inputs.synapse_workspace_name }}" \
+            -CheckPastDaysOfPipelineRuns 1
         shell: pwsh
         working-directory: ${{ github.workspace }}/code/Scripts
       
-      # Synapse Pre-Processing Step
-      - name: Synapse Pre-Processing Step Other
-        id: synapse_preprocessing_other
-        uses: azure/powershell@v1
-        with:
-          azPSVersion: latest
-          errorActionPreference: Stop
-          failOnStandardError: false
-          inlineScript: |
-            & "${{ github.workspace }}/code/Scripts/SynapseRolloutPreprocessing.ps1" `
-              -SubscriptionId "${{ inputs.azure_subscription_id }}" `
-              -SynapseWorkspaceName "${{ inputs.synapse_workspace_name }}" `
-              -CheckPastDaysOfPipelineRuns 1
-      
       # # Synapse Pre-Processing Step
-      # - name: Synapse Pre-Processing Step
-      #   id: synapse_preprocessing
-      #   run: |
-      #     ./code/scripts/SynapseRolloutPostprocessing.ps1
+      # - name: Synapse Pre-Processing Step Other
+      #   id: synapse_preprocessing_other
+      #   uses: azure/powershell@v1
+      #   with:
+      #     azPSVersion: latest
+      #     errorActionPreference: Stop
+      #     failOnStandardError: false
+      #     inlineScript: |
+      #       & "${{ github.workspace }}/code/Scripts/SynapseRolloutPreprocessing.ps1" `
+      #         -SubscriptionId "${{ inputs.azure_subscription_id }}" `
+      #         -SynapseWorkspaceName "${{ inputs.synapse_workspace_name }}" `
+      #         -CheckPastDaysOfPipelineRuns 1
+      
+      # Synapse Pre-Processing Step
+      - name: Synapse Pre-Processing Step
+        id: synapse_preprocessing
+        run: |
+          ./SynapseRolloutPostprocessing.ps1 \
+            -SubscriptionId "${{ inputs.azure_subscription_id }}" \
+            -SynapseWorkspaceName "${{ inputs.synapse_workspace_name }}" \
+            -TriggerNames "${{ steps.synapse_preprocessing.outputs.triggerNames }}"
+        shell: pwsh
+        working-directory: ${{ github.workspace }}/code/Scripts
 
       # Log out from Azure
       - name: Log out from Azure
