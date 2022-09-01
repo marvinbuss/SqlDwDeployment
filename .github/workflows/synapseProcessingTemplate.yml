@@ -44,6 +44,13 @@ jobs:
       # Synapse Pre-Processing Step
       - name: Synapse Pre-Processing Step
         id: synapse_preprocessing
+        shell: pwsh
+        run: |
+          ./SynapseRolloutPostprocessing.ps1 -Path ${{ github.workspace }}/code/scripts/
+      
+      # Synapse Pre-Processing Step
+      - name: Synapse Pre-Processing Step
+        id: synapse_preprocessing
         uses: azure/powershell@v1
         with:
           azPSVersion: latest
