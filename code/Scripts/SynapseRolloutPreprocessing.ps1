@@ -48,7 +48,6 @@ foreach ($trigger in $triggers) {
     Write-Verbose $trigger.Name
 
     if ($trigger.Properties.RuntimeState.Value -eq "Started") {
-
         Write-Output "Stopping Trigger '$($trigger.Name)'"
 
         # Both options are currently failing: https://github.com/Azure/azure-powershell/issues/16368
