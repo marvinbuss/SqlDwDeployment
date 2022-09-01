@@ -118,4 +118,4 @@ foreach ($pipeline in $pipelines) {
 }
 
 Write-Information "Successfully prepared Azure Synapse Workspace '$($SynapseWorkspaceName)' in Azure subscription '$($SubscriptionId)' for rollout of changes." -InformationAction Continue
-Write-Output "::set-output name=triggerNames::$($triggerNames))"
+Write-Output "::set-output name=triggerNames::$($triggerNames)"
