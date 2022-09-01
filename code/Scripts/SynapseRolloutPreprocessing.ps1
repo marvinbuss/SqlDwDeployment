@@ -19,10 +19,10 @@ param (
 
 # Set Azure Context
 try {
-    Write-Output "Setting Azure context set to subscription ID '$($SubscriptionId)'." # -InformationAction Continue
+    Write-Output "Setting Azure context set to subscription ID '$($SubscriptionId)'."
     $context = Set-AzContext `
         -Subscription $SubscriptionId
-    Write-Output "Azure context set to subscription ID '$($context.Subscription.Id)'." # -InformationAction Continue
+    Write-Output "Azure context set to subscription ID '$($context.Subscription.Id)'."
 }
 catch {
     Write-Error "Setting Azure Subscription Context failed. Please make sure you provided the correct Azure Subscription ID and that your Service Principal has access."
@@ -32,7 +32,7 @@ catch {
 try {
     $workspace = Get-AzSynapseWorkspace `
         -Name $SynapseWorkspaceName
-    Write-Information "Workspace with ID '$($workspace.Id)' found." -InformationAction Continue
+    Write-Output "Workspace with ID '$($workspace.Id)' found."
 }
 catch {
     Write-Error "Getting Azure Synapse Workspace failed. Please make sure you provided the correct Azure Synapse Workspace Name and that your Service Principal has access."
@@ -49,7 +49,7 @@ foreach ($trigger in $triggers) {
 
     if ($trigger.Properties.RuntimeState.Value -eq "Started") {
 
-        Write-Information "Stopping Trigger '$($trigger.Name)'" -InformationAction Continue
+        Write-Output "Stopping Trigger '$($trigger.Name)'"
 
         # Both options are currently failing: https://github.com/Azure/azure-powershell/issues/16368
         # $success = Stop-AzSynapseTrigger `
@@ -69,7 +69,7 @@ foreach ($trigger in $triggers) {
             -Headers $authHeader
 
         if ($response.StatusCode -lt 400 && $response.StatusCode -ge 200) {
-            Write-Information "Stopped Trigger '$($trigger.Name)' successfully." -InformationAction Continue
+            Write-Output "Stopped Trigger '$($trigger.Name)' successfully."
         }
         else {
             Write-Error "Failed to stop trigger '$($trigger.Name)'."
@@ -89,7 +89,7 @@ $pipelines = Get-AzSynapsePipeline `
 
 # Get Pipeline Runs
 foreach ($pipeline in $pipelines) {
-    Write-Information "Checking runs for pipeline '$($pipeline.Name)'." -InformationAction Continue
+    Write-Output "Checking runs for pipeline '$($pipeline.Name)'."
     $pipelineRuns = Get-AzSynapsePipelineRun `
         -WorkspaceName $SynapseWorkspaceName `
         -PipelineName $pipeline.Name `
@@ -98,7 +98,7 @@ foreach ($pipeline in $pipelines) {
 
     foreach ($pipelineRun in $pipelineRuns) {
         if ($pipelineRun.Status -eq "InProgress") {
-            Write-Information "Pipeline with Name '$($pipeline.Name)' is still in progress (Run ID: '$($pipelineRun.RunId)'). Waiting for pipeline to complete run." -InformationAction Continue
+            Write-Output "Pipeline with Name '$($pipeline.Name)' is still in progress (Run ID: '$($pipelineRun.RunId)'). Waiting for pipeline to complete run."
 
             do {
                 # Sleep for 1 second
@@ -112,10 +112,10 @@ foreach ($pipeline in $pipelines) {
                 $pipelineRun.Status -eq "InProgress"
             )
 
-            Write-Information "Pipeline with Name '$($pipeline.Name)' completed with status '$($pipelineRun.Status)' (Run ID: '$($pipelineRun.RunId)')." -InformationAction Continue
+            Write-Output "Pipeline with Name '$($pipeline.Name)' completed with status '$($pipelineRun.Status)' (Run ID: '$($pipelineRun.RunId)')."
         }
     }
 }
 
-Write-Information "Successfully prepared Azure Synapse Workspace '$($SynapseWorkspaceName)' in Azure subscription '$($SubscriptionId)' for rollout of changes." -InformationAction Continue
+Write-Output "Successfully prepared Azure Synapse Workspace '$($SynapseWorkspaceName)' in Azure subscription '$($SubscriptionId)' for rollout of changes."
 Write-Output "::set-output name=triggerNames::$($triggerNames)"
