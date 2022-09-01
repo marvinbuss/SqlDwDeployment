@@ -18,15 +18,15 @@ param (
 )
 
 # Set Azure Context
-# try {
-#     Write-Output "Setting Azure context set to subscription ID '$($SubscriptionId)'." # -InformationAction Continue
-#     $context = Set-AzContext `
-#         -Subscription $SubscriptionId
-#     Write-Output "Azure context set to subscription ID '$($context.Subscription.Id)'." # -InformationAction Continue
-# }
-# catch {
-#     Write-Error "Setting Azure Subscription Context failed. Please make sure you provided the correct Azure Subscription ID and that your Service Principal has access."
-# }
+try {
+    Write-Output "Setting Azure context set to subscription ID '$($SubscriptionId)'." # -InformationAction Continue
+    $context = Set-AzContext `
+        -Subscription $SubscriptionId
+    Write-Output "Azure context set to subscription ID '$($context.Subscription.Id)'." # -InformationAction Continue
+}
+catch {
+    Write-Error "Setting Azure Subscription Context failed. Please make sure you provided the correct Azure Subscription ID and that your Service Principal has access."
+}
 
 # Get Synapse Workspace
 try {
