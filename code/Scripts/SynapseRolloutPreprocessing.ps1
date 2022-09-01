@@ -45,9 +45,9 @@ $triggerNames = @()
 
 # Stop all triggers
 foreach ($trigger in $triggers) {
-    Write-Output "Checking Trigger '$($trigger.Name)' with status $($trigger.Properties.RuntimeState.Value)"
+    Write-Output "Checking Trigger '$($trigger.Name)' with status $($trigger.Properties.RuntimeState)"
 
-    if ($trigger.Properties.RuntimeState.Value -eq "Started") {
+    if ($trigger.Properties.RuntimeState -eq "Started") {
         Write-Output "Stopping Trigger '$($trigger.Name)'"
 
         # Both options are currently failing: https://github.com/Azure/azure-powershell/issues/16368
