@@ -12,7 +12,6 @@ param (
     $SynapseWorkspaceName,
 
     [Parameter(Mandatory = $true)]
-    [ValidateNotNullOrEmpty()]
     [string[]]
     $TriggerNames = @()
 )

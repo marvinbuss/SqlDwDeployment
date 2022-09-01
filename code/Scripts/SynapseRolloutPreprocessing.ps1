@@ -45,7 +45,7 @@ $triggerNames = @()
 
 # Stop all triggers
 foreach ($trigger in $triggers) {
-    Write-Verbose $trigger.Name
+    Write-Output "Checking Trigger '$($trigger.Name)' with status $($trigger.Properties.RuntimeState.Value)"
 
     if ($trigger.Properties.RuntimeState.Value -eq "Started") {
         Write-Output "Stopping Trigger '$($trigger.Name)'"
