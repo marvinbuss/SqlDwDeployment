@@ -79,7 +79,8 @@ foreach ($trigger in $triggers) {
     }
 }
 # Print stopped trigger names
-Write-Output "Stopped Triggers: $($triggerNames)"
+$triggerNamesOutput =  $triggerNames -join ","
+Write-Output "Stopped Triggers: $($triggerNamesOutput)"
 
 # Get Timestamp
 $timestamp = Get-Date -AsUTC
@@ -119,4 +120,4 @@ foreach ($pipeline in $pipelines) {
 }
 
 Write-Output "Successfully prepared Azure Synapse Workspace '$($SynapseWorkspaceName)' in Azure subscription '$($SubscriptionId)' for rollout of changes."
-Write-Output "::set-output name=triggerNames::$($triggerNames)"
+Write-Output "::set-output name=triggerNames::$($triggerNamesOutput)"
