@@ -41,6 +41,15 @@ jobs:
           creds: ${{ secrets.azure_credentials }}
           enable-AzPSSession: true
       
+      # Install Required Modules
+      - name: Install Required Modules
+        id: install_modules
+        run: |
+          Set-PSRepository PSGallery -InstallationPolicy Trusted
+          Install-Module Az -ErrorAction Stop
+        shell: pwsh
+        working-directory: ${{ github.workspace }}/code/Scripts
+      
       # Synapse Pre-Processing Step
       - name: Synapse Pre-Processing Step
         id: synapse_preprocessing
