@@ -48,7 +48,8 @@ jobs:
           ./SynapseRolloutPreprocessing.ps1 `
             -SubscriptionId "${{ secrets.azure_subscription_id }}" `
             -SynapseWorkspaceName "${{ inputs.synapse_workspace_name }}" `
-            -CheckPastDaysOfPipelineRuns 1
+            -CheckPastDaysOfPipelineRuns 1 `
+            -Verbose
         shell: pwsh
         working-directory: ${{ github.workspace }}/code/Scripts
       
