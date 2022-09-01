@@ -46,7 +46,7 @@ jobs:
         id: synapse_preprocessing
         shell: pwsh
         run: |
-          ./SynapseRolloutPostprocessing.ps1 -Path ${{ github.workspace }}/code/scripts/
+          ./SynapseRolloutPostprocessing.ps1 -Path ${{ github.workspace }}/code/Scripts
       
       # Synapse Pre-Processing Step
       - name: Synapse Pre-Processing Step Other
@@ -57,7 +57,7 @@ jobs:
           errorActionPreference: Stop
           failOnStandardError: false
           inlineScript: |
-            & "${{ github.workspace }}/code/scripts/SynapseRolloutPreprocessing.ps1" `
+            & "${{ github.workspace }}/code/Scripts/SynapseRolloutPreprocessing.ps1" `
               -SubscriptionId "${{ inputs.azure_subscription_id }}" `
               -SynapseWorkspaceName "${{ inputs.synapse_workspace_name }}" `
               -CheckPastDaysOfPipelineRuns 1
