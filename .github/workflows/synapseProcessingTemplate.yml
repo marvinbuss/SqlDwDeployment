@@ -45,9 +45,9 @@ jobs:
       - name: Synapse Pre-Processing Step
         id: synapse_preprocessing
         run: |
-          ./SynapseRolloutPostprocessing.ps1
+          ./SynapseRolloutPreprocessing.ps1
         shell: pwsh
-        working-directory: ${{ github.workspace }}/code/scripts
+        working-directory: ${{ github.workspace }}/code/Scripts
       
       # Synapse Pre-Processing Step
       - name: Synapse Pre-Processing Step Other
