@@ -66,9 +66,9 @@ jobs:
       #         -SynapseWorkspaceName "${{ inputs.synapse_workspace_name }}" `
       #         -CheckPastDaysOfPipelineRuns 1
       
-      # Synapse Pre-Processing Step
-      - name: Synapse Pre-Processing Step
-        id: synapse_preprocessing
+      # Synapse Post-Processing Step
+      - name: Synapse Post-Processing Step
+        id: synapse_postprocessing
         run: |
           ./SynapseRolloutPostprocessing.ps1 \
             -SubscriptionId "${{ inputs.azure_subscription_id }}" \
