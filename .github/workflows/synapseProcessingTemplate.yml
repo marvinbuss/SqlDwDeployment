@@ -45,6 +45,9 @@ jobs:
       - name: Synapse Pre-Processing Step
         id: synapse_preprocessing
         run: |
+          $context = Set-AzContext `
+            -Subscription ${{ secrets.azure_subscription_id }}
+          
           $triggers = Get-AzSynapseTrigger `
             -WorkspaceName ${{ inputs.synapse_workspace_name }}
           
