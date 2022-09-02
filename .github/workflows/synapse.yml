@@ -20,16 +20,6 @@ on:
       - ".github/workflows/**"
 
 jobs:
-  synapse_processing:
-    uses: ./.github/workflows/synapseProcessingTemplate.yml
-    name: "Synapse Processing - Dev"
-    with:
-      environment: "dev"
-      synapse_workspace_name: "data-auto-dev-synapse001"
-    secrets:
-      azure_subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-      azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
-
   validation_dev:
     uses: ./.github/workflows/synapseValidationTemplate.yml
     name: "Validation of Synapse artifacts - Dev"
