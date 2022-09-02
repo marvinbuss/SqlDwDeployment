@@ -50,34 +50,41 @@ catch {
 foreach ($triggerName in $TriggerNamesArray) {
     # Get Synapse Trigger
     Write-Output "Get Trigger '$($triggerName)'"
-    $trigger = Get-AzSynapseTrigger `
+
+    try {
+        $trigger = Get-AzSynapseTrigger `
         -WorkspaceName $SynapseWorkspaceName `
         -Name $triggerName
 
-    # # Both options are currently failing: https://github.com/Azure/azure-powershell/issues/16368
-    # # Start Synapse Trigger
-    # Write-Output "Start Trigger '$($trigger.Name)'"
-    # Start-AzSynapseTrigger `
-    #     -WorkspaceName $SynapseWorkspaceName `
-    #     -Name $trigger.Name
+        # # Both options are currently failing: https://github.com/Azure/azure-powershell/issues/16368
+        # # Start Synapse Trigger
+        # Write-Output "Start Trigger '$($trigger.Name)'"
+        # Start-AzSynapseTrigger `
+        #     -WorkspaceName $SynapseWorkspaceName `
+        #     -Name $trigger.Name
 
-    # Workaround: Call API Endpoint manually
-    $token = Get-AzAccessToken -ResourceUrl "https://dev.azuresynapse.net"
-    $authHeader = @{
-        'Content-Type'  = 'application/octet-stream'
-        'Authorization' = 'Bearer ' + $token.Token
-    }
-    $response = Invoke-WebRequest `
-        -Method POST `
-        -Uri "https://$($SynapseWorkspaceName).dev.azuresynapse.net/triggers/$($trigger.Name)/start?api-version=2020-12-01" `
-        -Headers $authHeader
+        # Workaround: Call API Endpoint manually
+        $token = Get-AzAccessToken -ResourceUrl "https://dev.azuresynapse.net"
+        $authHeader = @{
+            'Content-Type'  = 'application/octet-stream'
+            'Authorization' = 'Bearer ' + $token.Token
+        }
+        $response = Invoke-WebRequest `
+            -Method POST `
+            -Uri "https://$($SynapseWorkspaceName).dev.azuresynapse.net/triggers/$($trigger.Name)/start?api-version=2020-12-01" `
+            -Headers $authHeader
 
-    if ($response.StatusCode -lt 400 && $response.StatusCode -ge 200) {
-        Write-Output "Started Trigger '$($trigger.Name)' successfully."
+        if ($response.StatusCode -lt 400 && $response.StatusCode -ge 200) {
+            Write-Output "Started Trigger '$($trigger.Name)' successfully."
+        }
+        else {
+            Write-Error "Failed to start trigger '$($trigger.Name)'."
+        }
     }
-    else {
-        Write-Error "Failed to start trigger '$($trigger.Name)'."
+    catch {
+        Write-Error "Failed to get trigger '$($trigger.Name)'."
     }
+    
 }
 
 Write-Output "Successfully ran post-processing for Azure Synapse Workspace '$($SynapseWorkspaceName)' in Azure subscription '$($SubscriptionId)' after rollout of changes."
