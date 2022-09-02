@@ -47,6 +47,34 @@ jobs:
         id: checkout_repository
         uses: actions/checkout@v2
 
+      # Login to Azure
+      - name: Azure Login
+        id: azure_login
+        uses: azure/login@v1
+        with:
+          creds: '{"clientId":"${{ secrets.client_id }}","clientSecret":"${{ secrets.client_secret }}","subscriptionId":"${{ secrets.azure_subscription_id }}","tenantId":"${{ secrets.tenant_id }}"}'
+          enable-AzPSSession: true
+      
+      # Install Required Modules
+      - name: Install Required Modules
+        id: install_modules
+        run: |
+          Set-PSRepository PSGallery -InstallationPolicy Trusted
+          Install-Module Az -ErrorAction Stop
+        shell: pwsh
+        working-directory: ${{ github.workspace }}/code/Scripts
+      
+      # Synapse Pre-Processing Step
+      - name: Synapse Pre-Processing Step
+        id: synapse_preprocessing
+        run: |
+          ./SynapseRolloutPreprocessing.ps1 `
+            -SubscriptionId "${{ secrets.azure_subscription_id }}" `
+            -SynapseWorkspaceName "${{ inputs.synapse_workspace_name }}" `
+            -CheckPastDaysOfPipelineRuns 1
+        shell: pwsh
+        working-directory: ${{ github.workspace }}/code/Scripts
+      
       # Deploy Synapse Artifacts
       - name: Deploy Synapse Artifacts
         id: deployment_synapse
@@ -67,3 +95,23 @@ jobs:
           clientId: ${{ secrets.client_id }}
           clientSecret: ${{ secrets.client_secret }}
           managedIdentity: false
+
+      # Synapse Post-Processing Step
+      - name: Synapse Post-Processing Step
+        id: synapse_postprocessing
+        run: |
+          ./SynapseRolloutPostprocessing.ps1 `
+            -SubscriptionId "${{ secrets.azure_subscription_id }}" `
+            -SynapseWorkspaceName "${{ inputs.synapse_workspace_name }}" `
+            -TriggerNames "${{ steps.synapse_preprocessing.outputs.triggerNames }}"
+        shell: pwsh
+        working-directory: ${{ github.workspace }}/code/Scripts
+
+      # Log out from Azure
+      - name: Log out from Azure
+        id: azure_logout
+        uses: azure/cli@v1
+        with:
+          azcliversion: "agentazcliversion"
+          inlineScript: |
+            az logout
