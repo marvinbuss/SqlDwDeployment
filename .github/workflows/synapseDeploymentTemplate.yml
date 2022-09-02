@@ -70,7 +70,7 @@ jobs:
         run: |
           ./SynapseRolloutPreprocessing.ps1 `
             -SubscriptionId "${{ secrets.azure_subscription_id }}" `
-            -SynapseWorkspaceName "${{ inputs.synapse_workspace_name }}" `
+            -SynapseWorkspaceName "${{ inputs.target_synapse_workspace_name }}" `
             -CheckPastDaysOfPipelineRuns 1
         shell: pwsh
         working-directory: ${{ github.workspace }}/code/Scripts
@@ -102,7 +102,7 @@ jobs:
         run: |
           ./SynapseRolloutPostprocessing.ps1 `
             -SubscriptionId "${{ secrets.azure_subscription_id }}" `
-            -SynapseWorkspaceName "${{ inputs.synapse_workspace_name }}" `
+            -SynapseWorkspaceName "${{ inputs.target_synapse_workspace_name }}" `
             -TriggerNames "${{ steps.synapse_preprocessing.outputs.triggerNames }}"
         shell: pwsh
         working-directory: ${{ github.workspace }}/code/Scripts
