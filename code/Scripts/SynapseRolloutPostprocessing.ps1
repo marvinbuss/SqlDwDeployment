@@ -30,7 +30,7 @@ else {
 try {
     $context = Set-AzContext `
         -Subscription $SubscriptionId
-        Write-Output "Azure context set to subscription ID '$($context.Subscription.Id)'."
+    Write-Output "Azure context set to subscription ID '$($context.Subscription.Id)'."
 }
 catch {
     Write-Error "Setting Azure Subscription Context failed. Please make sure you provided the correct Azure Subscription ID and that your Service Principal has access."
@@ -53,8 +53,8 @@ foreach ($triggerName in $TriggerNamesArray) {
 
     try {
         $trigger = Get-AzSynapseTrigger `
-        -WorkspaceName $SynapseWorkspaceName `
-        -Name $triggerName
+            -WorkspaceName $SynapseWorkspaceName `
+            -Name $triggerName
 
         # # Both options are currently failing: https://github.com/Azure/azure-powershell/issues/16368
         # # Start Synapse Trigger
