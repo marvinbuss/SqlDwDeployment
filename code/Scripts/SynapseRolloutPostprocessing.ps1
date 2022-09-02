@@ -11,7 +11,7 @@ param (
     [string]
     $SynapseWorkspaceName,
 
-    [Parameter(Mandatory = $true)]
+    [Parameter(Mandatory = $false)]
     [string]
     $TriggerNames = ""
 )
