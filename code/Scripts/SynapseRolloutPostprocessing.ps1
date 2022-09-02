@@ -84,7 +84,6 @@ foreach ($triggerName in $TriggerNamesArray) {
     catch {
         Write-Error "Failed to get trigger '$($trigger.Name)'."
     }
-    
 }
 
 Write-Output "Successfully ran post-processing for Azure Synapse Workspace '$($SynapseWorkspaceName)' in Azure subscription '$($SubscriptionId)' after rollout of changes."
