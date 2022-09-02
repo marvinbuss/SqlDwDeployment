@@ -96,16 +96,16 @@ jobs:
           clientSecret: ${{ secrets.client_secret }}
           managedIdentity: false
 
-      # Synapse Post-Processing Step
-      - name: Synapse Post-Processing Step
-        id: synapse_postprocessing
-        run: |
-          ./SynapseRolloutPostprocessing.ps1 `
-            -SubscriptionId "${{ secrets.azure_subscription_id }}" `
-            -SynapseWorkspaceName "${{ inputs.target_synapse_workspace_name }}" `
-            -TriggerNames "${{ steps.synapse_preprocessing.outputs.triggerNames }}"
-        shell: pwsh
-        working-directory: ${{ github.workspace }}/code/Scripts
+      # # Synapse Post-Processing Step
+      # - name: Synapse Post-Processing Step
+      #   id: synapse_postprocessing
+      #   run: |
+      #     ./SynapseRolloutPostprocessing.ps1 `
+      #       -SubscriptionId "${{ secrets.azure_subscription_id }}" `
+      #       -SynapseWorkspaceName "${{ inputs.target_synapse_workspace_name }}" `
+      #       -TriggerNames "${{ steps.synapse_preprocessing.outputs.triggerNames }}"
+      #   shell: pwsh
+      #   working-directory: ${{ github.workspace }}/code/Scripts
 
       # Log out from Azure
       - name: Log out from Azure
