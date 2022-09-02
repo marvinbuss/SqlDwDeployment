@@ -45,7 +45,7 @@ jobs:
         id: dotnet_build
         run: dotnet build /p:NetCoreBuild=true --configuration Release --output ./${{ env.BUILD_PATH }}
         working-directory: ${{ inputs.working_directory }}
-      
+
       # Upload SQL Package Artifacts
       - name: Upload Build Artifacts
         id: build_artifacts

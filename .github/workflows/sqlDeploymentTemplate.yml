@@ -52,7 +52,7 @@ jobs:
         with:
           name: ${{ inputs.build_artifact_name }}
           path: ${{ github.workspace }}/${{ inputs.working_directory }}/${{ env.BUILD_PATH }}
-      
+
       # Login to Azure
       - name: Azure Login
         id: azure_login

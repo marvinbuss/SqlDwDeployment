@@ -24,7 +24,7 @@ jobs:
     with:
       build_artifact_name: buildDotNet
       working_directory: "code/MyDotNetSqlProject/MyDotNetSqlProject"
-  
+
   sql_report_dev:
     uses: ./.github/workflows/sqlReportTemplate.yml
     name: "Report SQL Changes"
@@ -40,7 +40,7 @@ jobs:
       azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
       target_server_name: ${{ secrets.SQL_SERVER_NAME }}
       target_database_name: ${{ secrets.SQL_DATABASE_NAME }}
-  
+
   sql_deploy_dev:
     uses: ./.github/workflows/sqlDeploymentTemplate.yml
     name: "Deploy SQL Changes"

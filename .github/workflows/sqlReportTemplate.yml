@@ -58,7 +58,7 @@ jobs:
         with:
           name: ${{ inputs.build_artifact_name }}
           path: ${{ github.workspace }}/${{ inputs.working_directory }}/${{ env.BUILD_PATH }}
-      
+
       # Login to Azure
       - name: Azure Login
         id: azure_login
@@ -80,7 +80,7 @@ jobs:
           echo "Set secret value"
           echo "::add-mask::$ACCESS_TOKEN"
           echo "::set-output name=azureAccessToken::$ACCESS_TOKEN"
-        
+
       # Create Output Directory
       - name: Create Output Directory
         id: output_directory
