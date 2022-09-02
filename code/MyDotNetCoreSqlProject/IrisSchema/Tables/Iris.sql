@@ -7,3 +7,5 @@ CREATE TABLE [IrisSchema].[Iris]
     [Variety]        VARCHAR (40) NOT NULL
 )
 WITH (CLUSTERED COLUMNSTORE INDEX, DISTRIBUTION = HASH([Variety]));
+GO
+GRANT SELECT, INSERT, UPDATE, DELETE ON [IrisSchema].[Iris] TO [IrisOwner];
