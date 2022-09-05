@@ -180,7 +180,7 @@ jobs:
   infra_deployment_prd:
     uses: ./.github/workflows/infraDeploymentTemplate.yml
     name: "Deployment of IaC templates - Prd"
-    needs: [infra_validation_prd, synapse_validation_prd, sql_dotnetcore_report_prd]
+    needs: [infra_validation_prd]  #, synapse_validation_prd, sql_dotnetcore_report_prd]
     if: github.event_name == 'release'
     with:
       environment: "prd"
