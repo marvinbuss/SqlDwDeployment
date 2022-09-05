@@ -61,7 +61,7 @@ jobs:
           template: ${{ github.workspace }}/infra/main.bicep
           parameters: ${{ github.workspace }}/infra/params.${{ inputs.environment }}.json
           deploymentMode: Incremental
-          deploymentName: "App-${{ github.sha }}"
+          deploymentName: "${{ inputs.environment }}-${{ github.sha }}"
           failOnStdErr: false
 
       # Log out from Azure
