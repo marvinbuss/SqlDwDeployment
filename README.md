@@ -2,7 +2,7 @@
 
 This project covers the following aspects for a Synapse- and SQL Data Warehouse-based data project:
 
-1. Infrastructure as Code: Validation, What-If and Deployment,
+1. Infrastructure as Code (IaC): Validation, What-If and Deployment,
 2. Synapse Artifacts: Validation and Deployment and
 3. Synapse SQL Pool: Build, Drift Reporting and Publishing of SQL DB Projects.
 
@@ -49,7 +49,7 @@ The deployment to the `development` and `production` environment is done in two 
 
 These reusable GitHub workflows are used by the [`devWorkflow.yml`](/.github/workflows/devWorkflow.yml), [`tstWorkflow.yml`](/.github/workflows/tstWorkflow.yml) and [`prdWorkflow.yml`](/.github/workflows/prdWorkflow.yml) to apply changes in the right order.
 
-## Infrastructure as Code
+## Infrastructure as Code (IaC)
 
 ### Code Artifacts
 
