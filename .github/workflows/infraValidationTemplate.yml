@@ -18,9 +18,15 @@ on:
       azure_location_name:
         required: true
         description: "Specifies the location name of the deployment."
-      azure_credentials:
+      tenant_id:
         required: true
-        description: "Specifies the azure credentials used for authentication."
+        description: "Specifies the tenant id of the deployment."
+      client_id:
+        required: true
+        description: "Specifies the client id."
+      client_secret:
+        required: true
+        description: "Specifies the client secret."
 
 jobs:
   validation:
@@ -40,7 +46,7 @@ jobs:
         id: azure_login
         uses: azure/login@v1
         with:
-          creds: ${{ secrets.azure_credentials }}
+          creds:  '{"clientId":"${{ secrets.client_id }}","clientSecret":"${{ secrets.client_secret }}","subscriptionId":"${{ secrets.azure_subscription_id }}","tenantId":"${{ secrets.tenant_id }}"}'
 
       # Deploy Template - validation
       - name: Deploy Template - validation

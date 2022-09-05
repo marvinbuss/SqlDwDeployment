@@ -26,7 +26,9 @@ jobs:
       azure_subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
       azure_resource_group_name: ${{ secrets.AZURE_RESOURCE_GROUP_NAME }}
       azure_location_name: ${{ secrets.AZURE_LOCATION }}
-      azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
+      tenant_id: ${{ secrets.TENANT_ID }}
+      client_id: ${{ secrets.CLIENT_ID }}
+      client_secret: ${{ secrets.CLIENT_SECRET }}
 
   validation_test:
     uses: ./.github/workflows/infraValidationTemplate.yml
@@ -37,7 +39,9 @@ jobs:
       azure_subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
       azure_resource_group_name: ${{ secrets.AZURE_RESOURCE_GROUP_NAME }}
       azure_location_name: ${{ secrets.AZURE_LOCATION }}
-      azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
+      tenant_id: ${{ secrets.TENANT_ID }}
+      client_id: ${{ secrets.CLIENT_ID }}
+      client_secret: ${{ secrets.CLIENT_SECRET }}
 
   validation_prod:
     uses: ./.github/workflows/infraValidationTemplate.yml
@@ -48,33 +52,39 @@ jobs:
       azure_subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
       azure_resource_group_name: ${{ secrets.AZURE_RESOURCE_GROUP_NAME }}
       azure_location_name: ${{ secrets.AZURE_LOCATION }}
-      azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
+      tenant_id: ${{ secrets.TENANT_ID }}
+      client_id: ${{ secrets.CLIENT_ID }}
+      client_secret: ${{ secrets.CLIENT_SECRET }}
 
   deployment_dev:
     uses: ./.github/workflows/infraDeploymentTemplate.yml
     name: "Deployment of IaC templates - Dev"
     needs: [validation_dev, validation_test, validation_prod]
-    if: github.event_name == 'push' || github.event_name == 'release'
+    if: github.event_name == 'push'
     with:
       environment: "dev"
     secrets:
       azure_subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
       azure_resource_group_name: ${{ secrets.AZURE_RESOURCE_GROUP_NAME }}
       azure_location_name: ${{ secrets.AZURE_LOCATION }}
-      azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
+      tenant_id: ${{ secrets.TENANT_ID }}
+      client_id: ${{ secrets.CLIENT_ID }}
+      client_secret: ${{ secrets.CLIENT_SECRET }}
 
   deployment_test:
     uses: ./.github/workflows/infraDeploymentTemplate.yml
     name: "Deployment of IaC templates - Test"
     needs: [deployment_dev]
-    if: github.event_name == 'push' || github.event_name == 'release'
+    if: github.event_name == 'push'
     with:
       environment: "tst"
     secrets:
       azure_subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
       azure_resource_group_name: ${{ secrets.AZURE_RESOURCE_GROUP_NAME }}
       azure_location_name: ${{ secrets.AZURE_LOCATION }}
-      azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
+      tenant_id: ${{ secrets.TENANT_ID }}
+      client_id: ${{ secrets.CLIENT_ID }}
+      client_secret: ${{ secrets.CLIENT_SECRET }}
 
   deployment_prod:
     uses: ./.github/workflows/infraDeploymentTemplate.yml
@@ -87,4 +97,6 @@ jobs:
       azure_subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
       azure_resource_group_name: ${{ secrets.AZURE_RESOURCE_GROUP_NAME }}
       azure_location_name: ${{ secrets.AZURE_LOCATION }}
-      azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
+      tenant_id: ${{ secrets.TENANT_ID }}
+      client_id: ${{ secrets.CLIENT_ID }}
+      client_secret: ${{ secrets.CLIENT_SECRET }}
