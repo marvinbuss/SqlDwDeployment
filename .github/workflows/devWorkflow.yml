@@ -1,14 +1,44 @@
 name: Dev Deployment
 on:
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/**"
+      - "code/MyDotNetCoreSqlProject/**"
+      - "code/MyDotNetSqlProject/**"
+      - "code/Scripts/**"
+      - "code/synapseParameters/**"
+      - "infra/**"
+      - "data-auto-dev-synapse001/**"
+
   pull_request:
     branches:
       - main
     paths:
       - ".github/workflows/**"
-      - "code/**"
+      - "code/MyDotNetCoreSqlProject/**"
+      - "code/MyDotNetSqlProject/**"
+      - "code/Scripts/**"
+      - "code/synapseParameters/**"
       - "infra/**"
 
 jobs:
+  sql_dotnet_build:
+    uses: ./.github/workflows/buildDotNetTemplate.yml
+    name: "Build SQL Project"
+    with:
+      build_artifact_name: buildDotNet
+      working_directory: "code/MyDotNetSqlProject/MyDotNetSqlProject"
+
+  sql_dotnetcore_build:
+    uses: ./.github/workflows/buildDotNetCoreTemplate.yml
+    name: "Build SQL Project"
+    with:
+      build_artifact_name: buildDotNetCore
+      dotnet_version: "6.0.x"
+      working_directory: "code/MyDotNetCoreSqlProject/"
+
   infra_validation_dev:
     uses: ./.github/workflows/infraValidationTemplate.yml
     name: "Validation of IaC templates - Dev"
@@ -35,25 +65,10 @@ jobs:
       client_id: ${{ secrets.CLIENT_ID }}
       client_secret: ${{ secrets.CLIENT_SECRET }}
 
-  sql_dotnet_build:
-    uses: ./.github/workflows/buildDotNetTemplate.yml
-    name: "Build SQL Project"
-    with:
-      build_artifact_name: buildDotNet
-      working_directory: "code/MyDotNetSqlProject/MyDotNetSqlProject"
-
-  sql_dotnetcore_build:
-    uses: ./.github/workflows/buildDotNetCoreTemplate.yml
-    name: "Build SQL Project"
-    with:
-      build_artifact_name: buildDotNetCore
-      dotnet_version: "6.0.x"
-      working_directory: "code/MyDotNetCoreSqlProject/"
-
   sql_dotnetcore_report_dev:
     uses: ./.github/workflows/sqlReportTemplate.yml
     name: "Report SQL Changes"
-    needs: [infra_validation_dev, synapse_validation_dev, sql_dotnet_build, sql_dotnetcore_build]
+    needs: [sql_dotnet_build, sql_dotnetcore_build]
     with:
       environment: "dev"
       build_artifact_name: "buildDotNetCore"
@@ -71,7 +86,7 @@ jobs:
   infra_deployment_dev:
     uses: ./.github/workflows/infraDeploymentTemplate.yml
     name: "Deployment of IaC templates - Dev"
-    needs: [sql_dotnetcore_report_dev]
+    needs: [infra_validation_dev, synapse_validation_dev, sql_dotnetcore_report_dev]
     if: github.event_name == 'push' || github.event_name == 'release'
     with:
       environment: "dev"
