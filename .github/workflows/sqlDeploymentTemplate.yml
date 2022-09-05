@@ -84,7 +84,7 @@ jobs:
       - name: SQL Package Deployment
         id: sqlpackage_deployment
         run: |
-          sqlpackage /Action:Publish /SourceFile:"${{steps.artifact_download.outputs.download-path}}/${{ inputs.project_name }}.dacpac" /TargetServerName:"${{ secrets.target_server_name }}" /TargetDatabaseName:"${{ secrets.target_database_name }}" /AccessToken:"${{ steps.azure_access_token.outputs.azureAccessToken }}" /p:VerifyCollationCompatibility=true /p:VerifyDeployment=true /p:BlockOnPossibleDataLoss=true /Diagnostics=true
+          sqlpackage /Action:Publish /SourceFile:"${{steps.artifact_download.outputs.download-path}}/${{ inputs.project_name }}.dacpac" /TargetServerName:"${{ secrets.target_server_name }}" /TargetDatabaseName:"${{ secrets.target_database_name }}" /AccessToken:"${{ steps.azure_access_token.outputs.azureAccessToken }}" /Diagnostics:true /p:VerifyCollationCompatibility=true /p:VerifyDeployment=true /p:BlockOnPossibleDataLoss=true
         working-directory: ${{ inputs.working_directory }}
 
       # Log out from Azure
