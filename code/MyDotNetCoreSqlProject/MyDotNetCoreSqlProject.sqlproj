@@ -9,7 +9,7 @@
   </PropertyGroup>
   <ItemGroup>
     <SqlCmdVariable Include="InputParameter">
-      <DefaultValue>MyInputVariable</DefaultValue>
+      <DefaultValue>MyInputParameter</DefaultValue>
       <Value>$(SqlCmdVar__1)</Value>
     </SqlCmdVariable>
   </ItemGroup>
@@ -18,8 +18,12 @@
   </Target>
   <ItemGroup>
     <Folder Include="PreDeploymentScripts\" />
+    <Folder Include="PostDeploymentScripts\" />
   </ItemGroup>
   <ItemGroup>
     <PreDeploy Include="PreDeploymentScripts\MyPreDeploymentScript001.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <PostDeploy Include="PostDeploymentScripts\MyPostDeploymentScript001.sql" />
   </ItemGroup>
 </Project>
