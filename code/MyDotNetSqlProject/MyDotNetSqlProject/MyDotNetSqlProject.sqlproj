@@ -61,10 +61,24 @@
     <Folder Include="Schema" />
     <Folder Include="IrisSchema" />
     <Folder Include="IrisSchema\Tables" />
+    <Folder Include="PreDeploymentScripts" />
+    <Folder Include="PostDeploymentScripts" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Security\Roles\IrisOwner.sql" />
     <Build Include="Schema\IrisSchema.sql" />
     <Build Include="IrisSchema\Tables\Iris.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <PreDeploy Include="PreDeploymentScripts\MyPreDeploymentScript001.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <PostDeploy Include="PostDeploymentScripts\MyPostDeploymentScript001.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <SqlCmdVariable Include="InputParameter">
+      <DefaultValue>MyInputParameter</DefaultValue>
+      <Value>$(SqlCmdVar__1)</Value>
+    </SqlCmdVariable>
   </ItemGroup>
 </Project>
