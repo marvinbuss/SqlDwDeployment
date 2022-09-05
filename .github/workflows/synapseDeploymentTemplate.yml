@@ -17,15 +17,15 @@ on:
         type: string
         description: "Specifies the name of the synapse workspace."
     secrets:
-      tenant_id:
-        required: true
-        description: "Specifies the tenant id of the deployment."
       azure_subscription_id:
         required: true
         description: "Specifies the subscription id of the deployment."
       azure_resource_group_name:
         required: true
         description: "Specifies the name of the resource group for the deployment."
+      tenant_id:
+        required: true
+        description: "Specifies the tenant id of the deployment."
       client_id:
         required: true
         description: "Specifies the client id."

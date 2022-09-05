@@ -6,17 +6,19 @@ on:
     tags:
       - "v*.*.*"
     paths:
-      - "code/synapseParameters/**"
       - ".github/workflows/**"
+      - "code/**"
+      - "infra/**"
       - "data-auto-dev-synapse001/**"
-      - ".github/workflows/**"
 
   pull_request:
     branches:
       - main
     paths:
-      - "infra/**"
       - ".github/workflows/**"
+      - "code/**"
+      - "infra/**"
+      - "data-auto-dev-synapse001/**"
 
 jobs:
   infra_validation_tst:
@@ -28,7 +30,9 @@ jobs:
       azure_subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
       azure_resource_group_name: ${{ secrets.AZURE_RESOURCE_GROUP_NAME }}
       azure_location_name: ${{ secrets.AZURE_LOCATION }}
-      azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
+      tenant_id: ${{ secrets.TENANT_ID }}
+      client_id: ${{ secrets.CLIENT_ID }}
+      client_secret: ${{ secrets.CLIENT_SECRET }}
 
   synapse_validation_tst:
     uses: ./.github/workflows/synapseValidationTemplate.yml
@@ -37,9 +41,9 @@ jobs:
       environment: "tst"
       target_synapse_workspace_name: "data-auto-tst-synapse001"
     secrets:
-      tenant_id: ${{ secrets.TENANT_ID }}
       azure_subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
       azure_resource_group_name: ${{ secrets.AZURE_RESOURCE_GROUP_NAME }}
+      tenant_id: ${{ secrets.TENANT_ID }}
       client_id: ${{ secrets.CLIENT_ID }}
       client_secret: ${{ secrets.CLIENT_SECRET }}
 
@@ -70,9 +74,11 @@ jobs:
       project_name: "MyDotNetCoreSqlProject"
     secrets:
       azure_subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-      azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
       target_server_name: ${{ secrets.SQL_SERVER_NAME }}
       target_database_name: ${{ secrets.SQL_DATABASE_NAME }}
+      tenant_id: ${{ secrets.TENANT_ID }}
+      client_id: ${{ secrets.CLIENT_ID }}
+      client_secret: ${{ secrets.CLIENT_SECRET }}
 
   infra_deployment_tst:
     uses: ./.github/workflows/infraDeploymentTemplate.yml
@@ -85,7 +91,9 @@ jobs:
       azure_subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
       azure_resource_group_name: ${{ secrets.AZURE_RESOURCE_GROUP_NAME }}
       azure_location_name: ${{ secrets.AZURE_LOCATION }}
-      azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
+      tenant_id: ${{ secrets.TENANT_ID }}
+      client_id: ${{ secrets.CLIENT_ID }}
+      client_secret: ${{ secrets.CLIENT_SECRET }}
 
   synapse_deployment_tst:
     uses: ./.github/workflows/synapseDeploymentTemplate.yml
@@ -97,9 +105,9 @@ jobs:
       source_synapse_workspace_name: "data-auto-dev-synapse001"
       target_synapse_workspace_name: "data-auto-tst-synapse001"
     secrets:
-      tenant_id: ${{ secrets.TENANT_ID }}
       azure_subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
       azure_resource_group_name: ${{ secrets.AZURE_RESOURCE_GROUP_NAME }}
+      tenant_id: ${{ secrets.TENANT_ID }}
       client_id: ${{ secrets.CLIENT_ID }}
       client_secret: ${{ secrets.CLIENT_SECRET }}
 
@@ -115,6 +123,8 @@ jobs:
       project_name: "MyDotNetCoreSqlProject"
     secrets:
       azure_subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-      azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
       target_server_name: ${{ secrets.SQL_SERVER_NAME }}
       target_database_name: ${{ secrets.SQL_DATABASE_NAME }}
+      tenant_id: ${{ secrets.TENANT_ID }}
+      client_id: ${{ secrets.CLIENT_ID }}
+      client_secret: ${{ secrets.CLIENT_SECRET }}

@@ -24,15 +24,21 @@ on:
       azure_subscription_id:
         required: true
         description: "Specifies the subscription id of the deployment."
-      azure_credentials:
-        required: true
-        description: "Specifies the azure credentials used for authentication."
       target_server_name:
         required: true
         description: "Specifies the target sql server name."
       target_database_name:
         required: true
         description: "Specifies the target sql database name."
+      tenant_id:
+        required: true
+        description: "Specifies the tenant id of the deployment."
+      client_id:
+        required: true
+        description: "Specifies the client id."
+      client_secret:
+        required: true
+        description: "Specifies the client secret."
 
 env:
   BUILD_PATH: "DatabaseRelease"
@@ -58,7 +64,7 @@ jobs:
         id: azure_login
         uses: azure/login@v1
         with:
-          creds: ${{ secrets.azure_credentials }}
+          creds:  '{"clientId":"${{ secrets.client_id }}","clientSecret":"${{ secrets.client_secret }}","subscriptionId":"${{ secrets.azure_subscription_id }}","tenantId":"${{ secrets.tenant_id }}"}'
           # enable-AzPSSession: true
 
       # Generate Azure Active Directory Token
