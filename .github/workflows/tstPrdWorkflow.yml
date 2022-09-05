@@ -210,7 +210,7 @@ jobs:
 
   sql_dotnetcore_deployment_prd:
     uses: ./.github/workflows/sqlDeploymentTemplate.yml
-    name: "Deploy SQL Changes"
+    name: "Deploy SQL Changes - Prd"
     needs: [synapse_deployment_prd]
     if: github.event_name == 'release'
     with:

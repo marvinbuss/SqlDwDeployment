@@ -67,7 +67,7 @@ jobs:
 
   sql_dotnetcore_report_dev:
     uses: ./.github/workflows/sqlReportTemplate.yml
-    name: "Report SQL Changes"
+    name: "Report SQL Changes - Dev"
     needs: [sql_dotnet_build, sql_dotnetcore_build]
     with:
       environment: "dev"
@@ -100,7 +100,7 @@ jobs:
 
   sql_dotnetcore_deployment_dev:
     uses: ./.github/workflows/sqlDeploymentTemplate.yml
-    name: "Deploy SQL Changes"
+    name: "Deploy SQL Changes - Dev"
     needs: [infra_deployment_dev]
     if: github.event_name == 'push' || github.event_name == 'release'
     with:

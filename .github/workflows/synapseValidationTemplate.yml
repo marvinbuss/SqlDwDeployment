@@ -31,7 +31,7 @@ on:
 
 jobs:
   deployment:
-    name: Deployment to ${{ inputs.environment }}
+    name: Validation for ${{ inputs.environment }}
     runs-on: ubuntu-latest
     continue-on-error: false
     environment: ${{ inputs.environment }}
