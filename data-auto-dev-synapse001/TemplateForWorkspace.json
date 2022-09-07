@@ -26,6 +26,14 @@
 			"type": "string",
 			"defaultValue": "https://data-auto-dev-vault001.vault.azure.net/"
 		},
+		"GrantAccess_properties_content_currentConnection_sqlPoolReference": {
+			"type": "object",
+			"defaultValue": "sqlPool001"
+		},
+		"myNotebook_properties_bigDataPool_bigDataPoolReference": {
+			"type": "string",
+			"defaultValue": "bigDataPool001"
+		},
 		"Purview_properties_managedPrivateEndpointPrivateLinkResourceId": {
 			"type": "string",
 			"defaultValue": "/subscriptions/558bd446-4212-46a2-908c-9ab0a628705e/resourceGroups/synapse-rg/providers/Microsoft.Purview/accounts/marvtest"
@@ -344,8 +352,8 @@
 						"language": "sql"
 					},
 					"currentConnection": {
-						"databaseName": "sqlPool001",
-						"poolName": "sqlPool001"
+						"databaseName": "[parameters('GrantAccess_properties_content_currentConnection_sqlPoolReference')]",
+						"poolName": "[parameters('GrantAccess_properties_content_currentConnection_sqlPoolReference')]"
 					},
 					"resultLimit": 5000
 				},
@@ -361,7 +369,7 @@
 				"nbformat": 4,
 				"nbformat_minor": 2,
 				"bigDataPool": {
-					"referenceName": "bigDataPool001",
+					"referenceName": "[parameters('myNotebook_properties_bigDataPool_bigDataPoolReference')]",
 					"type": "BigDataPoolReference"
 				},
 				"sessionProperties": {

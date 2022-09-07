@@ -20,6 +20,12 @@
 		"defaultKeyVault_properties_typeProperties_baseUrl": {
 			"value": "https://data-auto-dev-vault001.vault.azure.net/"
 		},
+		"GrantAccess_properties_content_currentConnection_sqlPoolReference": {
+			"value": "sqlPool001"
+		},
+		"myNotebook_properties_bigDataPool_bigDataPoolReference": {
+			"value": "bigDataPool001"
+		},
 		"Purview_properties_managedPrivateEndpointPrivateLinkResourceId": {
 			"value": "/subscriptions/558bd446-4212-46a2-908c-9ab0a628705e/resourceGroups/synapse-rg/providers/Microsoft.Purview/accounts/marvtest"
 		},
