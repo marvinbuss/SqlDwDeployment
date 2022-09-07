@@ -1,5 +1,5 @@
 {
-	"name": "mySqlPoolTable",
+	"name": "mySqlPoolIrisTable",
 	"properties": {
 		"annotations": [],
 		"type": "SqlPoolTable",
