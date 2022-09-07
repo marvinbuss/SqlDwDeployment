@@ -7,9 +7,11 @@
         }
     },
     "Microsoft.Synapse/workspaces/notebooks": {
-        "properties": {
-            "bigDataPool": {
-                "referenceName": "=:bigDataPoolReference:string"
+        "*": {
+            "properties": {
+                "bigDataPool": {
+                    "referenceName": "=:bigDataPoolReference:string"
+                }
             }
         }
     },
