@@ -43,6 +43,13 @@
             ]
         }
     },
+    "Microsoft.Synapse/workspaces/datasets": {
+        "properties": {
+            "sqlPool": {
+                "referenceName": "=:sqlPoolPoolReference:string"
+            }
+        }
+    },
     "Microsoft.Synapse/workspaces/managedVirtualNetworks/managedPrivateEndpoints": {
         "properties": {
             "privateLinkResourceId": "=:managedPrivateEndpointPrivateLinkResourceId:string",
