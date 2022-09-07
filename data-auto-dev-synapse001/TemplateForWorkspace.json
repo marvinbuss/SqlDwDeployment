@@ -96,6 +96,56 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('workspaceName'), '/mySqlPoolTable')]",
+			"type": "Microsoft.Synapse/workspaces/datasets",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"annotations": [],
+				"type": "SqlPoolTable",
+				"schema": [
+					{
+						"name": "SepalLength",
+						"type": "decimal",
+						"precision": 18,
+						"scale": 0
+					},
+					{
+						"name": "SepalWidth",
+						"type": "decimal",
+						"precision": 18,
+						"scale": 0
+					},
+					{
+						"name": "PetalLength",
+						"type": "decimal",
+						"precision": 18,
+						"scale": 0
+					},
+					{
+						"name": "PetalWidth",
+						"type": "decimal",
+						"precision": 18,
+						"scale": 0
+					},
+					{
+						"name": "Variety",
+						"type": "varchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "IrisSchema",
+					"table": "Iris"
+				},
+				"sqlPool": {
+					"referenceName": "sqlPool001",
+					"type": "SqlPoolReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/sqlPools/sqlPool001')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('workspaceName'), '/data-auto-dev-synapse001-WorkspaceDefaultSqlServer')]",
 			"type": "Microsoft.Synapse/workspaces/linkedServices",
 			"apiVersion": "2019-06-01-preview",
@@ -440,56 +490,6 @@
 			},
 			"dependsOn": [
 				"[concat(variables('workspaceId'), '/managedVirtualNetworks/default')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('workspaceName'), '/mySqlPoolTable')]",
-			"type": "Microsoft.Synapse/workspaces/datasets",
-			"apiVersion": "2019-06-01-preview",
-			"properties": {
-				"annotations": [],
-				"type": "SqlPoolTable",
-				"schema": [
-					{
-						"name": "SepalLength",
-						"type": "decimal",
-						"precision": 18,
-						"scale": 0
-					},
-					{
-						"name": "SepalWidth",
-						"type": "decimal",
-						"precision": 18,
-						"scale": 0
-					},
-					{
-						"name": "PetalLength",
-						"type": "decimal",
-						"precision": 18,
-						"scale": 0
-					},
-					{
-						"name": "PetalWidth",
-						"type": "decimal",
-						"precision": 18,
-						"scale": 0
-					},
-					{
-						"name": "Variety",
-						"type": "varchar"
-					}
-				],
-				"typeProperties": {
-					"schema": "IrisSchema",
-					"table": "Iris"
-				},
-				"sqlPool": {
-					"referenceName": "sqlPool001",
-					"type": "SqlPoolReference"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('workspaceId'), '/sqlPools/sqlPool001')]"
 			]
 		}
 	]
