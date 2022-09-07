@@ -20,12 +20,6 @@
 		"defaultKeyVault_properties_typeProperties_baseUrl": {
 			"value": "https://data-auto-dev-vault001.vault.azure.net/"
 		},
-		"GrantAccess_properties_content_currentConnection_databaseName": {
-			"value": "sqlPool001"
-		},
-		"GrantAccess_properties_content_currentConnection_poolName": {
-			"value": "sqlPool001"
-		},
 		"myNotebook_properties_bigDataPool_bigDataPoolReference": {
 			"value": "bigDataPool001"
 		},

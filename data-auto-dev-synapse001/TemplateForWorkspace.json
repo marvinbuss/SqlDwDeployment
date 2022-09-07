@@ -26,14 +26,6 @@
 			"type": "string",
 			"defaultValue": "https://data-auto-dev-vault001.vault.azure.net/"
 		},
-		"GrantAccess_properties_content_currentConnection_databaseName": {
-			"type": "string",
-			"defaultValue": "sqlPool001"
-		},
-		"GrantAccess_properties_content_currentConnection_poolName": {
-			"type": "string",
-			"defaultValue": "sqlPool001"
-		},
 		"myNotebook_properties_bigDataPool_bigDataPoolReference": {
 			"type": "string",
 			"defaultValue": "bigDataPool001"
@@ -356,8 +348,8 @@
 						"language": "sql"
 					},
 					"currentConnection": {
-						"databaseName": "[parameters('GrantAccess_properties_content_currentConnection_databaseName')]",
-						"poolName": "[parameters('GrantAccess_properties_content_currentConnection_poolName')]"
+						"databaseName": "sqlPool001",
+						"poolName": "sqlPool001"
 					},
 					"resultLimit": 5000
 				},
