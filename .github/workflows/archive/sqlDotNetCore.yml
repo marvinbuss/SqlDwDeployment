@@ -1,0 +1,137 @@
+name: SQL .NET Core - Test and Build
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - "v*.*.*"
+    paths:
+      - "code/MyDotNetCoreSqlProject/**"
+      - ".github/workflows/**"
+
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "code/MyDotNetCoreSqlProject/**"
+      - ".github/workflows/**"
+
+jobs:
+  sql_build:
+    uses: ./.github/workflows/buildDotNetCoreTemplate.yml
+    name: "Build SQL Project"
+    with:
+      build_artifact_name: buildDotNetCore
+      dotnet_version: "6.0.x"
+      working_directory: "code/MyDotNetCoreSqlProject/"
+
+  sql_report_dev:
+    uses: ./.github/workflows/sqlReportTemplate.yml
+    name: "Report SQL Changes"
+    needs: [sql_build]
+    with:
+      environment: "dev"
+      build_artifact_name: "buildDotNetCore"
+      report_artifact_name: "reportDotNetCore"
+      working_directory: "code/MyDotNetCoreSqlProject/"
+      project_name: "MyDotNetCoreSqlProject"
+    secrets:
+      azure_subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      target_server_name: ${{ secrets.SQL_SERVER_NAME }}
+      target_database_name: ${{ secrets.SQL_DATABASE_NAME }}
+      tenant_id: ${{ secrets.TENANT_ID }}
+      client_id: ${{ secrets.CLIENT_ID }}
+      client_secret: ${{ secrets.CLIENT_SECRET }}
+
+  sql_deployment_dev:
+    uses: ./.github/workflows/sqlDeploymentTemplate.yml
+    name: "Deploy SQL Changes"
+    needs: [sql_report_dev]
+    if: github.event_name == 'push'
+    with:
+      environment: "dev"
+      build_artifact_name: "buildDotNetCore"
+      working_directory: "code/MyDotNetCoreSqlProject/"
+      project_name: "MyDotNetCoreSqlProject"
+    secrets:
+      azure_subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      target_server_name: ${{ secrets.SQL_SERVER_NAME }}
+      target_database_name: ${{ secrets.SQL_DATABASE_NAME }}
+      tenant_id: ${{ secrets.TENANT_ID }}
+      client_id: ${{ secrets.CLIENT_ID }}
+      client_secret: ${{ secrets.CLIENT_SECRET }}
+
+  sql_report_tst:
+    uses: ./.github/workflows/sqlReportTemplate.yml
+    name: "Report SQL Changes"
+    needs: [sql_deployment_dev]
+    if: github.event_name == 'push'
+    with:
+      environment: "tst"
+      build_artifact_name: "buildDotNetCore"
+      report_artifact_name: "reportDotNetCore"
+      working_directory: "code/MyDotNetCoreSqlProject/"
+      project_name: "MyDotNetCoreSqlProject"
+    secrets:
+      azure_subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      target_server_name: ${{ secrets.SQL_SERVER_NAME }}
+      target_database_name: ${{ secrets.SQL_DATABASE_NAME }}
+      tenant_id: ${{ secrets.TENANT_ID }}
+      client_id: ${{ secrets.CLIENT_ID }}
+      client_secret: ${{ secrets.CLIENT_SECRET }}
+
+  sql_deployment_tst:
+    uses: ./.github/workflows/sqlDeploymentTemplate.yml
+    name: "Deploy SQL Changes"
+    needs: [sql_report_tst]
+    if: github.event_name == 'push'
+    with:
+      environment: "tst"
+      build_artifact_name: "buildDotNetCore"
+      working_directory: "code/MyDotNetCoreSqlProject/"
+      project_name: "MyDotNetCoreSqlProject"
+    secrets:
+      azure_subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      target_server_name: ${{ secrets.SQL_SERVER_NAME }}
+      target_database_name: ${{ secrets.SQL_DATABASE_NAME }}
+      tenant_id: ${{ secrets.TENANT_ID }}
+      client_id: ${{ secrets.CLIENT_ID }}
+      client_secret: ${{ secrets.CLIENT_SECRET }}
+
+  sql_report_prd:
+    uses: ./.github/workflows/sqlReportTemplate.yml
+    name: "Report SQL Changes"
+    needs: [sql_deployment_tst]
+    if: github.event_name == 'release'
+    with:
+      environment: "prd"
+      build_artifact_name: "buildDotNetCore"
+      report_artifact_name: "reportDotNetCore"
+      working_directory: "code/MyDotNetCoreSqlProject/"
+      project_name: "MyDotNetCoreSqlProject"
+    secrets:
+      azure_subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      target_server_name: ${{ secrets.SQL_SERVER_NAME }}
+      target_database_name: ${{ secrets.SQL_DATABASE_NAME }}
+      tenant_id: ${{ secrets.TENANT_ID }}
+      client_id: ${{ secrets.CLIENT_ID }}
+      client_secret: ${{ secrets.CLIENT_SECRET }}
+
+  sql_deployment_prd:
+    uses: ./.github/workflows/sqlDeploymentTemplate.yml
+    name: "Deploy SQL Changes"
+    needs: [sql_report_prd]
+    if: github.event_name == 'release'
+    with:
+      environment: "prd"
+      build_artifact_name: "buildDotNetCore"
+      working_directory: "code/MyDotNetCoreSqlProject/"
+      project_name: "MyDotNetCoreSqlProject"
+    secrets:
+      azure_subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      target_server_name: ${{ secrets.SQL_SERVER_NAME }}
+      target_database_name: ${{ secrets.SQL_DATABASE_NAME }}
+      tenant_id: ${{ secrets.TENANT_ID }}
+      client_id: ${{ secrets.CLIENT_ID }}
+      client_secret: ${{ secrets.CLIENT_SECRET }}

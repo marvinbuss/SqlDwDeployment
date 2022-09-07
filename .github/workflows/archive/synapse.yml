@@ -27,9 +27,9 @@ jobs:
       environment: "dev"
       target_synapse_workspace_name: "data-auto-dev-synapse001"
     secrets:
-      tenant_id: ${{ secrets.TENANT_ID }}
       azure_subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
       azure_resource_group_name: ${{ secrets.AZURE_RESOURCE_GROUP_NAME }}
+      tenant_id: ${{ secrets.TENANT_ID }}
       client_id: ${{ secrets.CLIENT_ID }}
       client_secret: ${{ secrets.CLIENT_SECRET }}
 
@@ -40,9 +40,9 @@ jobs:
       environment: "tst"
       target_synapse_workspace_name: "data-auto-tst-synapse001"
     secrets:
-      tenant_id: ${{ secrets.TENANT_ID }}
       azure_subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
       azure_resource_group_name: ${{ secrets.AZURE_RESOURCE_GROUP_NAME }}
+      tenant_id: ${{ secrets.TENANT_ID }}
       client_id: ${{ secrets.CLIENT_ID }}
       client_secret: ${{ secrets.CLIENT_SECRET }}
 
@@ -51,11 +51,11 @@ jobs:
   #   name: "Validation of Synapse artifacts - Prod"
   #   with:
   #     environment: "prd"
-  #     target_synapse_workspace_name: ""
+  #     target_synapse_workspace_name: "data-auto-prd-synapse001"
   #   secrets:
-  #     tenant_id: ${{ secrets.TENANT_ID }}
   #     azure_subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
   #     azure_resource_group_name: ${{ secrets.AZURE_RESOURCE_GROUP_NAME }}
+  #     tenant_id: ${{ secrets.TENANT_ID }}
   #     client_id: ${{ secrets.CLIENT_ID }}
   #     client_secret: ${{ secrets.CLIENT_SECRET }}
 
@@ -69,9 +69,9 @@ jobs:
       source_synapse_workspace_name: "data-auto-dev-synapse001"
       target_synapse_workspace_name: "data-auto-tst-synapse001"
     secrets:
-      tenant_id: ${{ secrets.TENANT_ID }}
       azure_subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
       azure_resource_group_name: ${{ secrets.AZURE_RESOURCE_GROUP_NAME }}
+      tenant_id: ${{ secrets.TENANT_ID }}
       client_id: ${{ secrets.CLIENT_ID }}
       client_secret: ${{ secrets.CLIENT_SECRET }}
 
@@ -83,10 +83,10 @@ jobs:
     with:
       environment: "prd"
       source_synapse_workspace_name: "data-auto-dev-synapse001"
-      target_synapse_workspace_name: ""
+      target_synapse_workspace_name: "data-auto-prd-synapse001"
     secrets:
-      tenant_id: ${{ secrets.TENANT_ID }}
       azure_subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
       azure_resource_group_name: ${{ secrets.AZURE_RESOURCE_GROUP_NAME }}
+      tenant_id: ${{ secrets.TENANT_ID }}
       client_id: ${{ secrets.CLIENT_ID }}
       client_secret: ${{ secrets.CLIENT_SECRET }}

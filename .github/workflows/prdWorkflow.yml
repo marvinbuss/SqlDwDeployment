@@ -1,0 +1,132 @@
+name: Production Deployment
+on:
+  release:
+    types:
+      - published
+  push:
+    branches:
+      - main
+    tags:
+      - "v*.*.*"
+    paths:
+      - ".github/workflows/**"
+      - "code/MyDotNetCoreSqlProject/**"
+      - "code/MyDotNetSqlProject/**"
+      - "code/Scripts/**"
+      - "code/synapseParameters/**"
+      - "infra/**"
+      - "data-auto-dev-synapse001/**"
+
+jobs:
+  sql_dotnet_build:
+    uses: ./.github/workflows/buildDotNetTemplate.yml
+    name: "Build SQL Project"
+    if: github.event_name == 'push' || github.event_name == 'release'
+    with:
+      build_artifact_name: buildDotNet
+      working_directory: "code/MyDotNetSqlProject/MyDotNetSqlProject"
+
+  sql_dotnetcore_build:
+    uses: ./.github/workflows/buildDotNetCoreTemplate.yml
+    name: "Build SQL Project"
+    if: github.event_name == 'push' || github.event_name == 'release'
+    with:
+      build_artifact_name: buildDotNetCore
+      dotnet_version: "6.0.x"
+      working_directory: "code/MyDotNetCoreSqlProject/"
+
+  infra_validation_prd:
+    uses: ./.github/workflows/infraValidationTemplate.yml
+    name: "Validation of IaC templates - Prd"
+    if: github.event_name == 'push' || github.event_name == 'release'
+    with:
+      environment: "prd"
+    secrets:
+      azure_subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      azure_resource_group_name: ${{ secrets.AZURE_RESOURCE_GROUP_NAME }}
+      azure_location_name: ${{ secrets.AZURE_LOCATION }}
+      tenant_id: ${{ secrets.TENANT_ID }}
+      client_id: ${{ secrets.CLIENT_ID }}
+      client_secret: ${{ secrets.CLIENT_SECRET }}
+
+  # synapse_validation_prd:
+  #   uses: ./.github/workflows/synapseValidationTemplate.yml
+  #   name: "Validation of Synapse artifacts - Prd"
+  #   if: github.event_name == 'push' || github.event_name == 'release'
+  #   with:
+  #     environment: "tst"
+  #     target_synapse_workspace_name: "data-auto-prd-synapse001"
+  #   secrets:
+  #     azure_subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+  #     azure_resource_group_name: ${{ secrets.AZURE_RESOURCE_GROUP_NAME }}
+  #     tenant_id: ${{ secrets.TENANT_ID }}
+  #     client_id: ${{ secrets.CLIENT_ID }}
+  #     client_secret: ${{ secrets.CLIENT_SECRET }}
+
+  # sql_dotnetcore_report_prd:
+  #   uses: ./.github/workflows/sqlReportTemplate.yml
+  #   name: "Report SQL Changes - Prd"
+  #   needs: [sql_dotnet_build, sql_dotnetcore_build]
+  #   if: github.event_name == 'push' || github.event_name == 'release'
+  #   with:
+  #     environment: "prd"
+  #     build_artifact_name: "buildDotNetCore"
+  #     report_artifact_name: "reportDotNetCore"
+  #     working_directory: "code/MyDotNetCoreSqlProject/"
+  #     project_name: "MyDotNetCoreSqlProject"
+  #   secrets:
+  #     azure_subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+  #     target_server_name: ${{ secrets.SQL_SERVER_NAME }}
+  #     target_database_name: ${{ secrets.SQL_DATABASE_NAME }}
+  #     tenant_id: ${{ secrets.TENANT_ID }}
+  #     client_id: ${{ secrets.CLIENT_ID }}
+  #     client_secret: ${{ secrets.CLIENT_SECRET }}
+
+  infra_deployment_prd:
+    uses: ./.github/workflows/infraDeploymentTemplate.yml
+    name: "Deployment of IaC templates - Prd"
+    needs: [infra_validation_prd]  #, synapse_validation_prd, sql_dotnetcore_report_prd]
+    if: github.event_name == 'release'
+    with:
+      environment: "prd"
+    secrets:
+      azure_subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      azure_resource_group_name: ${{ secrets.AZURE_RESOURCE_GROUP_NAME }}
+      azure_location_name: ${{ secrets.AZURE_LOCATION }}
+      tenant_id: ${{ secrets.TENANT_ID }}
+      client_id: ${{ secrets.CLIENT_ID }}
+      client_secret: ${{ secrets.CLIENT_SECRET }}
+
+  synapse_deployment_prd:
+    uses: ./.github/workflows/synapseDeploymentTemplate.yml
+    name: "Deployment of Synapse artifacts - Prd"
+    needs: [infra_deployment_prd]
+    if: github.event_name == 'release'
+    with:
+      environment: "prd"
+      source_synapse_workspace_name: "data-auto-dev-synapse001"
+      target_synapse_workspace_name: "data-auto-tst-synapse001"
+    secrets:
+      azure_subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      azure_resource_group_name: ${{ secrets.AZURE_RESOURCE_GROUP_NAME }}
+      tenant_id: ${{ secrets.TENANT_ID }}
+      client_id: ${{ secrets.CLIENT_ID }}
+      client_secret: ${{ secrets.CLIENT_SECRET }}
+
+  sql_dotnetcore_deployment_prd:
+    uses: ./.github/workflows/sqlDeploymentTemplate.yml
+    name: "Deploy SQL Changes - Prd"
+    needs: [synapse_deployment_prd]
+    if: github.event_name == 'release'
+    with:
+      environment: "prd"
+      build_artifact_name: "buildDotNetCore"
+      working_directory: "code/MyDotNetCoreSqlProject/"
+      project_name: "MyDotNetCoreSqlProject"
+    secrets:
+      azure_subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      target_server_name: ${{ secrets.SQL_SERVER_NAME }}
+      target_database_name: ${{ secrets.SQL_DATABASE_NAME }}
+      tenant_id: ${{ secrets.TENANT_ID }}
+      client_id: ${{ secrets.CLIENT_ID }}
+      client_secret: ${{ secrets.CLIENT_SECRET }}

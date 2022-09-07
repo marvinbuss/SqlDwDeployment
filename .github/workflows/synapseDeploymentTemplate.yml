@@ -17,15 +17,15 @@ on:
         type: string
         description: "Specifies the name of the synapse workspace."
     secrets:
-      tenant_id:
-        required: true
-        description: "Specifies the tenant id of the deployment."
       azure_subscription_id:
         required: true
         description: "Specifies the subscription id of the deployment."
       azure_resource_group_name:
         required: true
         description: "Specifies the name of the resource group for the deployment."
+      tenant_id:
+        required: true
+        description: "Specifies the tenant id of the deployment."
       client_id:
         required: true
         description: "Specifies the client id."
@@ -54,7 +54,7 @@ jobs:
         with:
           creds: '{"clientId":"${{ secrets.client_id }}","clientSecret":"${{ secrets.client_secret }}","subscriptionId":"${{ secrets.azure_subscription_id }}","tenantId":"${{ secrets.tenant_id }}"}'
           enable-AzPSSession: true
-      
+
       # Install Required Modules
       - name: Install Required Modules
         id: install_modules
@@ -63,18 +63,18 @@ jobs:
           Install-Module Az -ErrorAction Stop
         shell: pwsh
         working-directory: ${{ github.workspace }}/code/Scripts
-      
+
       # Synapse Pre-Processing Step
       - name: Synapse Pre-Processing Step
         id: synapse_preprocessing
         run: |
           ./SynapseRolloutPreprocessing.ps1 `
             -SubscriptionId "${{ secrets.azure_subscription_id }}" `
-            -SynapseWorkspaceName "${{ inputs.synapse_workspace_name }}" `
+            -SynapseWorkspaceName "${{ inputs.target_synapse_workspace_name }}" `
             -CheckPastDaysOfPipelineRuns 1
         shell: pwsh
         working-directory: ${{ github.workspace }}/code/Scripts
-      
+
       # Deploy Synapse Artifacts
       - name: Deploy Synapse Artifacts
         id: deployment_synapse
@@ -83,10 +83,10 @@ jobs:
           TargetWorkspaceName: ${{ inputs.target_synapse_workspace_name }}
           TemplateFile: ${{ github.workspace }}/${{ inputs.source_synapse_workspace_name }}/TemplateForWorkspace.json
           ParametersFile: ${{ github.workspace }}/code/synapseParameters/params.${{ inputs.target_synapse_workspace_name }}.json
-          # ArtifactsFolder: 
+          # ArtifactsFolder:
           operation: "deploy"
           deployManagedPrivateEndpoint: true
-          # OverrideArmParameters: 
+          # OverrideArmParameters:
           DeleteArtifactsNotInTemplate: true
           Environment: "Azure Public"
           tenantId: ${{ secrets.tenant_id }}
@@ -96,16 +96,16 @@ jobs:
           clientSecret: ${{ secrets.client_secret }}
           managedIdentity: false
 
-      # Synapse Post-Processing Step
-      - name: Synapse Post-Processing Step
-        id: synapse_postprocessing
-        run: |
-          ./SynapseRolloutPostprocessing.ps1 `
-            -SubscriptionId "${{ secrets.azure_subscription_id }}" `
-            -SynapseWorkspaceName "${{ inputs.synapse_workspace_name }}" `
-            -TriggerNames "${{ steps.synapse_preprocessing.outputs.triggerNames }}"
-        shell: pwsh
-        working-directory: ${{ github.workspace }}/code/Scripts
+      # # Synapse Post-Processing Step
+      # - name: Synapse Post-Processing Step
+      #   id: synapse_postprocessing
+      #   run: |
+      #     ./SynapseRolloutPostprocessing.ps1 `
+      #       -SubscriptionId "${{ secrets.azure_subscription_id }}" `
+      #       -SynapseWorkspaceName "${{ inputs.target_synapse_workspace_name }}" `
+      #       -TriggerNames "${{ steps.synapse_preprocessing.outputs.triggerNames }}"
+      #   shell: pwsh
+      #   working-directory: ${{ github.workspace }}/code/Scripts
 
       # Log out from Azure
       - name: Log out from Azure

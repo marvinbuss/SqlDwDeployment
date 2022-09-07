@@ -27,7 +27,7 @@ jobs:
       - name: Check Out Repository
         id: checkout_repository
         uses: actions/checkout@v3
-      
+
       # Setup msbuild
       - name: Add msbuild to PATH
         id: msbuild_setup
@@ -39,7 +39,7 @@ jobs:
         run: |
           msbuild.exe  MyDotNetSqlProject.sqlproj /p:Configuration=Release /p:OutputPath=.\${{ env.BUILD_PATH }}
         working-directory: ${{ inputs.working_directory }}
-      
+
       # Upload SQL Package Artifacts
       - name: Upload Build Artifacts
         id: build_artifacts

@@ -7,7 +7,23 @@
     <DSP>Microsoft.Data.Tools.Schema.Sql.SqlDwDatabaseSchemaProvider</DSP>
     <ModelCollation>1033, CI</ModelCollation>
   </PropertyGroup>
+  <ItemGroup>
+    <SqlCmdVariable Include="InputParameter">
+      <DefaultValue>MyInputParameter</DefaultValue>
+      <Value>$(SqlCmdVar__1)</Value>
+    </SqlCmdVariable>
+  </ItemGroup>
   <Target Name="BeforeBuild">
     <Delete Files="$(BaseIntermediateOutputPath)\project.assets.json" />
   </Target>
+  <ItemGroup>
+    <Folder Include="PreDeploymentScripts\" />
+    <Folder Include="PostDeploymentScripts\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PreDeploy Include="PreDeploymentScripts\MyPreDeploymentScript001.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <PostDeploy Include="PostDeploymentScripts\MyPostDeploymentScript001.sql" />
+  </ItemGroup>
 </Project>

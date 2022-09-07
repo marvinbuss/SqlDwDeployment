@@ -18,9 +18,15 @@ on:
       azure_location_name:
         required: true
         description: "Specifies the location name of the deployment."
-      azure_credentials:
+      tenant_id:
         required: true
-        description: "Specifies the azure credentials used for authentication."
+        description: "Specifies the tenant id of the deployment."
+      client_id:
+        required: true
+        description: "Specifies the client id."
+      client_secret:
+        required: true
+        description: "Specifies the client secret."
 
 jobs:
   deployment:
@@ -41,7 +47,7 @@ jobs:
         id: azure_login
         uses: azure/login@v1
         with:
-          creds: ${{ secrets.azure_credentials }}
+          creds:  '{"clientId":"${{ secrets.client_id }}","clientSecret":"${{ secrets.client_secret }}","subscriptionId":"${{ secrets.azure_subscription_id }}","tenantId":"${{ secrets.tenant_id }}"}'
 
       # Deploy Template
       - name: Deploy Template
@@ -55,7 +61,7 @@ jobs:
           template: ${{ github.workspace }}/infra/main.bicep
           parameters: ${{ github.workspace }}/infra/params.${{ inputs.environment }}.json
           deploymentMode: Incremental
-          deploymentName: "App-${{ github.sha }}"
+          deploymentName: "${{ inputs.environment }}-${{ github.sha }}"
           failOnStdErr: false
 
       # Log out from Azure
