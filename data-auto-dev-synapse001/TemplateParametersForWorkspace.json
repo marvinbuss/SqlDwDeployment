@@ -8,6 +8,9 @@
 		"data-auto-dev-synapse001-WorkspaceDefaultSqlServer_connectionString": {
 			"value": ""
 		},
+		"mySqlPoolIrisTable_properties_sqlPool_sqlPoolReference": {
+			"value": "sqlPool001"
+		},
 		"data-auto-dev-synapse001-WorkspaceDefaultSqlServer_properties_typeProperties_connectionString": {
 			"value": ""
 		},
@@ -16,6 +19,15 @@
 		},
 		"defaultKeyVault_properties_typeProperties_baseUrl": {
 			"value": "https://data-auto-dev-vault001.vault.azure.net/"
+		},
+		"GrantAccess_properties_content_currentConnection_databaseName": {
+			"value": "sqlPool001"
+		},
+		"GrantAccess_properties_content_currentConnection_poolName": {
+			"value": "sqlPool001"
+		},
+		"myNotebook_properties_bigDataPool_bigDataPoolReference": {
+			"value": "bigDataPool001"
 		},
 		"Purview_properties_managedPrivateEndpointPrivateLinkResourceId": {
 			"value": "/subscriptions/558bd446-4212-46a2-908c-9ab0a628705e/resourceGroups/synapse-rg/providers/Microsoft.Purview/accounts/marvtest"
