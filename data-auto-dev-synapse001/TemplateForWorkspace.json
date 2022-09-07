@@ -11,6 +11,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'data-auto-dev-synapse001-WorkspaceDefaultSqlServer'"
 		},
+		"mySqlPoolIrisTable_properties_sqlPool_sqlPoolReference": {
+			"type": "string",
+			"defaultValue": "sqlPool001"
+		},
 		"data-auto-dev-synapse001-WorkspaceDefaultSqlServer_properties_typeProperties_connectionString": {
 			"type": "string"
 		},
@@ -137,12 +141,12 @@
 					"table": "Iris"
 				},
 				"sqlPool": {
-					"referenceName": "sqlPool001",
+					"referenceName": "[parameters('mySqlPoolIrisTable_properties_sqlPool_sqlPoolReference')]",
 					"type": "SqlPoolReference"
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('workspaceId'), '/sqlPools/sqlPool001')]"
+				"[concat(variables('workspaceId'), '/sqlPools/', parameters('mySqlPoolIrisTable_properties_sqlPool_sqlPoolReference'))]"
 			]
 		},
 		{
@@ -350,6 +354,18 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('workspaceName'), '/sqlPool001')]",
+			"type": "Microsoft.Synapse/workspaces/sqlPools",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"collation": "SQL_Latin1_General_CP1_CI_AS",
+				"maxSizeBytes": 263882790666240,
+				"annotations": []
+			},
+			"dependsOn": [],
+			"location": "westeurope"
+		},
+		{
 			"name": "[concat(parameters('workspaceName'), '/bigDataPool001')]",
 			"type": "Microsoft.Synapse/workspaces/bigDataPools",
 			"apiVersion": "2019-06-01-preview",
@@ -370,18 +386,6 @@
 				"isComputeIsolationEnabled": false,
 				"sessionLevelPackagesEnabled": true,
 				"customLibraries": [],
-				"annotations": []
-			},
-			"dependsOn": [],
-			"location": "westeurope"
-		},
-		{
-			"name": "[concat(parameters('workspaceName'), '/sqlPool001')]",
-			"type": "Microsoft.Synapse/workspaces/sqlPools",
-			"apiVersion": "2019-06-01-preview",
-			"properties": {
-				"collation": "SQL_Latin1_General_CP1_CI_AS",
-				"maxSizeBytes": 263882790666240,
 				"annotations": []
 			},
 			"dependsOn": [],

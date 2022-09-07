@@ -8,6 +8,9 @@
 		"data-auto-dev-synapse001-WorkspaceDefaultSqlServer_connectionString": {
 			"value": ""
 		},
+		"mySqlPoolIrisTable_properties_sqlPool_sqlPoolReference": {
+			"value": "sqlPool001"
+		},
 		"data-auto-dev-synapse001-WorkspaceDefaultSqlServer_properties_typeProperties_connectionString": {
 			"value": ""
 		},
