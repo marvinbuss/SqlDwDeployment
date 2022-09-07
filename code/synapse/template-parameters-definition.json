@@ -44,10 +44,17 @@
         }
     },
     "Microsoft.Synapse/workspaces/datasets": {
-        "*": {
+        "SqlPoolTable": {
             "properties": {
                 "sqlPool": {
                     "referenceName": "=:sqlPoolReference:string"
+                }
+            }
+        },
+        "*": {
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "=:reference:string"
                 }
             }
         }
