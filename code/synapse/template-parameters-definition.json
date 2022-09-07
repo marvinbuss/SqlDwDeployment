@@ -54,6 +54,17 @@
             }
         }
     },
+    "Microsoft.Synapse/workspaces/sqlscripts": {
+        "*": {
+            "properties": {
+                "content": {
+                    "currentConnection": {
+                        "*": "=:sqlPoolReference:object"
+                    }
+                }
+            }
+        }
+    },
     "Microsoft.Synapse/workspaces/managedVirtualNetworks/managedPrivateEndpoints": {
         "properties": {
             "privateLinkResourceId": "=:managedPrivateEndpointPrivateLinkResourceId:string",
