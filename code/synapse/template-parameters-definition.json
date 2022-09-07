@@ -52,11 +52,18 @@
             }
         }
     },
-    "Microsoft.Synapse/workspaces/sqlscripts": {
-        "properties": {
-            "content": {
-                "currentConnection": {
-                    "*": "="
+    "Microsoft.Synapse/workspaces/datasets": {
+        "SqlPoolTable": {
+            "properties": {
+                "sqlPool": {
+                    "referenceName": "=:sqlPoolReference:string"
+                }
+            }
+        },
+        "*": {
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "=:referenceName:string"
                 }
             }
         }
