@@ -56,7 +56,7 @@
         "properties": {
             "content": {
                 "currentConnection": {
-                    "*": "=:sqlPoolReference:object"
+                    "*": "="
                 }
             }
         }
