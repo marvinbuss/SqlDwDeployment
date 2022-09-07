@@ -7,11 +7,9 @@
         }
     },
     "Microsoft.Synapse/workspaces/notebooks": {
-        "*": {
-            "properties": {
-                "bigDataPool": {
-                    "referenceName": "=:bigDataPoolReference:string"
-                }
+        "properties": {
+            "bigDataPool": {
+                "referenceName": "=:bigDataPoolReference:string"
             }
         }
     },
@@ -55,12 +53,10 @@
         }
     },
     "Microsoft.Synapse/workspaces/sqlscripts": {
-        "*": {
-            "properties": {
-                "content": {
-                    "currentConnection": {
-                        "*": "=:sqlPoolReference:object"
-                    }
+        "properties": {
+            "content": {
+                "currentConnection": {
+                    "*": "=:sqlPoolReference:object"
                 }
             }
         }
