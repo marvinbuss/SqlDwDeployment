@@ -63,7 +63,7 @@
         "*": {
             "properties": {
                 "linkedServiceName": {
-                    "referenceName": "=:referenceName:string"
+                    "referenceName": "=:reference:string"
                 }
             }
         }
