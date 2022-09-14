@@ -8,6 +8,9 @@
 		"data-auto-dev-synapse001-WorkspaceDefaultSqlServer_connectionString": {
 			"value": ""
 		},
+		"WaitPipeline_properties_1_typeProperties_sparkPool_bigDataPoolReference": {
+			"value": "bigDataPool001"
+		},
 		"mySqlPoolIrisTable_properties_sqlPool_sqlPoolReference": {
 			"value": "sqlPool001"
 		},
