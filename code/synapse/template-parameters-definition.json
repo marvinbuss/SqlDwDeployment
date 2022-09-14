@@ -59,6 +59,19 @@
             }
         }
     },
+    "Microsoft.Synapse/workspaces/pipelines": {
+        "properties": {
+            "activities": [
+                {
+                    "typeProperties": {
+                        "sparkPool": {
+                            "referenceName": "=:bigDataPoolReference:string"
+                        }
+                    }
+                }
+            ]
+        }
+    },
     "Microsoft.Synapse/workspaces/sqlscripts": {
         "properties": {
             "content": {
