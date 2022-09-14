@@ -11,6 +11,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'data-auto-dev-synapse001-WorkspaceDefaultSqlServer'"
 		},
+		"WaitPipeline_properties_1_typeProperties_sparkPool_bigDataPoolReference": {
+			"type": "string",
+			"defaultValue": "bigDataPool001"
+		},
 		"mySqlPoolIrisTable_properties_sqlPool_sqlPoolReference": {
 			"type": "string",
 			"defaultValue": "sqlPool001"
@@ -128,12 +132,17 @@
 							},
 							"snapshot": true,
 							"sparkPool": {
-								"referenceName": "bigDataPool001",
+								"referenceName": "[parameters('WaitPipeline_properties_1_typeProperties_sparkPool_bigDataPoolReference')]",
 								"type": "BigDataPoolReference"
 							},
 							"executorSize": null,
-							"conf": {},
-							"driverSize": null
+							"conf": {
+								"spark.dynamicAllocation.enabled": null,
+								"spark.dynamicAllocation.minExecutors": null,
+								"spark.dynamicAllocation.maxExecutors": null
+							},
+							"driverSize": null,
+							"numExecutors": null
 						}
 					}
 				],
@@ -145,7 +154,7 @@
 			},
 			"dependsOn": [
 				"[concat(variables('workspaceId'), '/notebooks/myNotebook')]",
-				"[concat(variables('workspaceId'), '/bigDataPools/bigDataPool001')]"
+				"[concat(variables('workspaceId'), '/bigDataPools/', parameters('WaitPipeline_properties_1_typeProperties_sparkPool_bigDataPoolReference'))]"
 			]
 		},
 		{
@@ -423,7 +432,7 @@
 						"spark.dynamicAllocation.enabled": "true",
 						"spark.dynamicAllocation.minExecutors": "1",
 						"spark.dynamicAllocation.maxExecutors": "9",
-						"spark.autotune.trackingId": "ace278c4-fbdb-478b-8538-3ca7dcb0ef3e"
+						"spark.autotune.trackingId": "b96c07d7-48aa-46ea-aaee-088eb16b5410"
 					}
 				},
 				"metadata": {
@@ -448,15 +457,13 @@
 						"sparkVersion": "3.2",
 						"nodeCount": 3,
 						"cores": 4,
-						"memory": 28,
-						"automaticScaleJobs": true
+						"memory": 28
 					},
 					"sessionKeepAliveTimeout": 30
 				},
 				"cells": [
 					{
 						"cell_type": "code",
-						"metadata": {},
 						"source": [
 							"print(\"Hello World!\")"
 						],
