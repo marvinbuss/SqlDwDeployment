@@ -11,6 +11,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'data-auto-dev-synapse001-WorkspaceDefaultSqlServer'"
 		},
+		"WaitPipeline_properties_1_typeProperties_sparkPool_bigDataPoolReference": {
+			"type": "string",
+			"defaultValue": "bigDataPool001"
+		},
 		"mySqlPoolIrisTable_properties_sqlPool_sqlPoolReference": {
 			"type": "string",
 			"defaultValue": "sqlPool001"
@@ -96,10 +100,49 @@
 					{
 						"name": "Wait",
 						"type": "Wait",
-						"dependsOn": [],
+						"dependsOn": [
+							{
+								"activity": "myNotebook",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
 						"userProperties": [],
 						"typeProperties": {
 							"waitTimeInSeconds": 1
+						}
+					},
+					{
+						"name": "myNotebook",
+						"type": "SynapseNotebook",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"notebook": {
+								"referenceName": "myNotebook",
+								"type": "NotebookReference"
+							},
+							"snapshot": true,
+							"sparkPool": {
+								"referenceName": "[parameters('WaitPipeline_properties_1_typeProperties_sparkPool_bigDataPoolReference')]",
+								"type": "BigDataPoolReference"
+							},
+							"executorSize": null,
+							"conf": {
+								"spark.dynamicAllocation.enabled": null,
+								"spark.dynamicAllocation.minExecutors": null,
+								"spark.dynamicAllocation.maxExecutors": null
+							},
+							"driverSize": null,
+							"numExecutors": null
 						}
 					}
 				],
@@ -109,7 +152,10 @@
 				},
 				"annotations": []
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/notebooks/myNotebook')]",
+				"[concat(variables('workspaceId'), '/bigDataPools/', parameters('WaitPipeline_properties_1_typeProperties_sparkPool_bigDataPoolReference'))]"
+			]
 		},
 		{
 			"name": "[concat(parameters('workspaceName'), '/mySqlPoolIrisTable')]",
@@ -386,7 +432,7 @@
 						"spark.dynamicAllocation.enabled": "true",
 						"spark.dynamicAllocation.minExecutors": "1",
 						"spark.dynamicAllocation.maxExecutors": "9",
-						"spark.autotune.trackingId": "c604ad61-5042-494b-84ef-ab33cb6dae2d"
+						"spark.autotune.trackingId": "b96c07d7-48aa-46ea-aaee-088eb16b5410"
 					}
 				},
 				"metadata": {
@@ -419,7 +465,7 @@
 					{
 						"cell_type": "code",
 						"source": [
-							""
+							"print(\"Hello World!\")"
 						],
 						"outputs": [],
 						"execution_count": null
