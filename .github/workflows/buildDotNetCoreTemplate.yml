@@ -36,7 +36,7 @@ jobs:
       # Setup .NET
       - name: Setup .NET
         id: dotnet_setup
-        uses: actions/setup-dotnet@v2
+        uses: actions/setup-dotnet@v3
         with:
           dotnet-version: ${{ inputs.dotnet_version }}
 
