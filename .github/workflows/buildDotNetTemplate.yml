@@ -31,7 +31,7 @@ jobs:
       # Setup msbuild
       - name: Add msbuild to PATH
         id: msbuild_setup
-        uses: microsoft/setup-msbuild@v1.1
+        uses: microsoft/setup-msbuild@v1.3
 
       # Build Database project
       - name: Build Database project
