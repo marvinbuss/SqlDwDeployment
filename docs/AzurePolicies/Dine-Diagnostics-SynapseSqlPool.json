@@ -3,7 +3,7 @@
   "name": "Dine-Diagnostics-SynapseSqlPool",
   "properties": {
     "displayName": "Configure Synapse SQL Pools to have diagnostics enabled to Log Analytics workspace",
-    "policyType": "BuiltIn",
+    "policyType": "Custom",
     "mode": "Indexed",
     "description": "To ensure the operations performed against your Synapse SQL pool are captured, Synapse SQL pools should have diagnostics enabled. If diagnostics is not enabled, this policy will configure events to flow to the specified Log Analytics workspace.",
     "metadata": {

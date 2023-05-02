@@ -3,7 +3,7 @@
   "name": "Dine-Diagnostics-SynapseBigDataPool",
   "properties": {
     "displayName": "Configure Synapse Big Data Pools to have diagnostics enabled to Log Analytics workspace",
-    "policyType": "BuiltIn",
+    "policyType": "Custom",
     "mode": "Indexed",
     "description": "To ensure the operations performed against your Synapse Big Data pool are captured, Synapse Big Data pools should have diagnostics enabled. If diagnostics is not enabled, this policy will configure events to flow to the specified Log Analytics workspace.",
     "metadata": {

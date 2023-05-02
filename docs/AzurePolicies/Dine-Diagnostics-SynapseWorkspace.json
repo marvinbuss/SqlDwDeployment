@@ -3,7 +3,7 @@
   "name": "Dine-Diagnostics-SynapseWorkspace",
   "properties": {
     "displayName": "Configure Synapse workspaces to have diagnostics enabled to Log Analytics workspace",
-    "policyType": "BuiltIn",
+    "policyType": "Custom",
     "mode": "Indexed",
     "description": "To ensure the operations performed against your Synapse Workspace are captured, Synapse workspaces should have diagnostics enabled. If diagnostics is not enabled, this policy will configure events to flow to the specified Log Analytics workspace.",
     "metadata": {

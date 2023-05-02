@@ -3,7 +3,7 @@
   "name": "Deny-TrustedServiceBypassEnabled-SynapseWorkspace",
   "properties": {
     "displayName": "Restrict trusted services bypass for Synapse workspaces",
-    "policyType": "BuiltIn",
+    "policyType": "Custom",
     "mode": "Indexed",
     "description": "This policy block the creation of firewall rules to be created for a Synapse workspace to enforce connectivity via Private Endpoints as the only option.",
     "metadata": {

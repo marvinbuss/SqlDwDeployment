@@ -3,7 +3,7 @@
   "name": "Deny-Logging-SynapseSpark",
   "properties": {
     "displayName": "Synapse Spark Pools should have logging configured",
-    "policyType": "BuiltIn",
+    "policyType": "Custom",
     "mode": "Indexed",
     "description": "This policy enforces logging to be confiigured for Spark pools. If not configured, this policy blocks the ceration of Spark pools.",
     "metadata": {

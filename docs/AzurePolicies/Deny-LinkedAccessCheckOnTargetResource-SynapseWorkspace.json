@@ -3,7 +3,7 @@
   "name": "Deny-LinkedAccessCheckOnTargetResource-SynapseWorkspace",
   "properties": {
     "displayName": "Enforce linked access checks in target resource for Synapse workspaces",
-    "policyType": "BuiltIn",
+    "policyType": "Custom",
     "mode": "Indexed",
     "description": "This policy enforces the linked access checks in target resource for Synapse workspaces.",
     "metadata": {

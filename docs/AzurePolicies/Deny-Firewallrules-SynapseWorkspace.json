@@ -3,8 +3,8 @@
   "name": "Deny-Firewallrules-SynapseWorkspace",
   "properties": {
     "displayName": "Restrict firewall rules from being added to Synapse workspaces",
-    "policyType": "BuiltIn",
-    "mode": "Indexed",
+    "policyType": "Custom",
+    "mode": "All",
     "description": "This policy block the creation of firewall rules to be created for a Synapse workspace to enforce connectivity via Private Endpoints as the only option.",
     "metadata": {
       "version": "1.0.0",
