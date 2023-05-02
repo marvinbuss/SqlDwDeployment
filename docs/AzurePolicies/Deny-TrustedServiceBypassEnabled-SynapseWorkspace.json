@@ -1,0 +1,54 @@
+{
+  "type": "Microsoft.Authorization/policyDefinitions",
+  "name": "Deny-TrustedServiceBypassEnabled-SynapseWorkspace",
+  "properties": {
+    "displayName": "Restrict trusted services bypass for Synapse workspaces",
+    "policyType": "BuiltIn",
+    "mode": "Indexed",
+    "description": "This policy block the creation of firewall rules to be created for a Synapse workspace to enforce connectivity via Private Endpoints as the only option.",
+    "metadata": {
+      "version": "1.0.0",
+      "category": "Synapse"
+    },
+    "parameters": {
+      "effect": {
+        "type": "String",
+        "metadata": {
+          "displayName": "Effect",
+          "description": "Enable or disable the execution of the policy"
+        },
+        "allowedValues": [
+          "Audit",
+          "Disabled",
+          "Deny"
+        ],
+        "defaultValue": "Deny"
+      }
+    },
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.Synapse/workspaces"
+          },
+          {
+            "anyOf": [
+              {
+                "field": "Microsoft.Synapse/workspaces/trustedServiceBypassEnabled",
+                "exists": false
+              },
+              {
+                "field": "Microsoft.Synapse/workspaces/trustedServiceBypassEnabled",
+                "notEquals": false
+              }
+            ]
+          }
+        ]
+      },
+      "then": {
+        "effect": "[parameters('effect')]"
+      }
+    }
+  }
+}

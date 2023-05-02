@@ -1,0 +1,106 @@
+{
+  "type": "Microsoft.Authorization/policyDefinitions",
+  "name": "Dine-Auditing-SynapseWorkspace",
+  "properties": {
+    "displayName": "Configure Synapse workspaces to have auditing enabled to Log Analytics workspace",
+    "policyType": "BuiltIn",
+    "mode": "Indexed",
+    "description": "To ensure the operations performed against your Synapse Workspace are captured, Synapse workspaces should have auditing enabled. If auditing is not enabled, this policy will configure events to flow to the specified Log Analytics workspace.",
+    "metadata": {
+      "version": "1.0.0",
+      "category": "Synapse"
+    },
+    "parameters": {
+      "effect": {
+        "type": "String",
+        "metadata": {
+          "displayName": "Effect",
+          "description": "Enable or disable the execution of the policy"
+        },
+        "allowedValues": [
+          "DeployIfNotExists",
+          "Disabled"
+        ],
+        "defaultValue": "DeployIfNotExists"
+      },
+      "logAnalyticsWorkspaceId": {
+        "type": "String",
+        "metadata": {
+          "displayName": "Log Analytics Workspace ID",
+          "description": "Select the Log Analytics workspace from the dropdown list",
+          "strongType": "omsWorkspace",
+          "assignPermissions": true
+        }
+      }
+    },
+    "policyRule": {
+      "if": {
+        "field": "type",
+        "equals": "Microsoft.Synapse/workspaces"
+      },
+      "then": {
+        "effect": "[parameters('effect')]",
+        "details": {
+          "type": "Microsoft.Synapse/workspaces/auditingSettings",
+          "name": "Default",
+          "existenceCondition": {
+            "field": "Microsoft.Synapse/workspaces/auditingSettings/state",
+            "equals": "Enabled"
+          },
+          "roleDefinitionIds": [
+            "/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c"
+          ],
+          "deployment": {
+            "properties": {
+              "mode": "incremental",
+              "template": {
+                "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                "contentVersion": "1.0.0.0",
+                "parameters": {
+                  "resourceName": {
+                    "type": "string"
+                  },
+                  "location": {
+                    "type": "string"
+                  },
+                  "logAnalytics": {
+                    "type": "string"
+                  }
+                },
+                "resources": [
+                  {
+                    "type": "Microsoft.Synapse/workspaces/auditingSettings",
+                    "name": "[concat(parameters('resourceName'),'/default')]",
+                    "apiVersion": "2021-06-01",
+                    "properties": {
+                      "auditActionsAndGroups": [
+                        // Add additional groups according to: https://learn.microsoft.com/en-us/sql/relational-databases/security/auditing/sql-server-audit-action-groups-and-actions?view=sql-server-ver16#database-level-audit-action-groups
+                        "SUCCESSFUL_DATABASE_AUTHENTICATION_GROUP",
+                        "FAILED_DATABASE_AUTHENTICATION_GROUP",
+                        "BATCH_COMPLETED_GROUP"
+                      ],
+                      "state": "Enabled",
+                      "isAzureMonitorTargetEnabled": true,
+                      "isDevopsAuditEnabled": true
+                    }
+                  }
+                ]
+              },
+              "parameters": {
+                "location": {
+                  "value": "[field('location')]"
+                },
+                "resourceName": {
+                  "value": "[field('fullName')]"
+                },
+                "logAnalytics": {
+                  "value": "[parameters('logAnalytics')]"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
