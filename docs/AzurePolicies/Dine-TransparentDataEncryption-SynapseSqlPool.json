@@ -1,0 +1,93 @@
+{
+  "type": "Microsoft.Authorization/policyDefinitions",
+  "name": "Dine-TransparentDataEncryption-SynapseSqlPool",
+  "properties": {
+    "displayName": "Configure Synapse SQL Pool Transparent Data Encryption",
+    "policyType": "Custom",
+    "mode": "Indexed",
+    "description": "This policy enforces encryption of data at rest in Synapse SQL pools. If diagnostics is not enabled, this policy will configure it for the workspace.",
+    "metadata": {
+      "version": "1.0.0",
+      "category": "Synapse"
+    },
+    "parameters": {
+      "effect": {
+        "type": "String",
+        "metadata": {
+          "displayName": "Effect",
+          "description": "Enable or disable the execution of the policy"
+        },
+        "allowedValues": [
+          "DeployIfNotExists",
+          "Disabled"
+        ],
+        "defaultValue": "DeployIfNotExists"
+      }
+    },
+    "policyRule": {
+      "if": {
+        "field": "type",
+        "equals": "Microsoft.Synapse/workspaces/sqlPools"
+      },
+      "then": {
+        "effect": "[parameters('effect')]",
+        "details": {
+          "type": "Microsoft.Insights/diagnosticSettings",
+          "name": "[parameters('profileName')]",
+          "existenceCondition": {
+            "allOf": [
+              {
+                "field": "Microsoft.Synapse/workspaces/sqlPools/transparentDataEncryption/status",
+                "equals": "Enabled"
+              }
+            ]
+          },
+          "roleDefinitionIds": [
+            "/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c"
+          ],
+          "deployment": {
+            "properties": {
+              "mode": "incremental",
+              "template": {
+                "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                "contentVersion": "1.0.0.0",
+                "parameters": {
+                  "location": {
+                    "type": "string"
+                  },
+                  "synapseWorkspaceName": {
+                    "type": "string"
+                  },
+                  "synapseSqlPoolName": {
+                    "type": "string"
+                  }
+                },
+                "resources": [
+                  {
+                    "type": "Microsoft.Synapse/workspaces/sqlPools/transparentDataEncryption",
+                    "apiVersion": "2019-06-01-preview",
+                    "name": "[concat(parameters('synapseWorkspaceName'), '/', parameters('synapseSqlPoolName'), '/current')]",
+                    "properties": {
+                      "status": "Enabled"
+                    }
+                  }
+                ]
+              },
+              "parameters": {
+                "location": {
+                  "value": "[field('location')]"
+                },
+                "synapseWorkspaceName": {
+                  "value": "[first(split(field('fullname'),'/'))]"
+                },
+                "synapseSqlPoolName": {
+                  "value": "[field('name')]"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

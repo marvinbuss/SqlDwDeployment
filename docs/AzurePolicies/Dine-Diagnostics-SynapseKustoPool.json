@@ -1,0 +1,184 @@
+{
+  "type": "Microsoft.Authorization/policyDefinitions",
+  "name": "Dine-Diagnostics-SynapseKustoPool",
+  "properties": {
+    "displayName": "Configure Synapse Kusto Pools to have diagnostics enabled to Log Analytics workspace",
+    "policyType": "Custom",
+    "mode": "Indexed",
+    "description": "To ensure the operations performed against your Synapse Kusto pool are captured, Synapse Kusto pools should have diagnostics enabled. If diagnostics is not enabled, this policy will configure events to flow to the specified Log Analytics workspace.",
+    "metadata": {
+      "version": "1.0.0",
+      "category": "Synapse"
+    },
+    "parameters": {
+      "effect": {
+        "type": "String",
+        "metadata": {
+          "displayName": "Effect",
+          "description": "Enable or disable the execution of the policy"
+        },
+        "allowedValues": [
+          "DeployIfNotExists",
+          "Disabled"
+        ],
+        "defaultValue": "DeployIfNotExists"
+      },
+      "profileName": {
+        "type": "String",
+        "metadata": {
+          "displayName": "Profile name",
+          "description": "The diagnostic settings profile name"
+        },
+        "defaultValue": "setByPolicy"
+      },
+      "logAnalyticsWorkspaceId": {
+        "type": "String",
+        "metadata": {
+          "displayName": "Log Analytics Workspace ID",
+          "description": "Select the Log Analytics workspace from the dropdown list",
+          "strongType": "omsWorkspace",
+          "assignPermissions": true
+        }
+      },
+      "metricsEnabled": {
+        "type": "Boolean",
+        "metadata": {
+          "displayName": "Enable metrics",
+          "description": "Whether to enable metrics stream to the Log Analytics workspace - True or False"
+        },
+        "allowedValues": [
+          true,
+          false
+        ],
+        "defaultValue": true
+      }
+    },
+    "policyRule": {
+      "if": {
+        "field": "type",
+        "equals": "Microsoft.Synapse/workspaces/kustoPools"
+      },
+      "then": {
+        "effect": "[parameters('effect')]",
+        "details": {
+          "type": "Microsoft.Insights/diagnosticSettings",
+          "name": "[parameters('profileName')]",
+          "existenceCondition": {
+            "allOf": [
+              {
+                "field": "Microsoft.Insights/diagnosticSettings/logs.enabled",
+                "equals": "true"
+              },
+              {
+                "field": "Microsoft.Insights/diagnosticSettings/metrics.enabled",
+                "equals": "[parameters('metricsEnabled')]"
+              },
+              {
+                "field": "Microsoft.Insights/diagnosticSettings/workspaceId",
+                "equals": "[parameters('logAnalytics')]"
+              }
+            ]
+          },
+          "roleDefinitionIds": [
+            "/providers/Microsoft.Authorization/roleDefinitions/92aaf0da-9dab-42b6-94a3-d43ce8d16293",
+            "/providers/Microsoft.Authorization/roleDefinitions/749f88d5-cbae-40b8-bcfc-e573ddc772fa"
+          ],
+          "deployment": {
+            "properties": {
+              "mode": "incremental",
+              "template": {
+                "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                "contentVersion": "1.0.0.0",
+                "parameters": {
+                  "resourceName": {
+                    "type": "string"
+                  },
+                  "location": {
+                    "type": "string"
+                  },
+                  "logAnalytics": {
+                    "type": "string"
+                  },
+                  "metricsEnabled": {
+                    "type": "bool"
+                  },
+                  "profileName": {
+                    "type": "string"
+                  }
+                },
+                "resources": [
+                  {
+                    "type": "Microsoft.Synapse/workspaces/kustoPools/providers/diagnosticSettings",
+                    "apiVersion": "2021-05-01-preview",
+                    "name": "[concat(parameters('resourceName'), '/', 'Microsoft.Insights/', parameters('profileName'))]",
+                    "location": "[parameters('location')]",
+                    "properties": {
+                      "workspaceId": "[parameters('logAnalyticsWorkspaceId')]",
+                      "logs": [
+                        {
+                          "category": "SucceededIngestion",
+                          "enabled": true
+                        },
+                        {
+                          "category": "FailedIngestion",
+                          "enabled": true
+                        },
+                        {
+                          "category": "IngestionBatching",
+                          "enabled": true
+                        },
+                        {
+                          "category": "Command",
+                          "enabled": true
+                        },
+                        {
+                          "category": "Query",
+                          "enabled": true
+                        },
+                        {
+                          "category": "TableUsageStatistics",
+                          "enabled": true
+                        },
+                        {
+                          "category": "TableDetails",
+                          "enabled": true
+                        }
+                      ],
+                      "metrics": [
+                        {
+                          "enabled":true,
+                          "retentionPolicy": {
+                            "days":0,
+                            "enabled":false
+                          },
+                          "category":"AllMetrics"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "parameters": {
+                "location": {
+                  "value": "[field('location')]"
+                },
+                "resourceName": {
+                  "value": "[field('fullName')]"
+                },
+                "logAnalytics": {
+                  "value": "[parameters('logAnalytics')]"
+                },
+                "metricsEnabled": {
+                  "value": "[parameters('metricsEnabled')]"
+                },
+                "profileName": {
+                  "value": "[parameters('profileName')]"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

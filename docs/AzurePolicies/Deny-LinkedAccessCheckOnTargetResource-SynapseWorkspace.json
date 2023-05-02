@@ -1,0 +1,54 @@
+{
+  "type": "Microsoft.Authorization/policyDefinitions",
+  "name": "Deny-LinkedAccessCheckOnTargetResource-SynapseWorkspace",
+  "properties": {
+    "displayName": "Enforce linked access checks in target resource for Synapse workspaces",
+    "policyType": "Custom",
+    "mode": "Indexed",
+    "description": "This policy enforces the linked access checks in target resource for Synapse workspaces.",
+    "metadata": {
+      "version": "1.0.0",
+      "category": "Synapse"
+    },
+    "parameters": {
+      "effect": {
+        "type": "String",
+        "metadata": {
+          "displayName": "Effect",
+          "description": "Enable or disable the execution of the policy"
+        },
+        "allowedValues": [
+          "Audit",
+          "Disabled",
+          "Deny"
+        ],
+        "defaultValue": "Deny"
+      }
+    },
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.Synapse/workspaces"
+          },
+          {
+            "anyOf": [
+              {
+                "field": "Microsoft.Synapse/workspaces/managedVirtualNetworkSettings.linkedAccessCheckOnTargetResource",
+                "exists": false
+              },
+              {
+                "field": "Microsoft.Synapse/workspaces/managedVirtualNetworkSettings.linkedAccessCheckOnTargetResource",
+                "notEquals": true
+              }
+            ]
+          }
+        ]
+      },
+      "then": {
+        "effect": "[parameters('effect')]"
+      }
+    }
+  }
+}

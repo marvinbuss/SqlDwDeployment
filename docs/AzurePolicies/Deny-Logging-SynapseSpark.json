@@ -1,0 +1,54 @@
+{
+  "type": "Microsoft.Authorization/policyDefinitions",
+  "name": "Deny-Logging-SynapseSpark",
+  "properties": {
+    "displayName": "Synapse Spark Pools should have logging configured",
+    "policyType": "Custom",
+    "mode": "Indexed",
+    "description": "This policy enforces logging to be confiigured for Spark pools. If not configured, this policy blocks the ceration of Spark pools.",
+    "metadata": {
+      "version": "1.0.0",
+      "category": "Synapse"
+    },
+    "parameters": {
+      "effect": {
+        "type": "String",
+        "metadata": {
+          "displayName": "Effect",
+          "description": "Enable or disable the execution of the policy"
+        },
+        "allowedValues": [
+          "Audit",
+          "Disabled",
+          "Deny"
+        ],
+        "defaultValue": "Deny"
+      }
+    },
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.Synapse/workspaces/bigDataPools"
+          },
+          {
+            "anyOf": [
+              {
+                "field": "Microsoft.Synapse/workspaces/bigDataPools/defaultSparkLogFolder",
+                "exists": false
+              },
+              {
+                "value": "[empty(field('Microsoft.Synapse/workspaces/bigDataPools/defaultSparkLogFolder'))]",
+                "equals": true
+              }
+            ]
+          }
+        ]
+      },
+      "then": {
+        "effect": "[parameters('effect')]"
+      }
+    }
+  }
+}

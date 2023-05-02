@@ -1,0 +1,46 @@
+{
+  "type": "Microsoft.Authorization/policyDefinitions",
+  "name": "Deny-Firewallrules-SynapseWorkspace",
+  "properties": {
+    "displayName": "Restrict firewall rules from being added to Synapse workspaces",
+    "policyType": "Custom",
+    "mode": "All",
+    "description": "This policy block the creation of firewall rules to be created for a Synapse workspace to enforce connectivity via Private Endpoints as the only option.",
+    "metadata": {
+      "version": "1.0.0",
+      "category": "Synapse"
+    },
+    "parameters": {
+      "effect": {
+        "type": "String",
+        "metadata": {
+          "displayName": "Effect",
+          "description": "Enable or disable the execution of the policy"
+        },
+        "allowedValues": [
+          "Audit",
+          "Disabled",
+          "Deny"
+        ],
+        "defaultValue": "Deny"
+      }
+    },
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.Synapse/workspaces/firewallrules"
+          },
+          {
+            "field": "name",
+            "exists": "true"
+          }
+        ]
+      },
+      "then": {
+        "effect": "[parameters('effect')]"
+      }
+    }
+  }
+}
