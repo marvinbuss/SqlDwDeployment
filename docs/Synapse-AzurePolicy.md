@@ -5,7 +5,6 @@ Azure Policies are the tool in AZure to enforce a secure configuration of Azure 
 - [Network Connectivity](#network-connectivity)
 - [Encryption](#encryption)
 - [Authentication](#authentication)
-- [Automation](#automation)
 
 ## Logging and Monitoring
 
@@ -35,6 +34,7 @@ The following Policies are recommended to be applied for a compliant network con
 | Data Exfiltration Protection           | [3484ce98-c0c5-4c83-994b-c5ac24785218](https://portal.azure.com/#view/Microsoft_Azure_Policy/PolicyDetailBlade/definitionId/%2Fproviders%2FMicrosoft.Authorization%2FpolicyDefinitions%2F3484ce98-c0c5-4c83-994b-c5ac24785218) | - | |
 | Linked Access Check on Target Resource | - | [Deny-LinkedAccessCheckOnTargetResource-SynapseWorkspace](/docs/AzurePolicies/Deny-LinkedAccessCheckOnTargetResource-SynapseWorkspace.json) |
 | Deny Trusted Srvices Bypass | - | [Deny-TrustedServiceBypassEnabled-SynapseWorkspace](/docs/AzurePolicies/Deny-TrustedServiceBypassEnabled-SynapseWorkspace.json) | |
+| Private DNS Zone Group for all group IDs | [1e5ed725-f16c-478b-bd4b-7bfa2f7940b9](https://portal.azure.com/#view/Microsoft_Azure_Policy/PolicyDetailBlade/definitionId/%2Fproviders%2FMicrosoft.Authorization%2FpolicyDefinitions%2F1e5ed725-f16c-478b-bd4b-7bfa2f7940b9) | - | Can be assigned with different parameters to cover all sub-resources. | |
 
 ## Encryption
 
@@ -53,11 +53,3 @@ The following Policies are recommended to be applied for a compliant authenticat
 | Purpose                                 | Built-in Policy | Custom Policy | Comment |
 |:----------------------------------------|:----------------|:--------------|:--------|
 | AAD-only Authentication | [2158ddbe-fefa-408e-b43f-d4faef8ff3b8](https://portal.azure.com/#view/Microsoft_Azure_Policy/PolicyDetailBlade/definitionId/%2Fproviders%2FMicrosoft.Authorization%2FpolicyDefinitions%2F2158ddbe-fefa-408e-b43f-d4faef8ff3b8) | - | |
-
-## Automation
-
-The following Policies are recommended to be applied for a compliant automation configuration:
-
-| Purpose                                 | Built-in Policy | Custom Policy | Comment |
-|:----------------------------------------|:----------------|:--------------|:--------|
-| Private DNS Zone Group for all group IDs | [1e5ed725-f16c-478b-bd4b-7bfa2f7940b9](https://portal.azure.com/#view/Microsoft_Azure_Policy/PolicyDetailBlade/definitionId/%2Fproviders%2FMicrosoft.Authorization%2FpolicyDefinitions%2F1e5ed725-f16c-478b-bd4b-7bfa2f7940b9) | - | Can be assigned with different parameters to cover all sub-resources. |
