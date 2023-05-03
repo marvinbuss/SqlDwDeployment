@@ -1,0 +1,20 @@
+{
+	"name": "CreateExternalAccess",
+	"properties": {
+		"folder": {
+			"name": "Samples"
+		},
+		"content": {
+			"query": "CREATE SCHEMA [bdv_etl_schema];\n    AUTHORIZATION [dbo];\n\nCREATE ROLE [business_owner]\nGO\n\nGRANT ALTER ON SCHEMA::bdv_etl_schema TO [business_owner];\nGRANT SELECT, INSERT, UPDATE, DELETE ON SCHEMA :: [bdv_etl_schema] TO [business_owner];\nGRANT CREATE TABLE TO [business_owner];\n\n-- Create external user \nCREATE USER [data-auto-tst-synapse001] FROM EXTERNAL PROVIDER;\n\n-- Add user to role\nEXEC sp_addrolemember 'business_owner', 'data-auto-tst-synapse001';\n",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "master",
+				"poolName": "Built-in"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}
