@@ -1,6 +1,6 @@
 data "azurerm_storage_account" "datalake_workspace" {
-  name                = local.datalake_synapse.name
-  resource_group_name = local.datalake_synapse.resource_group_name
+  name                = local.datalake_workspace.name
+  resource_group_name = local.datalake_workspace.resource_group_name
 }
 
 resource "azapi_resource" "container_workspace" {
@@ -35,7 +35,7 @@ resource "azapi_resource" "container_main" {
 }
 
 resource "azurerm_storage_account_local_user" "storage_account_local_user" {
-  name                 = "${var.prefix}-sftp001"
+  name                 = lower("${var.prefix}user001")
   storage_account_id   = data.azurerm_storage_account.datalake_main.id
   ssh_key_enabled      = false
   ssh_password_enabled = true

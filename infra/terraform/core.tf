@@ -2,6 +2,7 @@ module "core" {
   source = "./modules/core"
 
   location                      = var.location
+  resource_group_name           = azurerm_resource_group.core_rg.name
   environment                   = var.environment
   prefix                        = var.prefix
   tags                          = var.tags

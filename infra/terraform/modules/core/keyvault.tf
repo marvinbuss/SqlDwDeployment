@@ -1,7 +1,7 @@
 resource "azurerm_key_vault" "key_vault" {
   name                = "${local.prefix}-kv001"
   location            = var.location
-  resource_group_name = azurerm_resource_group.governance_rg.name
+  resource_group_name = var.resource_group_name
   tags                = var.tags
 
   access_policy                   = []
@@ -24,7 +24,7 @@ resource "azurerm_key_vault" "key_vault" {
 
 resource "azapi_resource" "key_vault_secret_sftp_username" {
   type      = "Microsoft.KeyVault/vaults/secrets@2023-02-01"
-  name      = "sftpUserName"
+  name      = "sftpUsername"
   parent_id = azurerm_key_vault.key_vault.id
 
   body = jsonencode({
@@ -33,7 +33,7 @@ resource "azapi_resource" "key_vault_secret_sftp_username" {
         enabled = true
       }
       contentType = "text/plain"
-      value       = azurerm_storage_account_local_user.storage_account_local_user.sid
+      value       = azurerm_storage_account_local_user.storage_account_local_user.name
     }
   })
 }
@@ -50,6 +50,38 @@ resource "azapi_resource" "key_vault_secret_sftp_password" {
       }
       contentType = "text/plain"
       value       = azurerm_storage_account_local_user.storage_account_local_user.password
+    }
+  })
+}
+
+resource "azapi_resource" "key_vault_secret_sftp_connection_string" {
+  type      = "Microsoft.KeyVault/vaults/secrets@2023-02-01"
+  name      = "sftpConnectionString"
+  parent_id = azurerm_key_vault.key_vault.id
+
+  body = jsonencode({
+    properties = {
+      attributes = {
+        enabled = true
+      }
+      contentType = "text/plain"
+      value       = "${data.azurerm_storage_account.datalake_main.name}.${azurerm_storage_account_local_user.storage_account_local_user.name}@${data.azurerm_storage_account.datalake_main.name}.blob.core.windows.net"
+    }
+  })
+}
+
+resource "azapi_resource" "key_vault_secret_sftp_sid" {
+  type      = "Microsoft.KeyVault/vaults/secrets@2023-02-01"
+  name      = "sftpSid"
+  parent_id = azurerm_key_vault.key_vault.id
+
+  body = jsonencode({
+    properties = {
+      attributes = {
+        enabled = true
+      }
+      contentType = "text/plain"
+      value       = azurerm_storage_account_local_user.storage_account_local_user.sid
     }
   })
 }

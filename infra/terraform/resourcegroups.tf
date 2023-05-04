@@ -21,3 +21,9 @@ resource "azurerm_resource_group" "gateways_rg" {
   location = var.location
   tags     = var.tags
 }
+
+resource "azurerm_resource_group" "core_rg" {
+  name     = "${local.prefix}-core-rg"
+  location = var.location
+  tags     = var.tags
+}

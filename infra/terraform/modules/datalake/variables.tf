@@ -20,12 +20,6 @@ variable "datalake_filesystem_names" {
   sensitive   = false
 }
 
-variable "sftp_enabled" {
-  description = "Specifies whether SFTP should be enabled."
-  type        = list(string)
-  sensitive   = false
-}
-
 variable "datalake_replication_type" {
   description = "Specifies the replication type of the ADLS Gen2 account."
   type        = string
@@ -35,6 +29,12 @@ variable "datalake_replication_type" {
     condition     = contains(["ZRS", "GZRS"], var.datalake_replication_type)
     error_message = "Please specify a valid replication type."
   }
+}
+
+variable "sftp_enabled" {
+  description = "Specifies whether SFTP should be enabled."
+  type        = bool
+  sensitive   = false
 }
 
 variable "tags" {

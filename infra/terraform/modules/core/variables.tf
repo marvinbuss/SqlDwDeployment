@@ -32,13 +32,19 @@ variable "tags" {
   default     = {}
 }
 
+variable "resource_group_name" {
+  description = "Specifies the resource group name"
+  type        = string
+  sensitive   = false
+}
+
 variable "datalake_id_main" {
   description = "Specifies the resource id of the main data lake."
   type        = string
   sensitive   = false
   default     = ""
   validation {
-    condition     = var.datalake_enriched_id == "" || length(split("/", var.datalake_enriched_id)) == 9
+    condition     = var.datalake_id_main == "" || length(split("/", var.datalake_id_main)) == 9
     error_message = "Please specify a valid resource ID."
   }
 }
@@ -49,7 +55,7 @@ variable "datalake_id_workspace" {
   sensitive   = false
   default     = ""
   validation {
-    condition     = var.datalake_raw_id == "" || length(split("/", var.datalake_raw_id)) == 9
+    condition     = var.datalake_id_workspace == "" || length(split("/", var.datalake_id_workspace)) == 9
     error_message = "Please specify a valid resource ID."
   }
 }

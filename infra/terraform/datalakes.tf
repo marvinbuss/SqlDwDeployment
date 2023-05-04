@@ -7,6 +7,7 @@ module "datalake_main" {
   datalake_name                  = "${local.prefix}-st-data"
   datalake_filesystem_names      = []
   datalake_replication_type      = "ZRS"
+  sftp_enabled                   = false
   subnet_id                      = azapi_resource.storage_subnet.id
   enable_queue_private_endpoint  = false
   enable_table_private_endpoint  = false
@@ -26,6 +27,7 @@ module "datalake_workspace" {
   datalake_name                  = "${local.prefix}-st-wsp"
   datalake_filesystem_names      = []
   datalake_replication_type      = "ZRS"
+  sftp_enabled                   = false
   subnet_id                      = azapi_resource.storage_subnet.id
   enable_queue_private_endpoint  = true
   enable_table_private_endpoint  = true
