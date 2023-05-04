@@ -1,11 +1,11 @@
 locals {
-  datalake_synapse = {
-    resource_group_name = try(split("/", var.datalake_id_synapse)[4], "")
-    name                = try(split("/", var.datalake_id_synapse)[8], "")
+  datalake_workspace = {
+    resource_group_name = try(split("/", var.datalake_id_workspace)[4], "")
+    name                = try(split("/", var.datalake_id_workspace)[8], "")
   }
 
-  datalake_data = {
-    resource_group_name = try(split("/", var.datalake_id_data)[4], "")
-    name                = try(split("/", var.datalake_id_data)[8], "")
+  datalake_main = {
+    resource_group_name = try(split("/", var.datalake_id_main)[4], "")
+    name                = try(split("/", var.datalake_id_main)[8], "")
   }
 }

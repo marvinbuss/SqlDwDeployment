@@ -32,8 +32,19 @@ variable "tags" {
   default     = {}
 }
 
-variable "datalake_id_synapse" {
-  description = "Specifies the resource id of the data lake."
+variable "datalake_id_main" {
+  description = "Specifies the resource id of the main data lake."
+  type        = string
+  sensitive   = false
+  default     = ""
+  validation {
+    condition     = var.datalake_enriched_id == "" || length(split("/", var.datalake_enriched_id)) == 9
+    error_message = "Please specify a valid resource ID."
+  }
+}
+
+variable "datalake_id_workspace" {
+  description = "Specifies the resource id of the workspace data lake."
   type        = string
   sensitive   = false
   default     = ""
@@ -43,13 +54,12 @@ variable "datalake_id_synapse" {
   }
 }
 
-variable "datalake_id_data" {
-  description = "Specifies the resource id of the raw data lake."
+variable "subnet_id" {
+  description = "Specifies the resource ID of the subnet used for the datalake."
   type        = string
   sensitive   = false
-  default     = ""
   validation {
-    condition     = var.datalake_enriched_id == "" || length(split("/", var.datalake_enriched_id)) == 9
+    condition     = length(split("/", var.subnet_id)) == 11
     error_message = "Please specify a valid resource ID."
   }
 }
