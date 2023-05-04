@@ -11,15 +11,6 @@ terraform {
       version = "1.5.0"
     }
   }
-
-  #   backend "azurerm" {
-  #     environment          = "public"
-  #     resource_group_name  = "mycrp-prd-cicd"
-  #     storage_account_name = "mycrpprdstg001"
-  #     container_name       = "data-landing-zone"
-  #     key                  = "terraform.tfstate"
-  #     use_oidc             = true
-  #   }
 }
 
 provider "azurerm" {
