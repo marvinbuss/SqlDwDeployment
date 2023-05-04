@@ -22,6 +22,38 @@ resource "azurerm_key_vault" "key_vault" {
   tenant_id                     = data.azurerm_client_config.current.tenant_id
 }
 
+resource "azapi_resource" "key_vault_secret_sftp_username" {
+  type      = "Microsoft.KeyVault/vaults/secrets@2023-02-01"
+  name      = "sftpUserName"
+  parent_id = azurerm_key_vault.key_vault.id
+
+  body = jsonencode({
+    properties = {
+      attributes = {
+        enabled = true
+      }
+      contentType = "text/plain"
+      value       = azurerm_storage_account_local_user.storage_account_local_user.sid
+    }
+  })
+}
+
+resource "azapi_resource" "key_vault_secret_sftp_password" {
+  type      = "Microsoft.KeyVault/vaults/secrets@2023-02-01"
+  name      = "sftpPassword"
+  parent_id = azurerm_key_vault.key_vault.id
+
+  body = jsonencode({
+    properties = {
+      attributes = {
+        enabled = true
+      }
+      contentType = "text/plain"
+      value       = azurerm_storage_account_local_user.storage_account_local_user.password
+    }
+  })
+}
+
 resource "azurerm_private_endpoint" "key_vault_private_endpoint" {
   name                = "${azurerm_key_vault.key_vault.name}-pe"
   location            = var.location
@@ -35,7 +67,7 @@ resource "azurerm_private_endpoint" "key_vault_private_endpoint" {
     private_connection_resource_id = azurerm_key_vault.key_vault.id
     subresource_names              = ["vault"]
   }
-  subnet_id = azapi_resource.private_endpoint_subnet.id
+  subnet_id = var.subnet_id
   dynamic "private_dns_zone_group" {
     for_each = var.private_dns_zone_id_key_vault == "" ? [] : [1]
     content {
