@@ -52,4 +52,4 @@ The following Policies are recommended to be applied for a compliant authenticat
 
 | Purpose                                 | Built-in Policy | Custom Policy | Comment |
 |:----------------------------------------|:----------------|:--------------|:--------|
-| AAD-only Authentication | [2158ddbe-fefa-408e-b43f-d4faef8ff3b8](https://portal.azure.com/#view/Microsoft_Azure_Policy/PolicyDetailBlade/definitionId/%2Fproviders%2FMicrosoft.Authorization%2FpolicyDefinitions%2F2158ddbe-fefa-408e-b43f-d4faef8ff3b8) | - | |
+| AAD-only Authentication | [2158ddbe-fefa-408e-b43f-d4faef8ff3b8](https://portal.azure.com/#view/Microsoft_Azure_Policy/PolicyDetailBlade/definitionId/%2Fproviders%2FMicrosoft.Authorization%2FpolicyDefinitions%2F2158ddbe-fefa-408e-b43f-d4faef8ff3b8) and [c3624673-d2ff-48e0-b28c-5de1c6767c3c](https://portal.azure.com/#view/Microsoft_Azure_Policy/PolicyDetailBlade/definitionId/%2Fproviders%2FMicrosoft.Authorization%2FpolicyDefinitions%2Fc3624673-d2ff-48e0-b28c-5de1c6767c3c) | - | |
