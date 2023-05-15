@@ -1,0 +1,19 @@
+{
+	"name": "SqlServerless001",
+	"properties": {
+		"parameters": {
+			"DBName": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "AzureSqlDW",
+		"typeProperties": {
+			"connectionString": "Integrated Security=False;Encrypt=True;Connection Timeout=30;Data Source=data-auto-dev-synapse001-ondemand.sql.azuresynapse.net;Initial Catalog=@{linkedService().DBName}"
+		},
+		"connectVia": {
+			"referenceName": "AutoResolveIntegrationRuntime",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}
