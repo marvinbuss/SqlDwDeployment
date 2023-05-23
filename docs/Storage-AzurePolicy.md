@@ -17,7 +17,6 @@ The following Policies are recommended to be applied for a compliant logging and
 | Diagnostics for Storage Table Services | [2fb86bf3-d221-43d1-96d1-2434af34eaa0](https://portal.azure.com/#view/Microsoft_Azure_Policy/PolicyDetailBlade/definitionId/%2Fproviders%2FMicrosoft.Authorization%2FpolicyDefinitions%2F2fb86bf3-d221-43d1-96d1-2434af34eaa0) | - |  |
 | Diagnostics for Storage Blob Services | [b4fe1a3b-0715-4c6c-a5ea-ffc33cf823cb](https://portal.azure.com/#view/Microsoft_Azure_Policy/PolicyDetailBlade/definitionId/%2Fproviders%2FMicrosoft.Authorization%2FpolicyDefinitions%2Fb4fe1a3b-0715-4c6c-a5ea-ffc33cf823cb) | - |  |
 | Diagnostics for Storage Queue Services | [7bd000e3-37c7-4928-9f31-86c4b77c5c45](https://portal.azure.com/#view/Microsoft_Azure_Policy/PolicyDetailBlade/definitionId/%2Fproviders%2FMicrosoft.Authorization%2FpolicyDefinitions%2F7bd000e3-37c7-4928-9f31-86c4b77c5c45) | - |  |
-|  |  |  |  |
 
 ## Network Connectivity
 
