@@ -42,7 +42,7 @@ The following Policies are recommended to be applied for a compliant encryption 
 
 | Purpose                                              | Built-in Policy | Custom Policy | Comment |
 |:-----------------------------------------------------|:----------------|:--------------|:--------|
-| Customer-managed key for Synapse Workspace           | - | [f7d52b2d-e161-4dfa-a82b-55e564167385](https://portal.azure.com/#view/Microsoft_Azure_Policy/PolicyDetailBlade/definitionId/%2Fproviders%2FMicrosoft.Authorization%2FpolicyDefinitions%2Ff7d52b2d-e161-4dfa-a82b-55e564167385) | Only required for specific scenarios. |
+| ~~Customer-managed key for Synapse Workspace~~           | - | ~~[f7d52b2d-e161-4dfa-a82b-55e564167385](https://portal.azure.com/#view/Microsoft_Azure_Policy/PolicyDetailBlade/definitionId/%2Fproviders%2FMicrosoft.Authorization%2FpolicyDefinitions%2Ff7d52b2d-e161-4dfa-a82b-55e564167385)~~ | Only required for specific scenarios. |
 | TDE for Synapse SQL Pool                             | [Dine-TransparentDataEncryption-SynapseSqlPool](/docs/AzurePolicies/Dine-TransparentDataEncryption-SynapseSqlPool.json) | - | |
 | Encryption in transit for Synapse SQL Pool (TLS 1.2) | - | [8b5c654c-fb07-471b-aa8f-15fea733f140](https://portal.azure.com/#view/Microsoft_Azure_Policy/PolicyDetailBlade/definitionId/%2Fproviders%2FMicrosoft.Authorization%2FpolicyDefinitions%2F8b5c654c-fb07-471b-aa8f-15fea733f140) | |
 
