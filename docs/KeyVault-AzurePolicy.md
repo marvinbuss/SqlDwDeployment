@@ -11,7 +11,7 @@ Azure Policies are the tool in Azure to enforce a secure configuration of Azure 
 The following Policies are recommended to be applied for a compliant logging and monitoring configuration:
 
 | Purpose                                           | Built-in Policy | Custom Policy | Comment |
-|:--------------------------------------------------|:----------------|:--------------|:--------| - |  |
+|:--------------------------------------------------|:----------------|:--------------|:--------|
 | Diagnostics for Key Vault | [951af2fa-529b-416e-ab6e-066fd85ac459](https://portal.azure.com/#view/Microsoft_Azure_Policy/PolicyDetailBlade/definitionId/%2Fproviders%2FMicrosoft.Authorization%2FpolicyDefinitions%2F951af2fa-529b-416e-ab6e-066fd85ac459) | - |  |
 
 ## Network Connectivity
