@@ -1,0 +1,66 @@
+{
+  "type": "Microsoft.Authorization/policyDefinitions",
+  "name": "Deny-ContainerDeleteRetentionPolicy-Storage",
+  "properties": {
+    "displayName": "Storage Accounts should use a container delete retention policy",
+    "policyType": "Custom",
+    "mode": "All",
+    "description": "Enforce container delete retention policies larger than seven days for storage account. Enable this for increased data loss protection.",
+    "metadata": {
+      "version": "1.0.0",
+      "category": "Storage"
+    },
+    "parameters": {
+      "effect": {
+        "type": "String",
+        "metadata": {
+          "displayName": "Effect",
+          "description": "Enable or disable the execution of the policy"
+        },
+        "allowedValues": [
+          "Deny",
+          "Audit",
+          "Disabled"
+        ],
+        "defaultValue": "Deny"
+      },
+      "minContainerDeleteRetentionInDays": {
+        "type": "Integer",
+        "metadata": {
+          "displayName": "Minimum Container Delete Retention in Days",
+          "description": "Specifies the minimum number of days for the container delete retention policy"
+        },
+        "defaultValue": 7
+      }
+    },
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.Storage/storageAccounts/blobServices"
+          },
+          {
+            "anyOf": [
+              {
+                "field": "Microsoft.Storage/storageAccounts/blobServices/containerDeleteRetentionPolicy.enabled",
+                "exists": false
+              },
+              {
+                "field": "Microsoft.Storage/storageAccounts/blobServices/containerDeleteRetentionPolicy.enabled",
+                "notEquals": true
+              },
+              {
+                "field": "Microsoft.Storage/storageAccounts/blobServices/containerDeleteRetentionPolicy.days",
+                "less": "[parameters('minContainerDeleteRetentionInDays')]"
+              }
+            ]
+          }
+        ]
+      },
+      "then": {
+        "effect": "[parameters('effect')]"
+      }
+    }
+  }
+}
