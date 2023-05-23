@@ -1,0 +1,66 @@
+{
+  "type": "Microsoft.Authorization/policyDefinitions",
+  "name": "Deny-AllowedCopyScope-Storage",
+  "properties": {
+    "displayName": "Storage accounts should have a restricted copy scope that is allowed",
+    "policyType": "Custom",
+    "mode": "Indexed",
+    "description": "Azure Storage accounts should restrict the allowed copy scope. Enforce this for increased data exfiltration protection.",
+    "metadata": {
+      "version": "1.0.0",
+      "category": "Storage"
+    },
+    "parameters": {
+      "effect": {
+        "type": "String",
+        "metadata": {
+          "displayName": "Effect",
+          "description": "Enable or disable the execution of the policy"
+        },
+        "allowedValues": [
+          "Deny",
+          "Audit",
+          "Disabled"
+        ],
+        "defaultValue": "Deny"
+      },
+      "allowedCopyScope": {
+        "type": "String",
+        "metadata": {
+          "displayName": "Allowed Copy Scope",
+          "description": "Specify the allowed copy scope."
+        },
+        "allowedValues": [
+          "AAD",
+          "PrivateLink"
+        ],
+        "defaultValue": "AAD"
+      }
+    },
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.Storage/storageAccounts"
+          },
+          {
+            "anyOf": [
+              {
+                "field": "Microsoft.Storage/storageAccounts/allowedCopyScope",
+                "exists": "false"
+              },
+              {
+                "field": "Microsoft.Storage/storageAccounts/allowedCopyScope",
+                "notEquals": "[parameters('allowedCopyScope')]"
+              }
+            ]
+          }
+        ]
+      },
+      "then": {
+        "effect": "[parameters('effect')]"
+      }
+    }
+  }
+}

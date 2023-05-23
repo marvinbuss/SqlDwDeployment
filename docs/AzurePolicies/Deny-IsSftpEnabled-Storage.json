@@ -1,0 +1,54 @@
+{
+  "type": "Microsoft.Authorization/policyDefinitions",
+  "name": "Deny-IsSftpEnabled-Storage",
+  "properties": {
+    "displayName": "Storage accounts should disable SFTP",
+    "policyType": "Custom",
+    "mode": "Indexed",
+    "description": "Azure Storage accounts should disable SFTP. Enforce this for increased data exfiltration protection.",
+    "metadata": {
+      "version": "1.0.0",
+      "category": "Storage"
+    },
+    "parameters": {
+      "effect": {
+        "type": "String",
+        "metadata": {
+          "displayName": "Effect",
+          "description": "Enable or disable the execution of the policy"
+        },
+        "allowedValues": [
+          "Audit",
+          "Deny",
+          "Disabled"
+        ],
+        "defaultValue": "Deny"
+      }
+    },
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.Storage/storageAccounts"
+          },
+          {
+            "anyOf": [
+              {
+                "field": "Microsoft.Storage/storageAccounts/isSftpEnabled",
+                "exists": "false"
+              },
+              {
+                "field": "Microsoft.Storage/storageAccounts/isSftpEnabled",
+                "notEquals": false
+              }
+            ]
+          }
+        ]
+      },
+      "then": {
+        "effect": "[parameters('effect')]"
+      }
+    }
+  }
+}

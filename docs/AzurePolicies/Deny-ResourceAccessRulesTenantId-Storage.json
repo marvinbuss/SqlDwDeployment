@@ -1,0 +1,52 @@
+{
+  "type": "Microsoft.Authorization/policyDefinitions",
+  "name": "Deny-ResourceAccessRulesTenantId-Storage",
+  "properties": {
+    "displayName": "Storage accounts should restrict the resource instance rules tenant id",
+    "policyType": "Custom",
+    "mode": "Indexed",
+    "description": "Azure Storage accounts should restrict the resource access rule for service-level network ACLs to services from a specific Azure subscription. Enforce this for increased data exfiltration protection.",
+    "metadata": {
+      "version": "1.0.0",
+      "category": "Storage"
+    },
+    "parameters": {
+      "effect": {
+        "type": "String",
+        "metadata": {
+          "displayName": "Effect",
+          "description": "Enable or disable the execution of the policy"
+        },
+        "allowedValues": [
+          "Deny",
+          "Audit",
+          "Disabled"
+        ],
+        "defaultValue": "Deny"
+      }
+    },
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.Storage/storageAccounts"
+          },
+          {
+            "count": {
+              "field": "Microsoft.Storage/storageAccounts/networkAcls.resourceAccessRules[*]"
+            },
+            "greater": 0
+          },
+          {
+            "field": "Microsoft.Storage/storageAccounts/networkAcls.resourceAccessRules[*].tenantId",
+            "notEquals": "[subscription().tenantId]"
+          }
+        ]
+      },
+      "then": {
+        "effect": "[parameters('effect')]"
+      }
+    }
+  }
+}
