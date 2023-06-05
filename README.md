@@ -63,3 +63,4 @@ The deployment to the environments is done in two steps: 1. Validation of Templa
 * [`infraDeploymentTemplate.yml`](/.github/workflows/infraDeploymentTemplate.yml): Is used to deploy the IaC artifacts to the Azure environment.
 
 These reusable GitHub workflows are used by the [`devWorkflow.yml`](/.github/workflows/devWorkflow.yml), [`tstWorkflow.yml`](/.github/workflows/tstWorkflow.yml) and [`prdWorkflow.yml`](/.github/workflows/prdWorkflow.yml) to apply changes in the right order.
+
