@@ -78,7 +78,7 @@ jobs:
       # Deploy Synapse Artifacts
       - name: Deploy Synapse Artifacts
         id: deployment_synapse
-        uses: azure/synapse-workspace-deployment@V1.7.0
+        uses: azure/synapse-workspace-deployment@V1.8.0
         with:
           TargetWorkspaceName: ${{ inputs.target_synapse_workspace_name }}
           TemplateFile: ${{ github.workspace }}/${{ inputs.source_synapse_workspace_name }}/TemplateForWorkspace.json
